@@ -4,6 +4,7 @@ using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
 using BreatheKlere.REST;
+using Plugin.Geolocator;
 
 namespace BreatheKlere
 {
@@ -97,21 +98,28 @@ namespace BreatheKlere
                 //var geocoder = new Xamarin.Forms.GoogleMaps.Geocoder();
                 //var positions = await geocoder.GetPositionsForAddressAsync(entryAddress.Text);
                 //if (positions.Count() > 0)
-                if(result!=null)
+                if(result != null)
                 {
-                    double lat = result.results[0].geometry.location.lat;
-                    double lng = result.results[0].geometry.location.lng;
-                    var pos = new Position(lat, lng);
-                    map.MoveToRegion(MapSpan.FromCenterAndRadius(pos, Distance.FromMeters(100)));
-                    map.Pins.Clear();
-                    Pin pin = new Pin
+                    if (result.results.Count > 0)
                     {
-                        Type = PinType.Place,
-                        Label = result.results[0].formatted_address,
-                        Address = result.results[0].formatted_address,
-                        Position = pos,
-                     };
-                    map.Pins.Add(pin);
+                        double lat = result.results[0].geometry.location.lat;
+                        double lng = result.results[0].geometry.location.lng;
+                        var pos = new Position(lat, lng);
+                        map.MoveToRegion(MapSpan.FromCenterAndRadius(pos, Distance.FromMeters(5000)));
+                        map.Pins.Clear();
+                        Pin pin = new Pin
+                        {
+                            Type = PinType.Place,
+                            Label = result.results[0].formatted_address,
+                            Address = result.results[0].formatted_address,
+                            Position = pos,
+                        };
+                        map.Pins.Add(pin);
+                    }
+                    else
+                    {
+                        await this.DisplayAlert("Not found", "The location does not exist", "Close");
+                    }
                 }
                 else
                 {
@@ -120,5 +128,13 @@ namespace BreatheKlere
             };
 
         }
-    }
+		async protected override void OnAppearing()
+		{
+            base.OnAppearing();
+            var locator = CrossGeolocator.Current;
+            var pos = await locator.GetPositionAsync(TimeSpan.FromTicks(10000));
+            Position position = new Position(pos.Latitude, pos.Longitude);
+            map.MoveToRegion(MapSpan.FromCenterAndRadius(position, Distance.FromMeters(5000)));
+		}
+	}
 }

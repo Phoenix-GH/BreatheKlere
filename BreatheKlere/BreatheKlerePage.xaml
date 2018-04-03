@@ -29,7 +29,7 @@
                     <Entry
                         x:Name="entryAddress"
                         VerticalOptions="Center"
-                        Text="Herne Hill Rd, London SE24 0AE, UK"
+                        Text=""
                         Grid.Row="0"
                         Grid.Column="0" />
                     <Button
@@ -41,15 +41,7 @@
                 </Grid>
             </ScrollView>
 
-            <!--
-            Initial CameraUpdate
-              Location = Sao Paulo
-              Zoom = 13
-              Rotation = 30
-              Tilt = 60
-            -->
             <maps:Map Grid.Row="1" x:Name="map"
-                      InitialCameraUpdate="51.5, -0.13, 13, 30, 90"
                       VerticalOptions="FillAndExpand"
                       MyLocationEnabled="true"
                       />
