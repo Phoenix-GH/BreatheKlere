@@ -16,91 +16,40 @@ namespace BreatheKlere
             foreach (var mapType in Enum.GetValues(typeof(MapType)))
             {
                 mapTypeValues.Add((MapType)mapType);
-                pickerMapType.Items.Add(Enum.GetName(typeof(MapType), mapType));
             }
 
-            pickerMapType.SelectedIndexChanged += (sender, e) =>
-            {
-                map.MapType = mapTypeValues[pickerMapType.SelectedIndex];
-            };
-            pickerMapType.SelectedIndex = 0;
+            map.MapType = mapTypeValues[0];
 
             // MyLocationEnabled
-            switchMyLocationEnabled.Toggled += (sender, e) =>
-            {
-                map.MyLocationEnabled = e.Value;
-            };
-            switchMyLocationEnabled.IsToggled = map.MyLocationEnabled;
+            map.MyLocationEnabled = true;
 
             // IsTrafficEnabled
-            switchIsTrafficEnabled.Toggled += (sender, e) =>
-            {
-                map.IsTrafficEnabled = e.Value;
-            };
-            switchIsTrafficEnabled.IsToggled = map.IsTrafficEnabled;
+            map.IsTrafficEnabled = true;
 
             // IndoorEnabled
-            switchIndoorEnabled.Toggled += (sender, e) =>
-            {
-                map.IsIndoorEnabled = e.Value;
-            };
-            switchIndoorEnabled.IsToggled = map.IsIndoorEnabled;
+            map.IsIndoorEnabled = false;
 
             // CompassEnabled
-            switchCompassEnabled.Toggled += (sender, e) =>
-            {
-                map.UiSettings.CompassEnabled = e.Value;
-            };
-            switchCompassEnabled.IsToggled = map.UiSettings.CompassEnabled;
+            map.UiSettings.CompassEnabled = true;
 
             // RotateGesturesEnabled
-            switchRotateGesturesEnabled.Toggled += (sender, e) =>
-            {
-                map.UiSettings.RotateGesturesEnabled = e.Value;
-            };
-            switchRotateGesturesEnabled.IsToggled = map.UiSettings.RotateGesturesEnabled;
+            map.UiSettings.RotateGesturesEnabled = true;
 
             // MyLocationButtonEnabled
-            switchMyLocationButtonEnabled.Toggled += (sender, e) =>
-            {
-                map.UiSettings.MyLocationButtonEnabled = e.Value;
-            };
-            switchMyLocationButtonEnabled.IsToggled = map.UiSettings.MyLocationButtonEnabled;
+            map.UiSettings.MyLocationButtonEnabled = true;
 
             // IndoorLevelPickerEnabled
-            switchIndoorLevelPickerEnabled.Toggled += (sender, e) =>
-            {
-                map.UiSettings.IndoorLevelPickerEnabled = e.Value;
-            };
-            switchIndoorLevelPickerEnabled.IsToggled = map.UiSettings.IndoorLevelPickerEnabled;
+            map.UiSettings.IndoorLevelPickerEnabled = false;
 
             // ScrollGesturesEnabled
-            switchScrollGesturesEnabled.Toggled += (sender, e) =>
-            {
-                map.UiSettings.ScrollGesturesEnabled = e.Value;
-            };
-            switchScrollGesturesEnabled.IsToggled = map.UiSettings.ScrollGesturesEnabled;
+            map.UiSettings.ScrollGesturesEnabled = true;
 
             // TiltGesturesEnabled
-            switchTiltGesturesEnabled.Toggled += (sender, e) =>
-            {
-                map.UiSettings.TiltGesturesEnabled = e.Value;
-            };
-            switchTiltGesturesEnabled.IsToggled = map.UiSettings.TiltGesturesEnabled;
+            map.UiSettings.TiltGesturesEnabled = false;
 
-            // ZoomControlsEnabled
-            switchZoomControlsEnabled.Toggled += (sender, e) =>
-            {
-                map.UiSettings.ZoomControlsEnabled = e.Value;
-            };
-            switchZoomControlsEnabled.IsToggled = map.UiSettings.ZoomControlsEnabled;
+            map.UiSettings.ZoomControlsEnabled = true;
 
-            // ZoomGesturesEnabled
-            switchZoomGesturesEnabled.Toggled += (sender, e) =>
-            {
-                map.UiSettings.ZoomGesturesEnabled = e.Value;
-            };
-            switchZoomGesturesEnabled.IsToggled = map.UiSettings.ZoomGesturesEnabled;
+            map.UiSettings.ZoomGesturesEnabled = true;
 
             // Map Clicked
             map.MapClicked += (sender, e) =>
@@ -119,17 +68,17 @@ namespace BreatheKlere
             };
 
             // Map MyLocationButton clicked
-            map.MyLocationButtonClicked += (sender, args) =>
-            {
-                args.Handled = switchHandleMyLocationButton.IsToggled;
-                if (switchHandleMyLocationButton.IsToggled)
-                {
-                    this.DisplayAlert("MyLocationButtonClicked",
-                                 "If set MyLocationButtonClickedEventArgs.Handled = true then skip obtain current location",
-                                 "OK");
-                }
+            //map.MyLocationButtonClicked += (sender, args) =>
+            //{
+            //    args.Handled = switchHandleMyLocationButton.IsToggled;
+            //    if (switchHandleMyLocationButton.IsToggled)
+            //    {
+            //        this.DisplayAlert("MyLocationButtonClicked",
+            //                     "If set MyLocationButtonClickedEventArgs.Handled = true then skip obtain current location",
+            //                     "OK");
+            //    }
 
-            };
+            //};
 
             map.CameraChanged += (sender, args) =>
             {
@@ -156,12 +105,6 @@ namespace BreatheKlere
                 }
             };
 
-            // Snapshot
-            buttonTakeSnapshot.Clicked += async (sender, e) =>
-            {
-                var stream = await map.TakeSnapshot();
-                imageSnapshot.Source = ImageSource.FromStream(() => stream);
-            };
         }
     }
 }

@@ -3,12 +3,13 @@
     <MonoDevelop.MacDev.AppleDevelopmentTeam />
   </MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS>
   <MonoDevelop.Ide.ItemProperties.BreatheKlere.Droid AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.Android_Accelerated_Nougat" AndroidDesignerPreferredTheme="Theme.DeviceDefault.NoActionBar.Fullscreen" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="BreatheKlere/.gitignore">
+  <MonoDevelop.Ide.Workbench ActiveDocument="BreatheKlere/LoginPage.xaml">
     <Files>
       <File FileName="../../../../Library/Frameworks/Xamarin.Android.framework/Versions/8.2.0-16/lib/xamarin.android/xbuild/Xamarin/Android/Xamarin.Android.Common.targets" Line="1361" Column="2" />
-      <File FileName="BreatheKlere/BreatheKlerePage.xaml" Line="50" Column="44" />
-      <File FileName="BreatheKlere/BreatheKlerePage.xaml.cs" Line="17" Column="14" />
-      <File FileName="BreatheKlere/.gitignore" Line="87" Column="4" />
+      <File FileName="BreatheKlere/BreatheKlerePage.xaml" Line="55" Column="36" />
+      <File FileName="BreatheKlere/LoginPage.xaml" Line="6" Column="115" />
+      <File FileName="BreatheKlere/BreatheKlerePage.xaml.cs" Line="95" Column="18" NotebookId="1" />
+      <File FileName="BreatheKlere/LoginPage.xaml.cs" Line="13" Column="10" NotebookId="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
