@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
+using BreatheKlere.REST;
 
 namespace BreatheKlere
 {
@@ -89,12 +90,18 @@ namespace BreatheKlere
             // Geocode
             buttonGeocode.Clicked += async (sender, e) =>
             {
-                var geocoder = new Xamarin.Forms.GoogleMaps.Geocoder();
-                var positions = await geocoder.GetPositionsForAddressAsync(entryAddress.Text);
-                if (positions.Count() > 0)
+                RESTService rest = new RESTService();
+                Result result = await rest.getGeoResult(entryAddress.Text);
+
+                //var geocoder = new Xamarin.Forms.GoogleMaps.Geocoder();
+                //var positions = await geocoder.GetPositionsForAddressAsync(entryAddress.Text);
+                //if (positions.Count() > 0)
+                if(result!=null)
                 {
-                    var pos = positions.First();
-                    map.MoveToRegion(MapSpan.FromCenterAndRadius(pos, Distance.FromMeters(5000)));
+                    double lat = result.results[0].geometry.location.lat;
+                    double lng = result.results[0].geometry.location.lng;
+                    var pos = new Position(lat, lng);
+                    map.MoveToRegion(MapSpan.FromCenterAndRadius(pos, Distance.FromMeters(500)));
                     var reg = map.VisibleRegion;
                     var format = "0.00";
                     labelStatus.Text = $"Center = {reg.Center.Latitude.ToString(format)}, {reg.Center.Longitude.ToString(format)}";
