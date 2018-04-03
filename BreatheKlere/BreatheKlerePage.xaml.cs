@@ -84,10 +84,11 @@ namespace BreatheKlere
             map.CameraChanged += (sender, args) =>
             {
                 var p = args.Position;
-                labelStatus.Text = $"Lat={p.Target.Latitude:0.00}, Long={p.Target.Longitude:0.00}, Zoom={p.Zoom:0.00}, Bearing={p.Bearing:0.00}, Tilt={p.Tilt:0.00}";
+                //labelStatus.Text = $"Lat={p.Target.Latitude:0.00}, Long={p.Target.Longitude:0.00}, Zoom={p.Zoom:0.00}, Bearing={p.Bearing:0.00}, Tilt={p.Tilt:0.00}";
             };
 
             // Geocode
+
             buttonGeocode.Clicked += async (sender, e) =>
             {
                 RESTService rest = new RESTService();
@@ -101,10 +102,16 @@ namespace BreatheKlere
                     double lat = result.results[0].geometry.location.lat;
                     double lng = result.results[0].geometry.location.lng;
                     var pos = new Position(lat, lng);
-                    map.MoveToRegion(MapSpan.FromCenterAndRadius(pos, Distance.FromMeters(500)));
-                    var reg = map.VisibleRegion;
-                    var format = "0.00";
-                    labelStatus.Text = $"Center = {reg.Center.Latitude.ToString(format)}, {reg.Center.Longitude.ToString(format)}";
+                    map.MoveToRegion(MapSpan.FromCenterAndRadius(pos, Distance.FromMeters(100)));
+                    map.Pins.Clear();
+                    Pin pin = new Pin
+                    {
+                        Type = PinType.Place,
+                        Label = result.results[0].formatted_address,
+                        Address = result.results[0].formatted_address,
+                        Position = pos,
+                     };
+                    map.Pins.Add(pin);
                 }
                 else
                 {

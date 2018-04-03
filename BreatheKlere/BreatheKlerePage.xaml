@@ -19,7 +19,6 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
@@ -39,11 +38,6 @@
                         Text="GEOCODE"
                         Grid.Row="0"
                         Grid.Column="1" />
-
-                    <Label x:Name="labelStatus"
-                           Grid.Row="1"
-                           Grid.Column="0"
-                           Grid.ColumnSpan="2" />
                 </Grid>
             </ScrollView>
 
@@ -55,7 +49,7 @@
               Tilt = 60
             -->
             <maps:Map Grid.Row="1" x:Name="map"
-                      InitialCameraUpdate="51.5, -0.13, 13, 30, 60"
+                      InitialCameraUpdate="51.5, -0.13, 13, 30, 90"
                       VerticalOptions="FillAndExpand"
                       MyLocationEnabled="true"
                       />

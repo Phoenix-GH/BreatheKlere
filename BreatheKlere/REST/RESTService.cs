@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -33,7 +31,7 @@ namespace BreatheKlere.REST
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(@"             ResetPassword ERROR {0}", ex.Message);
+                Debug.WriteLine(@"             GeoResult ERROR {0}", ex.Message);
             }
             return null;
         }

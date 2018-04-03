@@ -1,16 +1,20 @@
 ﻿<Properties StartupConfiguration="{19773627-9912-42ED-9597-E2C9AAAEB6DE}|Default">
-  <MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.72BA83C5-C90C-403A-B0EC-06DE1C8851DF" automaticSigning="False" />
+  <MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget" automaticSigning="False" />
   <MonoDevelop.Ide.ItemProperties.BreatheKlere.Droid AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.1115fb2998170c03" AndroidDesignerPreferredTheme="Theme.DeviceDefault.NoActionBar.Fullscreen" />
   <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="BreatheKlere/REST/RESTService.cs" Line="18" Column="17" />
-      <File FileName="BreatheKlere/REST/Result.cs" Line="15" Column="33" />
-      <File FileName="Droid/Properties/AssemblyInfo.cs" Line="1" Column="1" />
+      <File FileName="BreatheKlere/REST/RESTService.cs" Line="14" Column="10" />
+      <File FileName="BreatheKlere/REST/Result.cs" Line="31" Column="29" />
+      <File FileName="Droid/Properties/AssemblyInfo.cs" Line="12" Column="32" />
       <File FileName="BreatheKlere/LoginPage.xaml.cs" Line="23" Column="14" />
-      <File FileName="iOS/Info.plist" />
-      <File FileName="BreatheKlere/REST/IRestService.cs" Line="9" Column="6" NotebookId="1" />
-      <File FileName="BreatheKlere/BreatheKlerePage.xaml.cs" Line="107" Column="80" NotebookId="1" />
-      <File FileName="BreatheKlere/BreatheKlerePage.xaml" Line="37" Column="47" NotebookId="1" />
+      <File FileName="BreatheKlere/REST/IRestService.cs" Line="11" Column="1" NotebookId="1" />
+      <File FileName="BreatheKlere/BreatheKlerePage.xaml.cs" Line="78" Column="62" NotebookId="1" />
+      <File FileName="BreatheKlere/BreatheKlerePage.xaml" Line="58" Column="1" NotebookId="1" />
+      <File FileName="BreatheKlere/LoginPage.xaml" Line="16" Column="1" NotebookId="1" />
+      <File FileName="BreatheKlere/App.xaml" Line="7" Column="1" NotebookId="1" />
+      <File FileName="BreatheKlere/App.xaml.cs" Line="22" Column="10" NotebookId="1" />
+      <File FileName="Droid/MainActivity.cs" Line="36" Column="1" NotebookId="1" />
+      <File FileName="Droid/MainApplication.cs" Line="25" Column="9" NotebookId="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
