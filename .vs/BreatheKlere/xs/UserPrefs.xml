@@ -1,15 +1,14 @@
 ﻿<Properties StartupConfiguration="{B27F91C8-DF42-4131-B165-254F2BC60605}|Default">
-  <MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.7A8F4250-966B-4CFC-8E04-3F8DB7BC057C">
+  <MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.72BA83C5-C90C-403A-B0EC-06DE1C8851DF">
     <MonoDevelop.MacDev.AppleDevelopmentTeam />
   </MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS>
-  <MonoDevelop.Ide.ItemProperties.BreatheKlere.Droid AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.Android_Accelerated_Nougat" AndroidDesignerPreferredTheme="Theme.DeviceDefault.NoActionBar.Fullscreen" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="BreatheKlere/LoginPage.xaml">
+  <MonoDevelop.Ide.ItemProperties.BreatheKlere.Droid AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.1115fb2998170c03" AndroidDesignerPreferredTheme="Theme.DeviceDefault.NoActionBar.Fullscreen" />
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="../../../../Library/Frameworks/Xamarin.Android.framework/Versions/8.2.0-16/lib/xamarin.android/xbuild/Xamarin/Android/Xamarin.Android.Common.targets" Line="1361" Column="2" />
-      <File FileName="BreatheKlere/BreatheKlerePage.xaml" Line="55" Column="36" />
-      <File FileName="BreatheKlere/LoginPage.xaml" Line="6" Column="115" />
-      <File FileName="BreatheKlere/BreatheKlerePage.xaml.cs" Line="95" Column="18" NotebookId="1" />
-      <File FileName="BreatheKlere/LoginPage.xaml.cs" Line="13" Column="10" NotebookId="1" />
+      <File FileName="BreatheKlere/BreatheKlerePage.xaml.cs" Line="92" Column="64" />
+      <File FileName="Droid/Properties/AndroidManifest.xml" Line="15" Column="12" />
+      <File FileName="BreatheKlere/LoginPage.xaml" Line="16" Column="1" />
+      <File FileName="BreatheKlere/BreatheKlerePage.xaml" Line="11" Column="34" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

@@ -19,7 +19,7 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
@@ -30,7 +30,7 @@
                     <Entry
                         x:Name="entryAddress"
                         VerticalOptions="Center"
-                        Text="London"
+                        Text="Herne Hill Rd, London SE24 0AE, UK"
                         Grid.Row="0"
                         Grid.Column="0" />
                     <Button

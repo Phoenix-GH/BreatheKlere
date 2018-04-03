@@ -56,7 +56,7 @@ namespace BreatheKlere
             {
                 var lat = e.Point.Latitude.ToString("0.000");
                 var lng = e.Point.Longitude.ToString("0.000");
-                this.DisplayAlert("MapClicked", $"{lat}/{lng}", "CLOSE");
+                //this.DisplayAlert("MapClicked", $"{lat}/{lng}", "CLOSE");
             };
 
             // Map Long clicked
@@ -64,7 +64,7 @@ namespace BreatheKlere
             {
                 var lat = e.Point.Latitude.ToString("0.000");
                 var lng = e.Point.Longitude.ToString("0.000");
-                this.DisplayAlert("MapLongClicked", $"{lat}/{lng}", "CLOSE");
+                //this.DisplayAlert("MapLongClicked", $"{lat}/{lng}", "CLOSE");
             };
 
             // Map MyLocationButton clicked
