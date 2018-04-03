@@ -3,7 +3,7 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout VerticalOptions="StartAndExpand">
-                <Label Text="BreathKlere" TextColor="Navy" FontSize="40" HorizontalOptions="Center" Margin="0, 100, 0, 0" />
+                <Label Text="BreatheKlere" TextColor="Navy" FontSize="40" HorizontalOptions="Center" Margin="0, 100, 0, 0" />
                 <Entry x:Name="usernameEntry" Placeholder="User name" HorizontalOptions="Fill" Margin="20, 15, 20, 0" />
                 <Entry x:Name="passwordEntry" IsPassword="true" Placeholder="Password" Margin="20, 15, 20, 0" HorizontalOptions="Fill" />
                 <Button Text="Login" Clicked="OnLogin" />
