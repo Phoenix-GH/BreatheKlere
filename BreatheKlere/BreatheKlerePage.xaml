@@ -35,7 +35,11 @@
                     Grid.Row="0"
                     Grid.Column="0"
                     Placeholder="Home Address"
-                />
+                    TextChanged="Entry_TextChanged">
+                    <Entry.Effects>
+                        <local:ClearEntryEffect />
+                    </Entry.Effects>
+                </Entry>
                 <Entry
                     x:Name="destinationAddress"
                     VerticalOptions="Center"
@@ -43,7 +47,12 @@
                     Grid.Row="1"
                     Grid.Column="0"
                     Placeholder="Destination Address"
-                />
+                    TextChanged="Destination_TextChanged">
+                    <Entry.Effects>
+                        <local:ClearEntryEffect />
+                    </Entry.Effects>
+                </Entry>
+                
                 <Label
                     Grid.Row="2"
                     Grid.Column="0"
@@ -72,7 +81,7 @@
                     VerticalOptions="Center"
                     Text="Calculate"
                     Grid.Row="0"
-                    Grid.RowSpan="3"
+                    Grid.RowSpan="2"
                     Grid.Column="2"
                     Clicked="Go_Clicked"
                 />

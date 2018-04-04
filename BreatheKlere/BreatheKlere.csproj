@@ -52,6 +52,7 @@
     <Compile Include="REST\GeoResult.cs" />
     <Compile Include="REST\Direction.cs" />
     <Compile Include="REST\DistanceMatrix.cs" />
+    <Compile Include="Properties\ClearEntryEffect.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">
@@ -87,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="REST\" />
+    <Folder Include="Effects\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.5.0.121934\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.5.0.121934\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets')" />

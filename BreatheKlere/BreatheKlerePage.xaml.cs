@@ -216,47 +216,60 @@ namespace BreatheKlere
 
         async void Go_Clicked(object sender, System.EventArgs e)
         {
-            map.Pins.Clear();
             map.Polylines.Clear();
-            await GeocodeOrigin();
-            await GeocodeDestination();
 
             var line = new Xamarin.Forms.GoogleMaps.Polyline();
             line.StrokeColor = Color.Red;
             line.StrokeWidth = 5;
 
-            //Distance calculation
-            var distanceResult = await rest.getDistance(entryAddress.Text, destinationAddress.Text);
-            if (distanceResult !=null )
+            string originParam = entryAddress.Text;
+            string destinationParam = destinationAddress.Text;
+
+            if (!string.IsNullOrEmpty(origin))
+                originParam = origin;
+            if (!string.IsNullOrEmpty(destination))
+                destinationParam = destination;
+
+            if (!string.IsNullOrEmpty(originParam) && !string.IsNullOrEmpty(destinationParam))
             {
-                string distance = distanceResult.rows[0].elements[0].distance.text;
-                string duration = distanceResult.rows[0].elements[0].duration.text;
-                distanceLabel.Text = $"Distance={distance}, Duration={duration}";
-            }
+                await GeocodeOrigin();
+                await GeocodeDestination();
 
-
-            var result = await rest.getDirection(entryAddress.Text, destinationAddress.Text);
-            Bounds bounds = new Bounds(originPos, destinationPos);
-            map.MoveToRegion(MapSpan.FromBounds(bounds));
-
-            if (result != null)
-            {
-                foreach (var route in result.routes)
+                var distanceResult = await rest.getDistance(originParam, destinationParam);
+                if (distanceResult != null)
                 {
-                    foreach (var leg in route.legs)
+                    string distance = distanceResult.rows[0].elements[0].distance.text;
+                    string duration = distanceResult.rows[0].elements[0].duration.text;
+                    distanceLabel.Text = $"Distance={distance}, Duration={duration}";
+                }
+
+                var result = await rest.getDirection(originParam, destinationParam);
+                Bounds bounds = new Bounds(originPos, destinationPos);
+                map.MoveToRegion(MapSpan.FromBounds(bounds));
+
+                if (result != null)
+                {
+                    foreach (var route in result.routes)
                     {
-                        foreach (var step in leg.steps)
+                        foreach (var leg in route.legs)
                         {
-                            var points = DecodePolyline(step.polyline.points);
-                            foreach (var point in points)
+                            foreach (var step in leg.steps)
                             {
-                                line.Positions.Add(point);
+                                var points = DecodePolyline(step.polyline.points);
+                                foreach (var point in points)
+                                {
+                                    line.Positions.Add(point);
+                                }
                             }
                         }
                     }
+                    if (line.Positions.Count >= 2)
+                        map.Polylines.Add(line);
                 }
-                if(line.Positions.Count >= 2)
-                    map.Polylines.Add(line);
+            }
+            else
+            {
+                await this.DisplayAlert("Not found", "Please fill all the fields", "OK");
             }
         }
 
@@ -270,25 +283,16 @@ namespace BreatheKlere
                     double lat = originResult.results[0].geometry.location.lat;
                     double lng = originResult.results[0].geometry.location.lng;
                     originPos = new Position(lat, lng);
-
-                    Pin pin = new Pin
-                    {
-                        Type = PinType.Place,
-                        Label = originResult.results[0].formatted_address,
-                        Address = originResult.results[0].formatted_address,
-                        Position = originPos,
-                    };
-                    map.Pins.Add(pin);
                 }
                 else
                 {
-                    await this.DisplayAlert("Not found", "The original location does not exist", "Close");
+                    await this.DisplayAlert("Not found", "Could not get info of home address", "OK");
                 }
                 return true;
             }
             else
             {
-                await this.DisplayAlert("Not found", "Geocoder returns no results", "Close");
+                await this.DisplayAlert("Not found", "Geocoder returns no results", "OK");
                 return false;
             }
         }
@@ -303,18 +307,10 @@ namespace BreatheKlere
                     double lat = destinationResult.results[0].geometry.location.lat;
                     double lng = destinationResult.results[0].geometry.location.lng;
                     destinationPos = new Position(lat, lng);
-                    Pin pin = new Pin
-                    {
-                        Type = PinType.Place,
-                        Label = destinationResult.results[0].formatted_address,
-                        Address = destinationResult.results[0].formatted_address,
-                        Position = destinationPos
-                    };
-                    map.Pins.Add(pin);
                 }
                 else
                 {
-                    await this.DisplayAlert("Not found", "The original location does not exist", "Close");
+                    await this.DisplayAlert("Not found", "Could not get info of destination address", "Close");
                 }
                 return true;
             }
@@ -335,6 +331,16 @@ namespace BreatheKlere
         {
             destinationAddress.Text = text;
             destinationAddress.Placeholder = placeholder;
+        }
+
+        void Entry_TextChanged(object sender, Xamarin.Forms.TextChangedEventArgs e)
+        {
+            origin = "";
+        }
+
+        void Destination_TextChanged(object sender, Xamarin.Forms.TextChangedEventArgs e)
+        {
+            destination = "";
         }
     }
 }
