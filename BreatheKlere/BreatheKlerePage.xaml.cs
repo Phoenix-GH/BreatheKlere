@@ -225,8 +225,17 @@ namespace BreatheKlere
             line.StrokeColor = Color.Red;
             line.StrokeWidth = 5;
 
-            var result = await rest.getDirection(entryAddress.Text, destinationAddress.Text);
+            //Distance calculation
+            var distanceResult = await rest.getDistance(entryAddress.Text, destinationAddress.Text);
+            if (distanceResult !=null )
+            {
+                string distance = distanceResult.rows[0].elements[0].distance.text;
+                string duration = distanceResult.rows[0].elements[0].duration.text;
+                distanceLabel.Text = $"Distance={distance}, Duration={duration}";
+            }
 
+
+            var result = await rest.getDirection(entryAddress.Text, destinationAddress.Text);
             Bounds bounds = new Bounds(originPos, destinationPos);
             map.MoveToRegion(MapSpan.FromBounds(bounds));
 

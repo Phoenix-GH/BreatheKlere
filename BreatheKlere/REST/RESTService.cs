@@ -35,6 +35,24 @@ namespace BreatheKlere.REST
             return null;
         }
 
+        public async Task<DistanceMatrix> getDistance(string origin, string destination)
+        {
+            string url = baseURL + "distancematrix/json?key=" + Config.google_maps_ios_api_key + "&origins=" + origin + "&destinations=" + destination;
+            var uri = new Uri(url);
+            try
+            {
+                var response = await client.GetAsync(uri);
+                var content = await response.Content.ReadAsStringAsync();
+                var resultResponse = JsonConvert.DeserializeObject<DistanceMatrix>(content);
+                return resultResponse;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"             GetDistance ERROR {0}", ex.Message);
+            }
+            return null;
+        }
+
         public async Task<GeoResult> getGeoResult(string locationName)
         {
             string url = baseURL + "geocode/json?key=" + Config.google_maps_ios_api_key + "&address=" + locationName;

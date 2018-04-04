@@ -51,6 +51,7 @@
     <Compile Include="REST\IRestService.cs" />
     <Compile Include="REST\GeoResult.cs" />
     <Compile Include="REST\Direction.cs" />
+    <Compile Include="REST\DistanceMatrix.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">
