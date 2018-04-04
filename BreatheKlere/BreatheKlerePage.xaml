@@ -6,44 +6,74 @@
              xmlns:maps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
 >
     <Grid
-            HorizontalOptions="Fill"
-            VerticalOptions="Fill">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+        HorizontalOptions="Fill"
+        VerticalOptions="Fill">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-            <ScrollView Grid.Row="0"
-                        Orientation="Vertical">
+        <ScrollView Grid.Row="0"
+                    Orientation="Vertical">
 
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Entry
+                    x:Name="entryAddress"
+                    VerticalOptions="Center"
+                    Text=""
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Placeholder="Home Address"
+                />
+                <Entry
+                    x:Name="destinationAddress"
+                    VerticalOptions="Center"
+                    Text=""
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Placeholder="Destination Address"
+                />
+                <Button
+                    x:Name="buttonSelectOrigin"
+                    VerticalOptions="Center"
+                    Text="Select"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Clicked="selectOrigin_Clicked"
+                />
+                <Button
+                    x:Name="buttonSelectDestination"
+                    VerticalOptions="Center"
+                    Text="Select"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Clicked="selectDestination_Clicked"
+                />
+                <Button
+                    x:Name="buttonGo"
+                    VerticalOptions="Center"
+                    Text="Calculate"
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="2"
+                    Clicked="Go_Clicked"
+                />
+            </Grid>
+        </ScrollView>
 
-                    <Entry
-                        x:Name="entryAddress"
-                        VerticalOptions="Center"
-                        Text=""
-                        Grid.Row="0"
-                        Grid.Column="0" />
-                    <Button
-                        x:Name="buttonGeocode"
-                        VerticalOptions="Center"
-                        Text="GEOCODE"
-                        Grid.Row="0"
-                        Grid.Column="1" />
-                </Grid>
-            </ScrollView>
-
-            <maps:Map Grid.Row="1" x:Name="map"
-                      VerticalOptions="FillAndExpand"
-                      MyLocationEnabled="true"
-                      />
-        </Grid>
+        <maps:Map Grid.Row="1" x:Name="map"
+                  VerticalOptions="FillAndExpand"
+                  MyLocationEnabled="true"
+                  />
+    </Grid>
 </ContentPage>

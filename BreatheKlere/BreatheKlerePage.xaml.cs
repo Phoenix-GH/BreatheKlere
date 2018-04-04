@@ -6,14 +6,17 @@ using BreatheKlere.REST;
 using Plugin.Geolocator;
 using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
+using System.Threading.Tasks;
 
 namespace BreatheKlere
 {
     public partial class BreatheKlerePage : ContentPage
     {
-        bool isDrawingBegan;
+        byte selectionMode = 0;
         string origin, destination;
+        Position originPos, destinationPos;
         RESTService rest;
+        Pin startPin, endPin;
         public BreatheKlerePage()
         {
             InitializeComponent();
@@ -24,7 +27,7 @@ namespace BreatheKlere
             {
                 mapTypeValues.Add((MapType)mapType);
             }
-            isDrawingBegan = false;
+
             map.MapType = mapTypeValues[0];
             map.MyLocationEnabled = true;
             map.IsTrafficEnabled = true;
@@ -37,12 +40,13 @@ namespace BreatheKlere
             map.UiSettings.TiltGesturesEnabled = false;
             map.UiSettings.ZoomControlsEnabled = true;
             map.UiSettings.ZoomGesturesEnabled = true;
-            Pin startPin = new Pin
+
+            startPin = new Pin
             {
                 Type = PinType.SavedPin,
                 Label = "Start Point",
             };
-            Pin endPin = new Pin
+            endPin = new Pin
             {
                 Type = PinType.Generic,
                 Label = "End Point",
@@ -50,55 +54,36 @@ namespace BreatheKlere
             // Map Clicked
             map.MapClicked += async (sender, e) =>
             {
-                var lat = e.Point.Latitude.ToString();
-                var lng = e.Point.Longitude.ToString();
-
-                if(!isDrawingBegan)
+                if (selectionMode == 2)
                 {
-                    origin = lat + ',' + lng;
-                    map.Pins.Clear();
-                    map.Polygons.Clear();
-                    startPin.Position = e.Point;
-                    startPin.Address = origin;
-                    map.Pins.Add(startPin);   
-
-                }
-                else
-                {
-                    destination = lat + ',' + lng;
-                    var line = new Xamarin.Forms.GoogleMaps.Polyline();
-                    line.StrokeColor = Color.Red;
-                    line.StrokeWidth = 5;
-
+                    destination = e.Point.Latitude.ToString() + ',' + e.Point.Longitude.ToString();
+                    destinationPos = e.Point;
                     endPin.Position = e.Point;
-                    endPin.Address = destination;
-                    map.Pins.Add(endPin);   
-
-                    var result = await rest.getDirection(origin, destination);
-                    map.Polylines.Clear();
-                    if(result != null) 
+                    setDestinationStatus("", "Pulling up location info...");
+                    GeoResult result = await rest.getGeoResult(destination);
+                    if (result!=null)
                     {
-                        foreach (var route in result.routes) 
-                        {
-                            line.Positions.Clear();
-                            foreach(var leg in route.legs) 
-                            {
-                                foreach (var step in leg.steps)
-                                {
-                                    if(line.Positions.Count == 0)
-                                    {
-                                        line.Positions.Add(new Position(step.start_location.lat, step.start_location.lng));
-                                    }
-                                    line.Positions.Add(new Position(step.end_location.lat, step.end_location.lng));
-                                }
-                            }
-                            map.Polylines.Add(line);
-                        }
+                        setDestinationStatus(result.results[0].formatted_address, "Destination Address");
+                        endPin.Address = result.results[0].formatted_address;
                     }
+                    map.Pins.Add(endPin);
 
                 }
-                isDrawingBegan = !isDrawingBegan;
-
+                else if(selectionMode == 1)
+                {
+                    originPos = e.Point;
+                    origin = e.Point.Latitude.ToString() + ',' + e.Point.Longitude.ToString();
+                    startPin.Position = e.Point;
+                    setEntryStatus("", "Pulling up location info...");
+                    GeoResult result = await rest.getGeoResult(origin);
+                    if(result != null)
+                    {
+                        setEntryStatus(result.results[0].formatted_address, "Home Address");
+                        startPin.Address = result.results[0].formatted_address;
+                    }
+                    map.Pins.Add(startPin);
+                }
+                selectionMode = 0;
             };
 
             // Map Long clicked
@@ -106,50 +91,10 @@ namespace BreatheKlere
             {
                 var lat = e.Point.Latitude.ToString();
                 var lng = e.Point.Longitude.ToString();
-                //this.DisplayAlert("MapLongClicked", $"{lat}/{lng}", "CLOSE");
-            };
-
-            map.CameraChanged += (sender, args) =>
-            {
-                var p = args.Position;
-                //labelStatus.Text = $"Lat={p.Target.Latitude:0.00}, Long={p.Target.Longitude:0.00}, Zoom={p.Zoom:0.00}, Bearing={p.Bearing:0.00}, Tilt={p.Tilt:0.00}";
-            };
-
-            // Geocode
-            buttonGeocode.Clicked += async (sender, e) =>
-            {
-                
-                GeoResult result = await rest.getGeoResult(entryAddress.Text);
-                if(result != null)
-                {
-                    if (result.results.Count > 0)
-                    {
-                        double lat = result.results[0].geometry.location.lat;
-                        double lng = result.results[0].geometry.location.lng;
-                        var pos = new Position(lat, lng);
-                        map.MoveToRegion(MapSpan.FromCenterAndRadius(pos, Distance.FromMeters(5000)));
-                        map.Pins.Clear();
-                        Pin pin = new Pin
-                        {
-                            Type = PinType.Place,
-                            Label = result.results[0].formatted_address,
-                            Address = result.results[0].formatted_address,
-                            Position = pos,
-                        };
-                        map.Pins.Add(pin);
-                    }
-                    else
-                    {
-                        await this.DisplayAlert("Not found", "The location does not exist", "Close");
-                    }
-                }
-                else
-                {
-                    await this.DisplayAlert("Not found", "Geocoder returns no results", "Close");
-                }
             };
 
         }
+
 		async protected override void OnAppearing()
 		{
             base.OnAppearing();
@@ -197,5 +142,190 @@ namespace BreatheKlere
 
             return CrossGeolocator.Current.IsGeolocationAvailable;
         }
-	}
+
+        private List<Position> DecodePolyline(string encodedPoints)
+        {
+            if (string.IsNullOrWhiteSpace(encodedPoints))
+                return null;
+
+            int index = 0;
+            var polylineChars = encodedPoints.ToCharArray();
+            var poly = new List<Position>();
+            int currentLat = 0;
+            int currentLng = 0;
+            int next5Bits;
+
+            while (index < polylineChars.Length)
+            {
+                int sum = 0;
+                int shifter = 0;
+
+                do
+                {
+                    next5Bits = polylineChars[index++] - 63;
+                    sum |= (next5Bits & 31) << shifter;
+                    shifter += 5;
+                }
+                while (next5Bits >= 32 && index < polylineChars.Length);
+
+                if (index >= polylineChars.Length)
+                    break;
+
+                currentLat += (sum & 1) == 1 ? ~(sum >> 1) : (sum >> 1);
+                sum = 0;
+                shifter = 0;
+
+                do
+                {
+                    next5Bits = polylineChars[index++] - 63;
+                    sum |= (next5Bits & 31) << shifter;
+                    shifter += 5;
+                }
+                while (next5Bits >= 32 && index < polylineChars.Length);
+
+                if (index >= polylineChars.Length && next5Bits >= 32)
+                {
+                    break;
+                }
+
+                currentLng += (sum & 1) == 1 ? ~(sum >> 1) : (sum >> 1);
+                var mLatLng = new Position(Convert.ToDouble(currentLat) / 100000.0, Convert.ToDouble(currentLng) / 100000.0);
+                poly.Add(mLatLng);
+            }
+
+            return poly;
+        }
+
+        void selectOrigin_Clicked (object sender, System.EventArgs e)
+        {
+            selectionMode = 1;
+            setEntryStatus("", "Tap on the map to select location");
+
+            if(map.Pins.Contains(startPin))
+                map.Pins.Remove(startPin);
+        }
+
+        void selectDestination_Clicked(object sender, System.EventArgs e)
+        {
+            selectionMode = 2;
+            setDestinationStatus("", "Tap on the map to select location");
+
+            if(map.Pins.Contains(endPin))
+                map.Pins.Remove(endPin);
+        }
+
+        async void Go_Clicked(object sender, System.EventArgs e)
+        {
+            map.Pins.Clear();
+            map.Polylines.Clear();
+            await GeocodeOrigin();
+            await GeocodeDestination();
+
+            var line = new Xamarin.Forms.GoogleMaps.Polyline();
+            line.StrokeColor = Color.Red;
+            line.StrokeWidth = 5;
+
+            var result = await rest.getDirection(entryAddress.Text, destinationAddress.Text);
+
+            Bounds bounds = new Bounds(originPos, destinationPos);
+            map.MoveToRegion(MapSpan.FromBounds(bounds));
+
+            if (result != null)
+            {
+                foreach (var route in result.routes)
+                {
+                    foreach (var leg in route.legs)
+                    {
+                        foreach (var step in leg.steps)
+                        {
+                            var points = DecodePolyline(step.polyline.points);
+                            foreach (var point in points)
+                            {
+                                line.Positions.Add(point);
+                            }
+                        }
+                    }
+                }
+                if(line.Positions.Count >= 2)
+                    map.Polylines.Add(line);
+            }
+        }
+
+        async Task<bool> GeocodeOrigin() 
+        {
+            GeoResult originResult = await rest.getGeoResult(entryAddress.Text);
+            if (originResult != null)
+            {
+                if (originResult.results.Count > 0)
+                {
+                    double lat = originResult.results[0].geometry.location.lat;
+                    double lng = originResult.results[0].geometry.location.lng;
+                    originPos = new Position(lat, lng);
+
+                    Pin pin = new Pin
+                    {
+                        Type = PinType.Place,
+                        Label = originResult.results[0].formatted_address,
+                        Address = originResult.results[0].formatted_address,
+                        Position = originPos,
+                    };
+                    map.Pins.Add(pin);
+                }
+                else
+                {
+                    await this.DisplayAlert("Not found", "The original location does not exist", "Close");
+                }
+                return true;
+            }
+            else
+            {
+                await this.DisplayAlert("Not found", "Geocoder returns no results", "Close");
+                return false;
+            }
+        }
+
+        async Task<bool> GeocodeDestination() 
+        {
+            GeoResult destinationResult = await rest.getGeoResult(destinationAddress.Text);
+            if (destinationResult != null)
+            {
+                if (destinationResult.results.Count > 0)
+                {
+                    double lat = destinationResult.results[0].geometry.location.lat;
+                    double lng = destinationResult.results[0].geometry.location.lng;
+                    destinationPos = new Position(lat, lng);
+                    Pin pin = new Pin
+                    {
+                        Type = PinType.Place,
+                        Label = destinationResult.results[0].formatted_address,
+                        Address = destinationResult.results[0].formatted_address,
+                        Position = destinationPos
+                    };
+                    map.Pins.Add(pin);
+                }
+                else
+                {
+                    await this.DisplayAlert("Not found", "The original location does not exist", "Close");
+                }
+                return true;
+            }
+            else
+            {
+                await this.DisplayAlert("Not found", "Geocoder returns no results", "Close");
+                return false;
+            }
+
+        }
+
+        void setEntryStatus(string text, string placeholder = "") {
+            entryAddress.Text = text;
+            entryAddress.Placeholder = placeholder;
+        }
+
+        void setDestinationStatus(string text, string placeholder = "")
+        {
+            destinationAddress.Text = text;
+            destinationAddress.Placeholder = placeholder;
+        }
+    }
 }
