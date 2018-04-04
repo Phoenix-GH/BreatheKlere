@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BreatheKlere.REST
 {
-    public class Result
+    public class GeoResult
     {
         public List<ResultItem> results { get; set; }
         public string status { get; set; }
@@ -18,12 +18,14 @@ namespace BreatheKlere.REST
         public List<string> types { get; set; }
 
     }
+
     public class AddressComponent
     {
         public string long_name { get; set; }
         public string short_name { get; set; }
         public List<string> types { get; set; }
     }
+
     public class Geometry
     {
         public Object bounds { get; set; }
@@ -31,6 +33,7 @@ namespace BreatheKlere.REST
         public string location_type { get; set; }
         public Object viewport { get; set; }
     }
+
     public class Location {
         public double lat { get; set; }
         public double lng { get; set; }

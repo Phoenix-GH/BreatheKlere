@@ -5,6 +5,7 @@ namespace BreatheKlere.REST
 {
     public interface IRestService
     {
-        Task<Result> getGeoResult(string locationName);
+        Task<GeoResult> getGeoResult(string locationName);
+        Task<Direction> getDirection(string origin, string destination);
     }
 }

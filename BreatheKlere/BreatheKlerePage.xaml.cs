@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
 using BreatheKlere.REST;
 using Plugin.Geolocator;
-using System.Diagnostics;
 using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
 
@@ -13,77 +11,103 @@ namespace BreatheKlere
 {
     public partial class BreatheKlerePage : ContentPage
     {
+        bool isDrawingBegan;
+        string origin, destination;
+        RESTService rest;
         public BreatheKlerePage()
         {
             InitializeComponent();
             // MapTypes
             var mapTypeValues = new List<MapType>();
+            rest = new RESTService();
             foreach (var mapType in Enum.GetValues(typeof(MapType)))
             {
                 mapTypeValues.Add((MapType)mapType);
             }
-
+            isDrawingBegan = false;
             map.MapType = mapTypeValues[0];
-
-            // MyLocationEnabled
             map.MyLocationEnabled = true;
-
-            // IsTrafficEnabled
             map.IsTrafficEnabled = true;
-
-            // IndoorEnabled
             map.IsIndoorEnabled = false;
-
-            // CompassEnabled
             map.UiSettings.CompassEnabled = true;
-
-            // RotateGesturesEnabled
             map.UiSettings.RotateGesturesEnabled = true;
-
-            // MyLocationButtonEnabled
             map.UiSettings.MyLocationButtonEnabled = true;
-
-            // IndoorLevelPickerEnabled
             map.UiSettings.IndoorLevelPickerEnabled = false;
-
-            // ScrollGesturesEnabled
             map.UiSettings.ScrollGesturesEnabled = true;
-
-            // TiltGesturesEnabled
             map.UiSettings.TiltGesturesEnabled = false;
-
             map.UiSettings.ZoomControlsEnabled = true;
-
             map.UiSettings.ZoomGesturesEnabled = true;
-
-            // Map Clicked
-            map.MapClicked += (sender, e) =>
+            Pin startPin = new Pin
             {
-                var lat = e.Point.Latitude.ToString("0.000");
-                var lng = e.Point.Longitude.ToString("0.000");
-                //this.DisplayAlert("MapClicked", $"{lat}/{lng}", "CLOSE");
+                Type = PinType.SavedPin,
+                Label = "Start Point",
+            };
+            Pin endPin = new Pin
+            {
+                Type = PinType.Generic,
+                Label = "End Point",
+            };
+            // Map Clicked
+            map.MapClicked += async (sender, e) =>
+            {
+                var lat = e.Point.Latitude.ToString();
+                var lng = e.Point.Longitude.ToString();
+
+                if(!isDrawingBegan)
+                {
+                    origin = lat + ',' + lng;
+                    map.Pins.Clear();
+                    map.Polygons.Clear();
+                    startPin.Position = e.Point;
+                    startPin.Address = origin;
+                    map.Pins.Add(startPin);   
+
+                }
+                else
+                {
+                    destination = lat + ',' + lng;
+                    var line = new Xamarin.Forms.GoogleMaps.Polyline();
+                    line.StrokeColor = Color.Red;
+                    line.StrokeWidth = 5;
+
+                    endPin.Position = e.Point;
+                    endPin.Address = destination;
+                    map.Pins.Add(endPin);   
+
+                    var result = await rest.getDirection(origin, destination);
+                    map.Polylines.Clear();
+                    if(result != null) 
+                    {
+                        foreach (var route in result.routes) 
+                        {
+                            line.Positions.Clear();
+                            foreach(var leg in route.legs) 
+                            {
+                                foreach (var step in leg.steps)
+                                {
+                                    if(line.Positions.Count == 0)
+                                    {
+                                        line.Positions.Add(new Position(step.start_location.lat, step.start_location.lng));
+                                    }
+                                    line.Positions.Add(new Position(step.end_location.lat, step.end_location.lng));
+                                }
+                            }
+                            map.Polylines.Add(line);
+                        }
+                    }
+
+                }
+                isDrawingBegan = !isDrawingBegan;
+
             };
 
             // Map Long clicked
             map.MapLongClicked += (sender, e) =>
             {
-                var lat = e.Point.Latitude.ToString("0.000");
-                var lng = e.Point.Longitude.ToString("0.000");
+                var lat = e.Point.Latitude.ToString();
+                var lng = e.Point.Longitude.ToString();
                 //this.DisplayAlert("MapLongClicked", $"{lat}/{lng}", "CLOSE");
             };
-
-            // Map MyLocationButton clicked
-            //map.MyLocationButtonClicked += (sender, args) =>
-            //{
-            //    args.Handled = switchHandleMyLocationButton.IsToggled;
-            //    if (switchHandleMyLocationButton.IsToggled)
-            //    {
-            //        this.DisplayAlert("MyLocationButtonClicked",
-            //                     "If set MyLocationButtonClickedEventArgs.Handled = true then skip obtain current location",
-            //                     "OK");
-            //    }
-
-            //};
 
             map.CameraChanged += (sender, args) =>
             {
@@ -92,15 +116,10 @@ namespace BreatheKlere
             };
 
             // Geocode
-
             buttonGeocode.Clicked += async (sender, e) =>
             {
-                RESTService rest = new RESTService();
-                Result result = await rest.getGeoResult(entryAddress.Text);
-
-                //var geocoder = new Xamarin.Forms.GoogleMaps.Geocoder();
-                //var positions = await geocoder.GetPositionsForAddressAsync(entryAddress.Text);
-                //if (positions.Count() > 0)
+                
+                GeoResult result = await rest.getGeoResult(entryAddress.Text);
                 if(result != null)
                 {
                     if (result.results.Count > 0)
@@ -159,7 +178,6 @@ namespace BreatheKlere
                         Position position = new Position(pos.Latitude, pos.Longitude);
                         map.MoveToRegion(MapSpan.FromCenterAndRadius(position, Distance.FromMeters(5000)));
                     }
-
                 }
                 else if (status != PermissionStatus.Unknown)
                 {
@@ -168,10 +186,8 @@ namespace BreatheKlere
             }
             catch (Exception ex)
             {
-
-                await DisplayAlert("Error: ",ex.Message,"OK");
+                await DisplayAlert("Error: ", ex.Message, "OK");
             }
-
 		}
 
         public bool IsLocationAvailable()

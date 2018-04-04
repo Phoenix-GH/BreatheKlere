@@ -8,7 +8,7 @@ namespace BreatheKlere.REST
 {
     public class RESTService : IRestService
     {
-        string baseURL = "https://maps.googleapis.com/maps/api/geocode/json";
+        string baseURL = "https://maps.googleapis.com/maps/api/";
         HttpClient client;
         public RESTService()
         {
@@ -17,16 +17,33 @@ namespace BreatheKlere.REST
             client.MaxResponseContentBufferSize = 2560000;
         }
 
-        public async Task<Result> getGeoResult(string locationName)
+        public async Task<Direction> getDirection(string origin, string destination)
         {
-            string url = baseURL + "?key=" + Config.google_maps_ios_api_key + "&address=" + locationName;
-            Debug.WriteLine("url-------------", url);
+            string url = baseURL + "directions/json?key=" + Config.google_maps_ios_api_key + "&origin=" + origin + "&destination=" + destination;
             var uri = new Uri(url);
             try
             {
                 var response = await client.GetAsync(uri);
                 var content = await response.Content.ReadAsStringAsync();
-                var resultResponse = JsonConvert.DeserializeObject<Result>(content);
+                var resultResponse = JsonConvert.DeserializeObject<Direction>(content);
+                return resultResponse;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"             GetDirection ERROR {0}", ex.Message);
+            }
+            return null;
+        }
+
+        public async Task<GeoResult> getGeoResult(string locationName)
+        {
+            string url = baseURL + "geocode/json?key=" + Config.google_maps_ios_api_key + "&address=" + locationName;
+            var uri = new Uri(url);
+            try
+            {
+                var response = await client.GetAsync(uri);
+                var content = await response.Content.ReadAsStringAsync();
+                var resultResponse = JsonConvert.DeserializeObject<GeoResult>(content);
                 return resultResponse;
             }
             catch (Exception ex)
@@ -35,5 +52,6 @@ namespace BreatheKlere.REST
             }
             return null;
         }
+
     }
 }
