@@ -102,7 +102,7 @@ namespace BreatheKlere
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error: ", ex.Message, "OK");
+                Debug.WriteLine(ex.Message);
             }
            
         }
