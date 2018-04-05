@@ -35,9 +35,9 @@ namespace BreatheKlere.REST
             return null;
         }
 
-        public async Task<DistanceMatrix> GetDistance(string origin, string destination)
+        public async Task<DistanceMatrix> GetDistance(string origin, string destination, string mode="driving")
         {
-            string url = baseURL + "distancematrix/json?key=" + Config.google_maps_ios_api_key + "&origins=" + origin + "&destinations=" + destination;
+            string url = baseURL + "distancematrix/json?key=" + Config.google_maps_ios_api_key + "&origins=" + origin + "&destinations=" + destination + "&mode=" + mode;
             var uri = new Uri(url);
             try
             {

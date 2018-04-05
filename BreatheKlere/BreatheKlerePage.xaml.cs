@@ -12,14 +12,19 @@ namespace BreatheKlere
 {
     public partial class BreatheKlerePage : ContentPage
     {
-        bool mapMode = false;
+        // mode variables
+        public byte mapMode = 0;
         bool isFirstLaunch;
+        string[] modes = { "driving", "walking", "bicycling", "transit" };
+        int mode = 0;
+
         RESTService rest;
 
+        //location variables
         public string origin, destination;
         public Position originPos, destinationPos;
-
         Pin startPin, endPin;
+
         public BreatheKlerePage()
         {
             InitializeComponent();
@@ -56,6 +61,37 @@ namespace BreatheKlere
             // Map Clicked
             map.MapClicked += async (sender, e) =>
             {
+                if (mapMode == 2)
+                {
+                    destinationPos = e.Point;
+                    endPin.Position = e.Point;
+
+                    GeoResult result = await rest.GetGeoResult(e.Point.Latitude.ToString() + ',' + e.Point.Longitude.ToString());
+                    if (result != null)
+                    {
+                        setDestinationStatus(result.results[0].formatted_address, "Destination Address");
+                        destination = result.results[0].formatted_address;
+                        endPin.Address = result.results[0].formatted_address;
+                    }
+                    map.Pins.Add(endPin);
+
+                }
+                else if (mapMode == 1)
+                {
+                    originPos = e.Point;
+                    startPin.Position = e.Point;
+                    setEntryStatus("", "Pulling up location info...");
+                    GeoResult result = await rest.GetGeoResult(e.Point.Latitude.ToString() + ',' + e.Point.Longitude.ToString());
+                    if (result != null)
+                    {
+                        origin = result.results[0].formatted_address;
+                        setEntryStatus(result.results[0].formatted_address, "Home Address");
+                        startPin.Address = result.results[0].formatted_address;
+                    }
+                    map.Pins.Add(startPin);
+                }
+                mapMode = 0;
+
             };
 
             // Map Long clicked
@@ -190,12 +226,15 @@ namespace BreatheKlere
             
             if (!string.IsNullOrEmpty(originParam) && !string.IsNullOrEmpty(destinationParam))
             {
-                var distanceResult = await rest.GetDistance(originParam, destinationParam);
+                var distanceResult = await rest.GetDistance(originParam, destinationParam, modes[mode]);
                 if (distanceResult != null)
                 {
-                    string distance = distanceResult.rows[0].elements[0].distance.text;
-                    string duration = distanceResult.rows[0].elements[0].duration.text;
-                    distanceLabel.Text = $"Distance={distance}, Duration={duration}";
+                    if (distanceResult.rows[0].elements[0].distance != null)
+                    {
+                        string distance = distanceResult.rows[0].elements[0].distance.text;
+                        string duration = distanceResult.rows[0].elements[0].duration.text;
+                        distanceLabel.Text = $"Distance={distance}, Duration={duration}";
+                    }
                 }
 
                 var result = await rest.GetDirection(originParam, destinationParam);
@@ -239,5 +278,63 @@ namespace BreatheKlere
             destinationAddress.Unfocus();
             Navigation.PushModalAsync(new LocationSelectionPage(this, false));
         }
+
+        void Driving_Clicked(object sender, System.EventArgs e)
+        {
+            clearStyles();
+            mode = 0;
+            btnDriving.BackgroundColor = Color.White;
+            btnDriving.TextColor = Color.FromHex("2196F3");
+        }
+
+        void Walking_Clicked(object sender, System.EventArgs e)
+        {
+            clearStyles();
+            mode = 1;
+            btnWalking.BackgroundColor = Color.White;
+            btnWalking.TextColor = Color.FromHex("2196F3");
+        }
+
+        void Bicycling_Clicked(object sender, System.EventArgs e)
+        {
+            clearStyles();
+            mode = 2;
+            btnBicycling.BackgroundColor = Color.White;
+            btnBicycling.TextColor = Color.FromHex("2196F3");
+        }
+
+        void Transit_Clicked(object sender, System.EventArgs e)
+        {
+            clearStyles();
+            mode = 3;
+            btnTransit.BackgroundColor = Color.White;
+            btnTransit.TextColor = Color.FromHex("2196F3");
+        }
+
+        void clearStyles()
+        {
+            btnDriving.BackgroundColor = Color.FromHex("2196F3");
+            btnWalking.BackgroundColor = Color.FromHex("2196F3");
+            btnBicycling.BackgroundColor = Color.FromHex("2196F3");
+            btnTransit.BackgroundColor = Color.FromHex("2196F3");
+
+            btnDriving.TextColor = Color.White;
+            btnWalking.TextColor = Color.White;
+            btnBicycling.TextColor = Color.White;
+            btnTransit.TextColor = Color.White;
+        }
+
+        void setEntryStatus(string text, string placeholder = "")
+        {
+            entryAddress.Text = text;
+            entryAddress.Placeholder = placeholder;
+        }
+
+        void setDestinationStatus(string text, string placeholder = "")
+        {
+            destinationAddress.Text = text;
+            destinationAddress.Placeholder = placeholder;
+        }
+
     }
 }

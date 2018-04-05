@@ -74,6 +74,10 @@ namespace BreatheKlere
 
         void Map_Tapped(object sender, System.EventArgs e)
         {
+            if (isHomeSelected)
+                parent.mapMode = 1;
+            else
+                parent.mapMode = 2;
             Navigation.PopModalAsync();
         }
 
@@ -82,9 +86,9 @@ namespace BreatheKlere
             if (!string.IsNullOrEmpty(locationEntry.Text))
             {
                 timer.Restart();
-                Device.StartTimer(TimeSpan.FromMilliseconds(500), () =>
+                Device.StartTimer(TimeSpan.FromMilliseconds(1000), () =>
                 {
-                    if (timer.ElapsedMilliseconds >= 1000)
+                    if (timer.ElapsedMilliseconds >= 800)
                     {
                         Debug.WriteLine("search progress");
                         GeoLocation(locationEntry.Text);

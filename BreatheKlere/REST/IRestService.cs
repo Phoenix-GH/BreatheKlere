@@ -5,6 +5,6 @@ namespace BreatheKlere.REST
     {
         Task<GeoResult> GetGeoResult(string locationName);
         Task<Direction> GetDirection(string origin, string destination);
-        Task<DistanceMatrix> GetDistance(string origin, string destination);
+        Task<DistanceMatrix> GetDistance(string origin, string destination, string mode);
     }
 }
