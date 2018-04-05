@@ -48,6 +48,15 @@ namespace BreatheKlere
             map.UiSettings.TiltGesturesEnabled = false;
             map.UiSettings.ZoomControlsEnabled = true;
             map.UiSettings.ZoomGesturesEnabled = true;
+
+            var entryGesture = new TapGestureRecognizer();
+            entryGesture.Tapped += Home_Focused;
+            entryAddress.GestureRecognizers.Add(entryGesture);
+
+            var destinationGesture = new TapGestureRecognizer();
+            destinationGesture.Tapped += Destination_Focused;
+            destinationAddress.GestureRecognizers.Add(destinationGesture);
+
             startPin = new Pin
             {
                 Type = PinType.SavedPin,
@@ -148,20 +157,25 @@ namespace BreatheKlere
             }
 
             //Setting up the locations
-            entryAddress.Text = origin;
-            destinationAddress.Text = destination;
-            if (map.Pins.Contains(startPin))
-                map.Pins.Remove(startPin);
-            startPin.Position = originPos;
-            startPin.Address = origin;
-            map.Pins.Add(startPin);
+            if (!string.IsNullOrEmpty(origin))
+            {
+                entryAddress.Text = origin;
+                startPin.Address = origin;
+                if (map.Pins.Contains(startPin))
+                    map.Pins.Remove(startPin);
+                startPin.Position = originPos;
+                map.Pins.Add(startPin);
+            }
+            if (!string.IsNullOrEmpty(destination))
+            {
+                destinationAddress.Text = destination;
+                endPin.Address = destination;
+                if (map.Pins.Contains(endPin))
+                    map.Pins.Remove(endPin);
+                endPin.Position = destinationPos;
 
-            if (map.Pins.Contains(endPin))
-                map.Pins.Remove(endPin);
-            endPin.Position = destinationPos;
-            endPin.Address = destination;
-
-            map.Pins.Add(endPin);
+                map.Pins.Add(endPin);
+            }
 		}
 
         private List<Position> DecodePolyline(string encodedPoints)
@@ -217,7 +231,85 @@ namespace BreatheKlere
             return poly;
         }
 
-        async void Go_Clicked(object sender, System.EventArgs e)
+        void Go_Clicked(object sender, System.EventArgs e)
+        {
+            CalculateRoute();
+        }
+
+        void Home_Focused(object sender, EventArgs e)
+        {
+            entryAddress.Unfocus();
+            Navigation.PushModalAsync(new LocationSelectionPage(this, true));
+        }
+
+        void Destination_Focused(object sender, EventArgs e)
+        {
+            destinationAddress.Unfocus();
+            Navigation.PushModalAsync(new LocationSelectionPage(this, false));
+        }
+
+        void Driving_Clicked(object sender, System.EventArgs e)
+        {
+            clearStyles();
+            mode = 0;
+            btnDriving.BackgroundColor = Color.White;
+            btnDriving.TextColor = Color.FromHex("2196F3");
+            CalculateRoute();
+        }
+
+        void Walking_Clicked(object sender, System.EventArgs e)
+        {
+            clearStyles();
+            mode = 1;
+            btnWalking.BackgroundColor = Color.White;
+            btnWalking.TextColor = Color.FromHex("2196F3");
+            CalculateRoute();
+        }
+
+        void Bicycling_Clicked(object sender, System.EventArgs e)
+        {
+            clearStyles();
+            mode = 2;
+            btnBicycling.BackgroundColor = Color.White;
+            btnBicycling.TextColor = Color.FromHex("2196F3");
+            CalculateRoute();
+        }
+
+        void Transit_Clicked(object sender, System.EventArgs e)
+        {
+            clearStyles();
+            mode = 3;
+            btnTransit.BackgroundColor = Color.White;
+            btnTransit.TextColor = Color.FromHex("2196F3");
+            CalculateRoute();
+        }
+
+        void clearStyles()
+        {
+            btnDriving.BackgroundColor = Color.FromHex("2196F3");
+            btnWalking.BackgroundColor = Color.FromHex("2196F3");
+            btnBicycling.BackgroundColor = Color.FromHex("2196F3");
+            btnTransit.BackgroundColor = Color.FromHex("2196F3");
+
+            btnDriving.TextColor = Color.White;
+            btnWalking.TextColor = Color.White;
+            btnBicycling.TextColor = Color.White;
+            btnTransit.TextColor = Color.White;
+        }
+
+        void setEntryStatus(string text, string placeholder = "")
+        {
+            entryAddress.Text = text;
+
+        }
+
+        void setDestinationStatus(string text, string placeholder = "")
+        {
+            destinationAddress.Text = text;
+
+        }
+
+        async void CalculateRoute() 
         {
             map.Polylines.Clear();
 
@@ -227,7 +319,8 @@ namespace BreatheKlere
 
             string originParam = originPos.Latitude.ToString() + ',' + originPos.Longitude.ToString();
             string destinationParam = destinationPos.Latitude.ToString() + ',' + destinationPos.Longitude.ToString();
-            
+            distanceLabel.Text = "";
+
             if (!string.IsNullOrEmpty(originParam) && !string.IsNullOrEmpty(destinationParam))
             {
                 var distanceResult = await rest.GetDistance(originParam, destinationParam, modes[mode]);
@@ -268,76 +361,7 @@ namespace BreatheKlere
             else
             {
                 await this.DisplayAlert("Not found", "Please fill all the fields", "OK");
-            }
-        }
-
-        void Home_Focused(object sender, Xamarin.Forms.FocusEventArgs e)
-        {
-            entryAddress.Unfocus();
-            Navigation.PushModalAsync(new LocationSelectionPage(this, true));
-        }
-
-        void Destination_Focused(object sender, Xamarin.Forms.FocusEventArgs e)
-        {
-            destinationAddress.Unfocus();
-            Navigation.PushModalAsync(new LocationSelectionPage(this, false));
-        }
-
-        void Driving_Clicked(object sender, System.EventArgs e)
-        {
-            clearStyles();
-            mode = 0;
-            btnDriving.BackgroundColor = Color.White;
-            btnDriving.TextColor = Color.FromHex("2196F3");
-        }
-
-        void Walking_Clicked(object sender, System.EventArgs e)
-        {
-            clearStyles();
-            mode = 1;
-            btnWalking.BackgroundColor = Color.White;
-            btnWalking.TextColor = Color.FromHex("2196F3");
-        }
-
-        void Bicycling_Clicked(object sender, System.EventArgs e)
-        {
-            clearStyles();
-            mode = 2;
-            btnBicycling.BackgroundColor = Color.White;
-            btnBicycling.TextColor = Color.FromHex("2196F3");
-        }
-
-        void Transit_Clicked(object sender, System.EventArgs e)
-        {
-            clearStyles();
-            mode = 3;
-            btnTransit.BackgroundColor = Color.White;
-            btnTransit.TextColor = Color.FromHex("2196F3");
-        }
-
-        void clearStyles()
-        {
-            btnDriving.BackgroundColor = Color.FromHex("2196F3");
-            btnWalking.BackgroundColor = Color.FromHex("2196F3");
-            btnBicycling.BackgroundColor = Color.FromHex("2196F3");
-            btnTransit.BackgroundColor = Color.FromHex("2196F3");
-
-            btnDriving.TextColor = Color.White;
-            btnWalking.TextColor = Color.White;
-            btnBicycling.TextColor = Color.White;
-            btnTransit.TextColor = Color.White;
-        }
-
-        void setEntryStatus(string text, string placeholder = "")
-        {
-            entryAddress.Text = text;
-            entryAddress.Placeholder = placeholder;
-        }
-
-        void setDestinationStatus(string text, string placeholder = "")
-        {
-            destinationAddress.Text = text;
-            destinationAddress.Placeholder = placeholder;
+            }   
         }
 
     }

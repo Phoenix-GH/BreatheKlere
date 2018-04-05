@@ -18,6 +18,7 @@
 
             <Grid
                 BackgroundColor="#2196F3"
+                Padding="10"
                 >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
@@ -30,27 +31,27 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <Entry
+                <Label
                     x:Name="entryAddress"
                     VerticalOptions="Center"
-                    Text=""
+                    Text="Your location"
                     Grid.Row="0"
                     Grid.Column="0"
-                    Placeholder="Home Address"
-                    Focused="Home_Focused"
+                    HeightRequest="30"
+                    BackgroundColor="White"
                 >
                    
-                </Entry>
-                <Entry
+                </Label>
+                <Label
                     x:Name="destinationAddress"
                     VerticalOptions="Center"
-                    Text=""
+                    Text="Destination"
                     Grid.Row="1"
                     Grid.Column="0"
-                    Placeholder="Destination Address"
-                    Focused="Destination_Focused"
+                    HeightRequest="30"
+                    BackgroundColor="White"
                 >
-                </Entry>
+                </Label>
                 <StackLayout
                     Grid.Row="2"
                     Grid.Column="0"
@@ -72,11 +73,12 @@
                 <Button
                     x:Name="buttonGo"
                     VerticalOptions="Center"
-                    Text="Calculate"
+                    Text="Go"
                     Grid.Row="0"
                     Grid.RowSpan="2"
                     Grid.Column="1"
                     Clicked="Go_Clicked"
+                    TextColor="White"
                 />
             </Grid>
         </ScrollView>

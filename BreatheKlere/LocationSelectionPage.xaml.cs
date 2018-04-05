@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using BreatheKlere.REST;
+using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
 
@@ -58,18 +60,51 @@ namespace BreatheKlere
 
         async void Your_Location_Tapped(object sender, System.EventArgs e)
         {
-            Position position = await Utils.GetPosition();
-            if (isHomeSelected)
+            try
             {
-                parent.originPos = position;
-                parent.origin = "Your location";
+                var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
+                if (status != Plugin.Permissions.Abstractions.PermissionStatus.Granted)
+                {
+                    if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(Permission.Location))
+                    {
+                        await DisplayAlert("Need location", "Gunna need that location", "OK");
+                    }
+
+                    var results = await CrossPermissions.Current.RequestPermissionsAsync(Permission.Location);
+                    //Best practice to always check that the key exists
+                    if (results.ContainsKey(Permission.Location))
+                        status = results[Permission.Location];
+                }
+
+                if (status == PermissionStatus.Granted)
+                {
+                    if (Utils.IsLocationAvailable())
+                    {
+                        Position position = await Utils.GetPosition();
+                        if (isHomeSelected)
+                        {
+                            parent.originPos = position;
+                            parent.origin = "Your location";
+                        }
+                        else
+                        {
+                            parent.destinationPos = position;
+                            parent.destination = "Your location";
+                        }
+                        await Navigation.PopModalAsync();
+                    }
+                }
+                else if (status != PermissionStatus.Unknown)
+                {
+                    await DisplayAlert("Location Denied", "Can not continue, try again.", "OK");
+                }
+
             }
-            else
+            catch (Exception ex)
             {
-                parent.destinationPos = position;
-                parent.destination = "Your location";
+                await DisplayAlert("Error: ", ex.Message, "OK");
             }
-            await Navigation.PopModalAsync();
+           
         }
 
         void Map_Tapped(object sender, System.EventArgs e)
@@ -88,7 +123,7 @@ namespace BreatheKlere
                 timer.Restart();
                 Device.StartTimer(TimeSpan.FromMilliseconds(1000), () =>
                 {
-                    if (timer.ElapsedMilliseconds >= 800)
+                    if (timer.ElapsedMilliseconds >= 1000)
                     {
                         Debug.WriteLine("search progress");
                         GeoLocation(locationEntry.Text);
