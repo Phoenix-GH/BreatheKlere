@@ -73,6 +73,8 @@ namespace BreatheKlere
                         destination = result.results[0].formatted_address;
                         endPin.Address = result.results[0].formatted_address;
                     }
+                    if (map.Pins.Contains(endPin))
+                        map.Pins.Remove(endPin);
                     map.Pins.Add(endPin);
 
                 }
@@ -88,6 +90,8 @@ namespace BreatheKlere
                         setEntryStatus(result.results[0].formatted_address, "Home Address");
                         startPin.Address = result.results[0].formatted_address;
                     }
+                    if (map.Pins.Contains(startPin))
+                        map.Pins.Remove(startPin);
                     map.Pins.Add(startPin);
                 }
                 mapMode = 0;
