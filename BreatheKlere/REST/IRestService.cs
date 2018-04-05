@@ -3,8 +3,8 @@ namespace BreatheKlere.REST
 {
     public interface IRestService
     {
-        Task<GeoResult> getGeoResult(string locationName);
-        Task<Direction> getDirection(string origin, string destination);
-        Task<DistanceMatrix> getDistance(string origin, string destination);
+        Task<GeoResult> GetGeoResult(string locationName);
+        Task<Direction> GetDirection(string origin, string destination);
+        Task<DistanceMatrix> GetDistance(string origin, string destination);
     }
 }

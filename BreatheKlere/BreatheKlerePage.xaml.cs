@@ -12,10 +12,13 @@ namespace BreatheKlere
 {
     public partial class BreatheKlerePage : ContentPage
     {
-        byte selectionMode = 0;
-        string origin, destination;
-        Position originPos, destinationPos;
+        bool mapMode = false;
+        bool isFirstLaunch;
         RESTService rest;
+
+        public string origin, destination;
+        public Position originPos, destinationPos;
+
         Pin startPin, endPin;
         public BreatheKlerePage()
         {
@@ -27,7 +30,7 @@ namespace BreatheKlere
             {
                 mapTypeValues.Add((MapType)mapType);
             }
-
+            isFirstLaunch = true;
             map.MapType = mapTypeValues[0];
             map.MyLocationEnabled = true;
             map.IsTrafficEnabled = true;
@@ -40,7 +43,6 @@ namespace BreatheKlere
             map.UiSettings.TiltGesturesEnabled = false;
             map.UiSettings.ZoomControlsEnabled = true;
             map.UiSettings.ZoomGesturesEnabled = true;
-
             startPin = new Pin
             {
                 Type = PinType.SavedPin,
@@ -54,36 +56,6 @@ namespace BreatheKlere
             // Map Clicked
             map.MapClicked += async (sender, e) =>
             {
-                if (selectionMode == 2)
-                {
-                    destination = e.Point.Latitude.ToString() + ',' + e.Point.Longitude.ToString();
-                    destinationPos = e.Point;
-                    endPin.Position = e.Point;
-                    setDestinationStatus("", "Pulling up location info...");
-                    GeoResult result = await rest.getGeoResult(destination);
-                    if (result!=null)
-                    {
-                        setDestinationStatus(result.results[0].formatted_address, "Destination Address");
-                        endPin.Address = result.results[0].formatted_address;
-                    }
-                    map.Pins.Add(endPin);
-
-                }
-                else if(selectionMode == 1)
-                {
-                    originPos = e.Point;
-                    origin = e.Point.Latitude.ToString() + ',' + e.Point.Longitude.ToString();
-                    startPin.Position = e.Point;
-                    setEntryStatus("", "Pulling up location info...");
-                    GeoResult result = await rest.getGeoResult(origin);
-                    if(result != null)
-                    {
-                        setEntryStatus(result.results[0].formatted_address, "Home Address");
-                        startPin.Address = result.results[0].formatted_address;
-                    }
-                    map.Pins.Add(startPin);
-                }
-                selectionMode = 0;
             };
 
             // Map Long clicked
@@ -113,35 +85,44 @@ namespace BreatheKlere
                     if (results.ContainsKey(Permission.Location))
                         status = results[Permission.Location];
                 }
-
-                if (status == PermissionStatus.Granted)
+                if (isFirstLaunch)
                 {
-                    if (IsLocationAvailable())
+                    if (status == PermissionStatus.Granted)
                     {
-                        var locator = CrossGeolocator.Current;
-                        var pos = await locator.GetPositionAsync(TimeSpan.FromTicks(10000));
-                        Position position = new Position(pos.Latitude, pos.Longitude);
-                        map.MoveToRegion(MapSpan.FromCenterAndRadius(position, Distance.FromMeters(5000)));
+                        if (Utils.IsLocationAvailable())
+                        {
+                            Position position = await Utils.GetPosition();
+                            map.MoveToRegion(MapSpan.FromCenterAndRadius(position, Distance.FromMeters(5000)));
+                        }
                     }
-                }
-                else if (status != PermissionStatus.Unknown)
-                {
-                    await DisplayAlert("Location Denied", "Can not continue, try again.", "OK");
+                    else if (status != PermissionStatus.Unknown)
+                    {
+                        await DisplayAlert("Location Denied", "Can not continue, try again.", "OK");
+                    }
+                    isFirstLaunch = false;
                 }
             }
             catch (Exception ex)
             {
                 await DisplayAlert("Error: ", ex.Message, "OK");
             }
+
+            //Setting up the locations
+            entryAddress.Text = origin;
+            destinationAddress.Text = destination;
+            if (map.Pins.Contains(startPin))
+                map.Pins.Remove(startPin);
+            startPin.Position = originPos;
+            startPin.Address = origin;
+            map.Pins.Add(startPin);
+
+            if (map.Pins.Contains(endPin))
+                map.Pins.Remove(endPin);
+            endPin.Position = destinationPos;
+            endPin.Address = destination;
+
+            map.Pins.Add(endPin);
 		}
-
-        public bool IsLocationAvailable()
-        {
-            if (!CrossGeolocator.IsSupported)
-                return false;
-
-            return CrossGeolocator.Current.IsGeolocationAvailable;
-        }
 
         private List<Position> DecodePolyline(string encodedPoints)
         {
@@ -196,46 +177,20 @@ namespace BreatheKlere
             return poly;
         }
 
-        void selectOrigin_Clicked (object sender, System.EventArgs e)
-        {
-            selectionMode = 1;
-            setEntryStatus("", "Tap on the map to select location");
-
-            if(map.Pins.Contains(startPin))
-                map.Pins.Remove(startPin);
-        }
-
-        void selectDestination_Clicked(object sender, System.EventArgs e)
-        {
-            selectionMode = 2;
-            setDestinationStatus("", "Tap on the map to select location");
-
-            if(map.Pins.Contains(endPin))
-                map.Pins.Remove(endPin);
-        }
-
         async void Go_Clicked(object sender, System.EventArgs e)
         {
             map.Polylines.Clear();
 
             var line = new Xamarin.Forms.GoogleMaps.Polyline();
             line.StrokeColor = Color.Red;
-            line.StrokeWidth = 5;
+            line.StrokeWidth = 10;
 
-            string originParam = entryAddress.Text;
-            string destinationParam = destinationAddress.Text;
-
-            if (!string.IsNullOrEmpty(origin))
-                originParam = origin;
-            if (!string.IsNullOrEmpty(destination))
-                destinationParam = destination;
-
+            string originParam = originPos.Latitude.ToString() + ',' + originPos.Longitude.ToString();
+            string destinationParam = destinationPos.Latitude.ToString() + ',' + destinationPos.Longitude.ToString();
+            
             if (!string.IsNullOrEmpty(originParam) && !string.IsNullOrEmpty(destinationParam))
             {
-                await GeocodeOrigin();
-                await GeocodeDestination();
-
-                var distanceResult = await rest.getDistance(originParam, destinationParam);
+                var distanceResult = await rest.GetDistance(originParam, destinationParam);
                 if (distanceResult != null)
                 {
                     string distance = distanceResult.rows[0].elements[0].distance.text;
@@ -243,7 +198,7 @@ namespace BreatheKlere
                     distanceLabel.Text = $"Distance={distance}, Duration={duration}";
                 }
 
-                var result = await rest.getDirection(originParam, destinationParam);
+                var result = await rest.GetDirection(originParam, destinationParam);
                 Bounds bounds = new Bounds(originPos, destinationPos);
                 map.MoveToRegion(MapSpan.FromBounds(bounds));
 
@@ -273,74 +228,16 @@ namespace BreatheKlere
             }
         }
 
-        async Task<bool> GeocodeOrigin() 
+        void Home_Focused(object sender, Xamarin.Forms.FocusEventArgs e)
         {
-            GeoResult originResult = await rest.getGeoResult(entryAddress.Text);
-            if (originResult != null)
-            {
-                if (originResult.results.Count > 0)
-                {
-                    double lat = originResult.results[0].geometry.location.lat;
-                    double lng = originResult.results[0].geometry.location.lng;
-                    originPos = new Position(lat, lng);
-                }
-                else
-                {
-                    await this.DisplayAlert("Not found", "Could not get info of home address", "OK");
-                }
-                return true;
-            }
-            else
-            {
-                await this.DisplayAlert("Not found", "Geocoder returns no results", "OK");
-                return false;
-            }
+            entryAddress.Unfocus();
+            Navigation.PushModalAsync(new LocationSelectionPage(this, true));
         }
 
-        async Task<bool> GeocodeDestination() 
+        void Destination_Focused(object sender, Xamarin.Forms.FocusEventArgs e)
         {
-            GeoResult destinationResult = await rest.getGeoResult(destinationAddress.Text);
-            if (destinationResult != null)
-            {
-                if (destinationResult.results.Count > 0)
-                {
-                    double lat = destinationResult.results[0].geometry.location.lat;
-                    double lng = destinationResult.results[0].geometry.location.lng;
-                    destinationPos = new Position(lat, lng);
-                }
-                else
-                {
-                    await this.DisplayAlert("Not found", "Could not get info of destination address", "Close");
-                }
-                return true;
-            }
-            else
-            {
-                await this.DisplayAlert("Not found", "Geocoder returns no results", "Close");
-                return false;
-            }
-
-        }
-
-        void setEntryStatus(string text, string placeholder = "") {
-            entryAddress.Text = text;
-            entryAddress.Placeholder = placeholder;
-        }
-
-        void setDestinationStatus(string text, string placeholder = "")
-        {
-            destinationAddress.Text = text;
-            destinationAddress.Placeholder = placeholder;
-        }
-
-        void Entry_TextChanged(object sender, Xamarin.Forms.TextChangedEventArgs e)
-        {
-            origin = "";
-        }
-
-        void Destination_TextChanged(object sender, Xamarin.Forms.TextChangedEventArgs e)
-        {
-            destination = "";
+            destinationAddress.Unfocus();
+            Navigation.PushModalAsync(new LocationSelectionPage(this, false));
         }
     }
 }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BreatheKlere.LocationSelectionPage"
+             xmlns:local="clr-namespace:BreatheKlere">
+    <ContentPage.Content>
+        <TableView Intent="Settings">
+            <TableRoot>
+                <TableSection>
+                    <ViewCell>
+                        <Entry
+                            x:Name="locationEntry"
+                            VerticalOptions="Fill"
+                            HorizontalOptions="Fill"
+                            Placeholder="Choose destination"
+                            TextChanged="Handle_TextChanged"
+                        >
+                            <Entry.Effects>
+                                <local:ClearEntryEffect />
+                            </Entry.Effects>
+                        </Entry>
+                    </ViewCell>
+                </TableSection>
+                <TableSection x:Name="locationList">
+                    
+                </TableSection>
+                
+                <TableSection>
+                    <ImageCell
+                        Text="Your location"
+                        Tapped="Your_Location_Tapped"
+                        >
+                    </ImageCell>>
+                    <ImageCell
+                        Text="Choose on map"
+                        Tapped="Map_Tapped"
+                        >
+                    </ImageCell>>
+                </TableSection>
+
+                <TableSection Title="Locations in London" x:Name="londonLocationList">
+                    
+                </TableSection>
+             </TableRoot>
+        </TableView>
+    </ContentPage.Content>
+</ContentPage>

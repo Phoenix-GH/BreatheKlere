@@ -34,6 +34,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="LocationSelectionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -53,6 +57,10 @@
     <Compile Include="REST\Direction.cs" />
     <Compile Include="REST\DistanceMatrix.cs" />
     <Compile Include="Properties\ClearEntryEffect.cs" />
+    <Compile Include="LocationSelectionPage.xaml.cs">
+      <DependentUpon>LocationSelectionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">

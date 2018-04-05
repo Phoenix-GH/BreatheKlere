@@ -17,7 +17,7 @@ namespace BreatheKlere.REST
             client.MaxResponseContentBufferSize = 2560000;
         }
 
-        public async Task<Direction> getDirection(string origin, string destination)
+        public async Task<Direction> GetDirection(string origin, string destination)
         {
             string url = baseURL + "directions/json?key=" + Config.google_maps_ios_api_key + "&origin=" + origin + "&destination=" + destination;
             var uri = new Uri(url);
@@ -35,7 +35,7 @@ namespace BreatheKlere.REST
             return null;
         }
 
-        public async Task<DistanceMatrix> getDistance(string origin, string destination)
+        public async Task<DistanceMatrix> GetDistance(string origin, string destination)
         {
             string url = baseURL + "distancematrix/json?key=" + Config.google_maps_ios_api_key + "&origins=" + origin + "&destinations=" + destination;
             var uri = new Uri(url);
@@ -53,7 +53,7 @@ namespace BreatheKlere.REST
             return null;
         }
 
-        public async Task<GeoResult> getGeoResult(string locationName)
+        public async Task<GeoResult> GetGeoResult(string locationName)
         {
             string url = baseURL + "geocode/json?key=" + Config.google_maps_ios_api_key + "&address=" + locationName;
             var uri = new Uri(url);
