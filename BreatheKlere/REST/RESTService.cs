@@ -71,5 +71,24 @@ namespace BreatheKlere.REST
             return null;
         }
 
+        public async Task<Place> GetPlaces(string locationName, string location = null)
+        {
+            string url = baseURL + "place/autocomplete/json?key=" + Config.google_maps_ios_api_key + "&input=" + locationName;
+            if(!string.IsNullOrEmpty(location))
+                url += "&location=" + location;
+            var uri = new Uri(url);
+            try
+            {
+                var response = await client.GetAsync(uri);
+                var content = await response.Content.ReadAsStringAsync();
+                var resultResponse = JsonConvert.DeserializeObject<Place>(content);
+                return resultResponse;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"             GeoResult ERROR {0}", ex.Message);
+            }
+            return null;
+        }
     }
 }

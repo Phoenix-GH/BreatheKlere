@@ -48,15 +48,18 @@ namespace BreatheKlere
                     if (Utils.IsLocationAvailable())
                     {
                         Position position = await Utils.GetPosition();
+                        parent.currentPos = position.Latitude + "," + position.Longitude;
                         if (isHomeSelected)
                         {
                             parent.originPos = position;
                             parent.origin = "Your location";
+                            parent.isHomeSet = 2;
                         }
                         else
                         {
                             parent.destinationPos = position;
                             parent.destination = "Your location";
+                            parent.isDestinationSet = 2;
                         }
                         await Navigation.PopModalAsync();
                     }
@@ -88,13 +91,13 @@ namespace BreatheKlere
             if (!string.IsNullOrEmpty(locationEntry.Text))
             {
                 timer.Restart();
-                Device.StartTimer(TimeSpan.FromMilliseconds(2000), () =>
+                Device.StartTimer(TimeSpan.FromMilliseconds(1000), () =>
                 {
-                    if (timer.ElapsedMilliseconds >= 2000)
+                    if (timer.ElapsedMilliseconds >= 1000)
                     {
-                        
-                        GeoLocation(locationEntry.Text);
-                        locationEntry.Focus();
+
+                        //GetLocation(locationEntry.Text);
+                        GetPlaces(locationEntry.Text, parent.currentPos);
                         timer.Stop();
                     }
                     return false;
@@ -124,34 +127,84 @@ namespace BreatheKlere
                             {
                                 parent.originPos = new Position(lat, lng);
                                 parent.origin = item.formatted_address;
+                                parent.isHomeSet = 2;
                             }
                             else
                             {
                                 parent.destinationPos = new Position(lat, lng);
                                 parent.destination = item.formatted_address;
+                                parent.isDestinationSet = 2;
                             }
+
                             Navigation.PopModalAsync();
                         };
                         locationList.Add(cell);
 
                     }
-                    locationEntry.Focus();
                     return true;
                 }
                 else
                 {
                     Debug.WriteLine("Could not get info of home address");
-                    locationEntry.Focus();
                     return false;
                 }
             }
             else
             {
                 Debug.WriteLine("Geocoder returns no results");
-                locationEntry.Focus();
                 return false;
             }
 
         }
+
+        async Task<bool> GetPlaces(string locationName, string location = null)
+        {
+            locationList.Clear();
+
+            Place result = await rest.GetPlaces(locationName, location);
+            if (result != null)
+            {
+                if (result.predictions.Count > 0)
+                {
+                    foreach(var item in result.predictions) 
+                    {
+                        var cell = new TextCell()
+                        {
+                            Text = item.description,
+                        };
+                        cell.Tapped += (sender, e) => {
+                            
+                            if (isHomeSelected)
+                            {
+                                parent.origin = item.description;
+                                parent.isHomeSet = 1;
+                            }
+                            else
+                            {
+                                parent.destination = item.description;
+                                parent.isDestinationSet = 1;
+                            }
+
+                            Navigation.PopModalAsync();
+                        };
+                        locationList.Add(cell);
+
+                    }
+                    return true;
+                }
+                else
+                {
+                    Debug.WriteLine("Could not get info of home address");
+                    return false;
+                }
+            }
+            else
+            {
+                Debug.WriteLine("Geocoder returns no results");
+                return false;
+            }
+
+        }
+
     }
 }

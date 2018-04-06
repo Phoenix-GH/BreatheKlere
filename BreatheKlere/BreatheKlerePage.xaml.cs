@@ -7,6 +7,7 @@ using Plugin.Geolocator;
 using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace BreatheKlere
 {
@@ -15,13 +16,14 @@ namespace BreatheKlere
         // mode variables
         public byte mapMode = 0;
         bool isFirstLaunch;
+        public byte isHomeSet = 0, isDestinationSet = 0;
         string[] modes = { "driving", "walking", "bicycling" };
         int mode = 0;
 
         RESTService rest;
 
         //location variables
-        public string origin, destination;
+        public string origin, destination, currentPos;
         public Position originPos, destinationPos;
         Pin startPin, endPin;
 
@@ -85,13 +87,12 @@ namespace BreatheKlere
                     if (map.Pins.Contains(endPin))
                         map.Pins.Remove(endPin);
                     map.Pins.Add(endPin);
-
+                    isDestinationSet = 2;
                 }
                 else if (mapMode == 1)
                 {
                     originPos = e.Point;
                     startPin.Position = e.Point;
-                    setEntryStatus("", "Pulling up location info...");
                     GeoResult result = await rest.GetGeoResult(e.Point.Latitude.ToString() + ',' + e.Point.Longitude.ToString());
                     if (result != null)
                     {
@@ -102,7 +103,9 @@ namespace BreatheKlere
                     if (map.Pins.Contains(startPin))
                         map.Pins.Remove(startPin);
                     map.Pins.Add(startPin);
+                    isHomeSet = 2;
                 }
+
                 mapMode = 0;
 
             };
@@ -140,8 +143,11 @@ namespace BreatheKlere
                     {
                         if (Utils.IsLocationAvailable())
                         {
-                            Position position = await Utils.GetPosition();
-                            map.MoveToRegion(MapSpan.FromCenterAndRadius(position, Distance.FromMeters(5000)));
+                            originPos = await Utils.GetPosition();
+                            currentPos = originPos.Latitude + "," + originPos.Longitude;
+                            origin = currentPos;
+                            isHomeSet = 2;
+                            map.MoveToRegion(MapSpan.FromCenterAndRadius(originPos, Distance.FromMeters(5000)));
                         }
                     }
                     else if (status != PermissionStatus.Unknown)
@@ -153,12 +159,19 @@ namespace BreatheKlere
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error: ", ex.Message, "OK");
+                Debug.WriteLine(ex.Message);
             }
 
             //Setting up the locations
-            if (!string.IsNullOrEmpty(origin))
+            if(isHomeSet > 0)
             {
+                if(isHomeSet == 1)
+                {
+                    var result = await rest.GetGeoResult(origin);
+                    if (result != null)
+                        originPos = new Position(result.results[0].geometry.location.lat, result.results[0].geometry.location.lng);
+                }
+
                 entryAddress.Text = origin;
                 startPin.Address = origin;
                 if (map.Pins.Contains(startPin))
@@ -166,14 +179,20 @@ namespace BreatheKlere
                 startPin.Position = originPos;
                 map.Pins.Add(startPin);
             }
-            if (!string.IsNullOrEmpty(destination))
+
+            if (isDestinationSet > 0)
             {
+                if (isDestinationSet == 1)
+                {
+                    var result = await rest.GetGeoResult(destination);
+                    if (result != null)
+                        destinationPos = new Position(result.results[0].geometry.location.lat, result.results[0].geometry.location.lng);
+                }
                 destinationAddress.Text = destination;
                 endPin.Address = destination;
                 if (map.Pins.Contains(endPin))
                     map.Pins.Remove(endPin);
                 endPin.Position = destinationPos;
-
                 map.Pins.Add(endPin);
             }
 		}
@@ -275,15 +294,12 @@ namespace BreatheKlere
             CalculateRoute();
         }
 
-      
-
         void clearStyles()
         {
             btnDriving.BackgroundColor = Color.FromHex("2196F3");
             btnWalking.BackgroundColor = Color.FromHex("2196F3");
             btnBicycling.BackgroundColor = Color.FromHex("2196F3");
-           
-
+          
             btnDriving.TextColor = Color.White;
             btnWalking.TextColor = Color.White;
             btnBicycling.TextColor = Color.White;
@@ -299,7 +315,6 @@ namespace BreatheKlere
         void setDestinationStatus(string text, string placeholder = "")
         {
             destinationAddress.Text = text;
-
         }
 
         async void CalculateRoute() 
@@ -312,9 +327,15 @@ namespace BreatheKlere
 
             string originParam = originPos.Latitude.ToString() + ',' + originPos.Longitude.ToString();
             string destinationParam = destinationPos.Latitude.ToString() + ',' + destinationPos.Longitude.ToString();
+            if(isHomeSet == 1)
+                originParam = origin;
+            
+            if (isDestinationSet == 1)
+                destinationParam = destination;
+            
             distanceLabel.Text = "";
 
-            if (!string.IsNullOrEmpty(originParam) && !string.IsNullOrEmpty(destinationParam))
+            if (!string.IsNullOrEmpty(originParam) && !string.IsNullOrEmpty(destinationParam) && isHomeSet>0 && isDestinationSet>0)
             {
                 var distanceResult = await rest.GetDistance(originParam, destinationParam, modes[mode]);
                 if (distanceResult != null)
@@ -353,7 +374,7 @@ namespace BreatheKlere
             }
             else
             {
-                await this.DisplayAlert("Not found", "Please fill all the fields", "OK");
+                await this.DisplayAlert("Warning", "Please fill all the fields", "OK");
             }   
         }
 

@@ -4,7 +4,8 @@
     <ContentPage.Content>
          <Grid
             HorizontalOptions="Fill"
-            VerticalOptions="Fill">
+            VerticalOptions="Fill"
+            Padding="0,20,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
