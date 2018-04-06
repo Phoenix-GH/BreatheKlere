@@ -1,14 +1,20 @@
 ﻿<Properties StartupConfiguration="{19773627-9912-42ED-9597-E2C9AAAEB6DE}|Default">
   <MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.7A8F4250-966B-4CFC-8E04-3F8DB7BC057C" automaticSigning="False" />
   <MonoDevelop.Ide.ItemProperties.BreatheKlere.Droid AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.1115fb2998170c03" AndroidDesignerPreferredTheme="Theme.DeviceDefault.NoActionBar.Fullscreen" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="BreatheKlere/LocationSelectionPage.xaml.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="BreatheKlere/LocationSelectionPage.xaml">
     <Files>
-      <File FileName="BreatheKlere/LocationSelectionPage.xaml.cs" Line="146" Column="38" />
-      <File FileName="BreatheKlere/LocationSelectionPage.xaml" Line="25" Column="17" />
-      <File FileName="BreatheKlere/BreatheKlerePage.xaml.cs" Line="321" Column="38" />
-      <File FileName="BreatheKlere/BreatheKlerePage.xaml" Line="21" Column="28" />
+      <File FileName="BreatheKlere/LocationSelectionPage.xaml.cs" Line="104" Column="9" />
+      <File FileName="BreatheKlere/LocationSelectionPage.xaml" Line="22" Column="15" />
+      <File FileName="BreatheKlere/BreatheKlerePage.xaml.cs" Line="63" Column="39" />
+      <File FileName="BreatheKlere/BreatheKlerePage.xaml" Line="18" Column="21" />
       <File FileName="Droid/MainActivity.cs" Line="26" Column="33" />
-      <File FileName="BreatheKlere/REST/RESTService.cs" Line="41" Column="36" />
+      <File FileName="BreatheKlere/REST/RESTService.cs" Line="31" Column="33" />
+      <File FileName="BreatheKlere/REST/IRestService.cs" Line="7" Column="25" />
+      <File FileName="BreatheKlere/REST/DistanceMatrix.cs" Line="18" Column="1" />
+      <File FileName="BreatheKlere/REST/Direction.cs" Line="56" Column="18" />
+      <File FileName="iOS/Info.plist" />
+      <File FileName="BreatheKlere/obj/Debug/BreatheKlere.LocationSelectionPage.xaml.g.cs" Line="26" Column="1" />
+      <File FileName="BreatheKlere/App.xaml" Line="7" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

@@ -17,9 +17,9 @@ namespace BreatheKlere.REST
             client.MaxResponseContentBufferSize = 2560000;
         }
 
-        public async Task<Direction> GetDirection(string origin, string destination)
+        public async Task<Direction> GetDirection(string origin, string destination, string mode)
         {
-            string url = baseURL + "directions/json?key=" + Config.google_maps_ios_api_key + "&origin=" + origin + "&destination=" + destination;
+            string url = baseURL + "directions/json?key=" + Config.google_maps_ios_api_key + "&origin=" + origin + "&destination=" + destination + "&mode=" + mode;
             var uri = new Uri(url);
             try
             {

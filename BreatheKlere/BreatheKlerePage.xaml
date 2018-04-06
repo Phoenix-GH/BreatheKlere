@@ -62,7 +62,7 @@
                     </Button>
                     <Button x:Name="btnWalking" Text="Walking" Clicked="Walking_Clicked" BackgroundColor="#2196F3" TextColor="White"></Button>
                     <Button x:Name="btnBicycling" Text="Bicycling" Clicked="Bicycling_Clicked" BackgroundColor="#2196F3" TextColor="White"></Button>
-                    <Button x:Name="btnTransit" Text="Transit" Clicked="Transit_Clicked" BackgroundColor="#2196F3" TextColor="White"></Button>
+              
                 </StackLayout>
                 <Label
                     Grid.Row="3"

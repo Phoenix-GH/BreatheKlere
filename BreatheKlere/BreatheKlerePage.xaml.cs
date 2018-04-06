@@ -15,7 +15,7 @@ namespace BreatheKlere
         // mode variables
         public byte mapMode = 0;
         bool isFirstLaunch;
-        string[] modes = { "driving", "walking", "bicycling", "transit" };
+        string[] modes = { "driving", "walking", "bicycling" };
         int mode = 0;
 
         RESTService rest;
@@ -275,26 +275,19 @@ namespace BreatheKlere
             CalculateRoute();
         }
 
-        void Transit_Clicked(object sender, System.EventArgs e)
-        {
-            clearStyles();
-            mode = 3;
-            btnTransit.BackgroundColor = Color.White;
-            btnTransit.TextColor = Color.FromHex("2196F3");
-            CalculateRoute();
-        }
+      
 
         void clearStyles()
         {
             btnDriving.BackgroundColor = Color.FromHex("2196F3");
             btnWalking.BackgroundColor = Color.FromHex("2196F3");
             btnBicycling.BackgroundColor = Color.FromHex("2196F3");
-            btnTransit.BackgroundColor = Color.FromHex("2196F3");
+           
 
             btnDriving.TextColor = Color.White;
             btnWalking.TextColor = Color.White;
             btnBicycling.TextColor = Color.White;
-            btnTransit.TextColor = Color.White;
+
         }
 
         void setEntryStatus(string text, string placeholder = "")
@@ -334,7 +327,7 @@ namespace BreatheKlere
                     }
                 }
 
-                var result = await rest.GetDirection(originParam, destinationParam);
+                var result = await rest.GetDirection(originParam, destinationParam, modes[mode]);
                 Bounds bounds = new Bounds(originPos, destinationPos);
                 map.MoveToRegion(MapSpan.FromBounds(bounds));
 

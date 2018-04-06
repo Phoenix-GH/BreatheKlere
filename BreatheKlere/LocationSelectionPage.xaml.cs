@@ -16,7 +16,6 @@ namespace BreatheKlere
         Stopwatch timer;
         RESTService rest;
         bool isHomeSelected;
-        string[] listLondon = {"Big Ben", "Trafalgar Square", "Wembley Stadium", "Emirates", "Stamford Bridge", "Olympic Park", "Bank of England", "London City Airport"};
         public LocationSelectionPage(BreatheKlerePage parent, bool isHomeSelected = true)
         {
             InitializeComponent();
@@ -24,38 +23,6 @@ namespace BreatheKlere
             this.isHomeSelected = isHomeSelected;
             timer = new Stopwatch();
             rest = new RESTService();
-            for (var i = 0; i < listLondon.Length; i++) 
-            {
-                var cell = new TextCell
-                {
-                    Text = listLondon[i],
-                };
-                cell.Tapped += async (sender, e) =>
-                {
-                    
-                    GeoResult result = await rest.GetGeoResult(((TextCell)sender).Text);
-                    if (result != null)
-                    {
-                        if(result.results.Count > 0)
-                        {
-                            double lat = result.results[0].geometry.location.lat;
-                            double lng = result.results[0].geometry.location.lng;
-                            if (isHomeSelected)
-                            {
-                                parent.originPos = new Position(lat, lng);
-                                parent.origin = result.results[0].formatted_address;
-                            }
-                            else
-                            {
-                                parent.destinationPos = new Position(lat, lng);
-                                parent.destination = result.results[0].formatted_address;
-                            }
-                            await Navigation.PopModalAsync();
-                        }
-                    }
-                };
-                londonLocationList.Add(cell);
-            }
         }
 
         async void Your_Location_Tapped(object sender, System.EventArgs e)
@@ -121,12 +88,13 @@ namespace BreatheKlere
             if (!string.IsNullOrEmpty(locationEntry.Text))
             {
                 timer.Restart();
-                Device.StartTimer(TimeSpan.FromMilliseconds(1000), () =>
+                Device.StartTimer(TimeSpan.FromMilliseconds(2000), () =>
                 {
-                    if (timer.ElapsedMilliseconds >= 1000)
+                    if (timer.ElapsedMilliseconds >= 2000)
                     {
-                        Debug.WriteLine("search progress");
+                        
                         GeoLocation(locationEntry.Text);
+                        locationEntry.Focus();
                         timer.Stop();
                     }
                     return false;
@@ -165,20 +133,25 @@ namespace BreatheKlere
                             Navigation.PopModalAsync();
                         };
                         locationList.Add(cell);
+
                     }
+                    locationEntry.Focus();
                     return true;
                 }
                 else
                 {
-                    await this.DisplayAlert("Not found", "Could not get info of home address", "OK");
+                    Debug.WriteLine("Could not get info of home address");
+                    locationEntry.Focus();
                     return false;
                 }
             }
             else
             {
-                await this.DisplayAlert("Not found", "Geocoder returns no results", "OK");
+                Debug.WriteLine("Geocoder returns no results");
+                locationEntry.Focus();
                 return false;
             }
+
         }
     }
 }
