@@ -29,12 +29,12 @@
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="App.xaml" />
-    <EmbeddedResource Include="BreatheKlerePage.xaml" />
-    <EmbeddedResource Include="LoginPage.xaml">
+    <EmbeddedResource Include="Pages\BreatheKlerePage.xaml" />
+    <EmbeddedResource Include="Pages\LocationSelectionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="LocationSelectionPage.xaml">
+    <EmbeddedResource Include="Pages\LoginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -43,25 +43,25 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BreatheKlerePage.xaml.cs">
-      <DependentUpon>BreatheKlerePage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="LoginPage.xaml.cs">
-      <DependentUpon>LoginPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="REST\RESTService.cs" />
     <Compile Include="REST\IRestService.cs" />
     <Compile Include="REST\GeoResult.cs" />
     <Compile Include="REST\Direction.cs" />
     <Compile Include="REST\DistanceMatrix.cs" />
     <Compile Include="Properties\ClearEntryEffect.cs" />
-    <Compile Include="LocationSelectionPage.xaml.cs">
+    <Compile Include="REST\Place.cs" />
+    <Compile Include="Utils\Utils.cs" />
+    <Compile Include="Pages\BreatheKlerePage.xaml.cs">
+      <DependentUpon>BreatheKlerePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\LocationSelectionPage.xaml.cs">
       <DependentUpon>LocationSelectionPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils.cs" />
-    <Compile Include="REST\Place.cs" />
+    <Compile Include="Pages\LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">
@@ -98,6 +98,8 @@
   <ItemGroup>
     <Folder Include="REST\" />
     <Folder Include="Effects\" />
+    <Folder Include="Utils\" />
+    <Folder Include="Pages\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.5.0.121934\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.5.0.121934\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets')" />
