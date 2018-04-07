@@ -86,7 +86,7 @@ namespace BreatheKlere.REST
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(@"             GeoResult ERROR {0}", ex.Message);
+                Debug.WriteLine(@"             GetPlace ERROR {0}", ex.Message);
             }
             return null;
         }

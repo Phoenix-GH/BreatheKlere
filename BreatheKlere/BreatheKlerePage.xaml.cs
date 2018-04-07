@@ -1,12 +1,11 @@
-﻿using System;
+﻿/* Main Page */
+using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
 using BreatheKlere.REST;
-using Plugin.Geolocator;
 using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
-using System.Threading.Tasks;
 using System.Diagnostics;
 
 namespace BreatheKlere
@@ -80,7 +79,7 @@ namespace BreatheKlere
                     GeoResult result = await rest.GetGeoResult(e.Point.Latitude.ToString() + ',' + e.Point.Longitude.ToString());
                     if (result != null)
                     {
-                        setDestinationStatus(result.results[0].formatted_address, "Destination Address");
+                        destinationAddress.Text = result.results[0].formatted_address;
                         destination = result.results[0].formatted_address;
                         endPin.Address = result.results[0].formatted_address;
                     }
@@ -93,11 +92,12 @@ namespace BreatheKlere
                 {
                     originPos = e.Point;
                     startPin.Position = e.Point;
+
                     GeoResult result = await rest.GetGeoResult(e.Point.Latitude.ToString() + ',' + e.Point.Longitude.ToString());
                     if (result != null)
                     {
                         origin = result.results[0].formatted_address;
-                        setEntryStatus(result.results[0].formatted_address, "Home Address");
+                        entryAddress.Text = result.results[0].formatted_address;
                         startPin.Address = result.results[0].formatted_address;
                     }
                     if (map.Pins.Contains(startPin))
@@ -304,17 +304,6 @@ namespace BreatheKlere
             btnWalking.TextColor = Color.White;
             btnBicycling.TextColor = Color.White;
 
-        }
-
-        void setEntryStatus(string text, string placeholder = "")
-        {
-            entryAddress.Text = text;
-
-        }
-
-        void setDestinationStatus(string text, string placeholder = "")
-        {
-            destinationAddress.Text = text;
         }
 
         async void CalculateRoute() 

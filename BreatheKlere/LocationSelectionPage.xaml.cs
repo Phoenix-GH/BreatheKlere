@@ -1,5 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿/* Location Selection Modal */
+
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using BreatheKlere.REST;
@@ -36,7 +37,6 @@ namespace BreatheKlere
                     {
                         await DisplayAlert("Need location", "Gunna need that location", "OK");
                     }
-
                     var results = await CrossPermissions.Current.RequestPermissionsAsync(Permission.Location);
                     //Best practice to always check that the key exists
                     if (results.ContainsKey(Permission.Location))
@@ -74,7 +74,6 @@ namespace BreatheKlere
             {
                 Debug.WriteLine(ex.Message);
             }
-           
         }
 
         void Map_Tapped(object sender, System.EventArgs e)
@@ -95,7 +94,6 @@ namespace BreatheKlere
                 {
                     if (timer.ElapsedMilliseconds >= 1000)
                     {
-
                         //GetLocation(locationEntry.Text);
                         GetPlaces(locationEntry.Text, parent.currentPos);
                         timer.Stop();
@@ -139,7 +137,6 @@ namespace BreatheKlere
                             Navigation.PopModalAsync();
                         };
                         locationList.Add(cell);
-
                     }
                     return true;
                 }
@@ -205,6 +202,5 @@ namespace BreatheKlere
             }
 
         }
-
     }
 }
