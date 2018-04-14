@@ -17,6 +17,7 @@ namespace BreatheKlere
         bool isFirstLaunch;
         public byte isHomeSet = 0, isDestinationSet = 0;
         string[] modes = { "driving", "walking", "bicycling" };
+        string[] mqModes = { "fastest", "pedestrian", "bicycle" };
         int mode = 0;
 
         RESTService rest;
@@ -253,6 +254,7 @@ namespace BreatheKlere
         void Go_Clicked(object sender, System.EventArgs e)
         {
             CalculateRoute();
+            MQRoute();
         }
 
         void Home_Focused(object sender, EventArgs e)
@@ -274,6 +276,7 @@ namespace BreatheKlere
             btnDriving.BackgroundColor = Color.White;
             btnDriving.TextColor = Color.FromHex("2196F3");
             CalculateRoute();
+            MQRoute();
         }
 
         void Walking_Clicked(object sender, System.EventArgs e)
@@ -283,6 +286,7 @@ namespace BreatheKlere
             btnWalking.BackgroundColor = Color.White;
             btnWalking.TextColor = Color.FromHex("2196F3");
             CalculateRoute();
+            MQRoute();
         }
 
         void Bicycling_Clicked(object sender, System.EventArgs e)
@@ -292,6 +296,7 @@ namespace BreatheKlere
             btnBicycling.BackgroundColor = Color.White;
             btnBicycling.TextColor = Color.FromHex("2196F3");
             CalculateRoute();
+            MQRoute();
         }
 
         void clearStyles()
@@ -365,6 +370,56 @@ namespace BreatheKlere
             {
                 await this.DisplayAlert("Warning", "Please fill all the fields", "OK");
             }   
+        }
+        async void MQRoute()
+        {
+
+            var line = new Xamarin.Forms.GoogleMaps.Polyline();
+            line.StrokeColor = Color.Blue;
+            line.StrokeWidth = 5;
+
+            string originParam = originPos.Latitude.ToString() + ',' + originPos.Longitude.ToString();
+            string destinationParam = destinationPos.Latitude.ToString() + ',' + destinationPos.Longitude.ToString();
+            if (isHomeSet == 1)
+                originParam = origin;
+
+            if (isDestinationSet == 1)
+                destinationParam = destination;
+
+            distanceLabel.Text = "";
+
+            if (!string.IsNullOrEmpty(originParam) && !string.IsNullOrEmpty(destinationParam) && isHomeSet > 0 && isDestinationSet > 0)
+            {
+                var mqResult = await rest.GetMQDirection(originParam, destinationParam, mqModes[mode]);
+                if (mqResult != null)
+                {
+                    if (mqResult.route != null)
+                    {
+                        float distance = mqResult.route.distance;
+                        distanceLabel.Text += "\n" + $"MapQuest Distance={distance}";
+                        if (mqResult.route.shape != null)
+                        {
+
+                            if (!string.IsNullOrEmpty(mqResult.route.shape.shapePoints))
+                            {
+                                var points = DecodePolyline(mqResult.route.shape.shapePoints);
+                                foreach (var point in points)
+                                {
+                                    line.Positions.Add(point);
+                                }
+
+                                if (line.Positions.Count >= 2)
+                                    map.Polylines.Add(line);
+                            }
+                        }
+                    }
+                }
+
+            }
+            else
+            {
+                await this.DisplayAlert("Warning", "Please fill all the fields", "OK");
+            }
         }
 
     }

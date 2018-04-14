@@ -7,5 +7,6 @@ namespace BreatheKlere.REST
         Task<Direction> GetDirection(string origin, string destination, string mode);
         Task<DistanceMatrix> GetDistance(string origin, string destination, string mode);
         Task<Place> GetPlaces(string locationName, string location);
+        Task<MQDirection> GetMQDirection(string from, string to, string mode);
     }
 }

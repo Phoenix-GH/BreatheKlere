@@ -9,6 +9,7 @@ namespace BreatheKlere.REST
     public class RESTService : IRestService
     {
         string baseURL = "https://maps.googleapis.com/maps/api/";
+        string mqBaseURL = "http://www.mapquestapi.com/directions/v2/route";
         HttpClient client;
         public RESTService()
         {
@@ -19,7 +20,7 @@ namespace BreatheKlere.REST
 
         public async Task<Direction> GetDirection(string origin, string destination, string mode)
         {
-            string url = baseURL + "directions/json?key=" + Config.google_maps_ios_api_key + "&origin=" + origin + "&destination=" + destination + "&mode=" + mode;
+            string url = baseURL + "directions/json?alternative=true&key=" + Config.google_maps_ios_api_key + "&origin=" + origin + "&destination=" + destination + "&mode=" + mode;
             var uri = new Uri(url);
             try
             {
@@ -90,5 +91,24 @@ namespace BreatheKlere.REST
             }
             return null;
         }
+
+        public async Task<MQDirection> GetMQDirection(string from, string to, string mode)
+        {
+            string url = mqBaseURL + "?fullShape=true&key=" + Config.mapquest_key + "&from=" + from + "&to=" + to + "&routeType=" + mode + "&shapeFormat=cmp";
+            var uri = new Uri(url);
+            try
+            {
+                var response = await client.GetAsync(uri);
+                var content = await response.Content.ReadAsStringAsync();
+                var resultResponse = JsonConvert.DeserializeObject<MQDirection>(content);
+                return resultResponse;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"             GetMQDirection ERROR {0}", ex.Message);
+            }
+            return null;
+        }
+
     }
 }
