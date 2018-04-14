@@ -343,8 +343,6 @@ namespace BreatheKlere
                 }
 
                 var result = await rest.GetDirection(originParam, destinationParam, modes[mode]);
-                Bounds bounds = new Bounds(originPos, destinationPos);
-                map.MoveToRegion(MapSpan.FromBounds(bounds));
 
                 if (result != null)
                 {
@@ -388,9 +386,14 @@ namespace BreatheKlere
 
             distanceLabel.Text = "";
 
+            Bounds bounds = new Bounds(originPos, destinationPos);
+            map.MoveToRegion(MapSpan.FromBounds(bounds));
+
             if (!string.IsNullOrEmpty(originParam) && !string.IsNullOrEmpty(destinationParam) && isHomeSet > 0 && isDestinationSet > 0)
             {
                 var mqResult = await rest.GetMQDirection(originParam, destinationParam, mqModes[mode]);
+                var result = await rest.GetDirection(originParam, destinationParam, modes[mode]);
+
                 if (mqResult != null)
                 {
                     if (mqResult.route != null)
@@ -409,11 +412,15 @@ namespace BreatheKlere
                                 }
 
                                 if (line.Positions.Count >= 2)
+                                {
                                     map.Polylines.Add(line);
+                                    map.MoveToRegion(MapSpan.FromBounds(bounds));
+                                }
                             }
                         }
                     }
                 }
+
 
             }
             else

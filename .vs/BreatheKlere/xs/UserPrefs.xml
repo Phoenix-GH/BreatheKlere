@@ -1,20 +1,21 @@
 ﻿<Properties StartupConfiguration="{19773627-9912-42ED-9597-E2C9AAAEB6DE}|Default">
-  <MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.7A8F4250-966B-4CFC-8E04-3F8DB7BC057C" automaticSigning="False" />
+  <MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget" automaticSigning="False" />
   <MonoDevelop.Ide.ItemProperties.BreatheKlere.Droid AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.06157df6bb041820" AndroidDesignerPreferredTheme="Theme.DeviceDefault.NoActionBar.Fullscreen" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="iOS/Info.plist">
+  <MonoDevelop.Ide.Workbench ActiveDocument="BreatheKlere/Pages/BreatheKlerePage.xaml.cs">
     <Files>
-      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml.cs" Line="406" Column="1" />
+      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml.cs" Line="397" Column="33" />
       <File FileName="BreatheKlere/REST/MQDirection.cs" Line="117" Column="22" />
-      <File FileName="BreatheKlere/REST/RESTService.cs" Line="104" Column="1" />
+      <File FileName="BreatheKlere/REST/RESTService.cs" Line="102" Column="33" />
       <File FileName="iOS/Info.plist" />
+      <File FileName="BreatheKlere/REST/Place.cs" Line="1" Column="1" />
+      <File FileName="BreatheKlere/REST/IRestService.cs" Line="1" Column="1" />
+      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml" Line="92" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/Users/phoenix/Projects/BreatheKlere copy/BreatheKlere/BreatheKlerePage.xaml" relfile="BreatheKlere/BreatheKlerePage.xaml" line="20" column="1" />
-      <Breakpoint file="/Users/phoenix/Projects/BreatheKlere copy/BreatheKlere/REST/RESTService.cs" relfile="BreatheKlere/REST/RESTService.cs" line="108" column="1" />
-      <Breakpoint file="/Users/phoenix/Projects/BreatheKlere copy/BreatheKlere/REST/RESTService.cs" relfile="BreatheKlere/REST/RESTService.cs" line="104" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
