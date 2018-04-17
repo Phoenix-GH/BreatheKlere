@@ -378,11 +378,6 @@ namespace BreatheKlere
 
             string originParam = originPos.Latitude.ToString() + ',' + originPos.Longitude.ToString();
             string destinationParam = destinationPos.Latitude.ToString() + ',' + destinationPos.Longitude.ToString();
-            if (isHomeSet == 1)
-                originParam = origin;
-
-            if (isDestinationSet == 1)
-                destinationParam = destination;
 
             distanceLabel.Text = "";
 
