@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -10,6 +11,8 @@ namespace BreatheKlere.REST
     {
         string baseURL = "https://maps.googleapis.com/maps/api/";
         string mqBaseURL = "http://www.mapquestapi.com/directions/v2/route";
+        string wilinskyURL = "http://www.wilinsky.com/Klere/?meth=multi";
+
         HttpClient client;
         public RESTService()
         {
@@ -110,5 +113,30 @@ namespace BreatheKlere.REST
             return null;
         }
 
+        public async Task<Pollution> GetPollution(string request) {
+            string url = wilinskyURL;
+            var uri = new Uri(url);
+            try
+            {
+                var formContent = new FormUrlEncodedContent(new[]
+                {
+                    new KeyValuePair<string, string>("request", request),
+                });
+
+                HttpResponseMessage response = null;
+                response = await client.PostAsync(uri, formContent);
+                Debug.WriteLine("Pollution response------" + response);
+                var result = await response.Content.ReadAsStringAsync();
+                Debug.WriteLine("Pollution result------" + result);
+                var pollution = JsonConvert.DeserializeObject<Pollution>(result);
+                return pollution;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"             Login ERROR {0}", ex.Message);
+            }
+            return null;
+        }
     }
 }

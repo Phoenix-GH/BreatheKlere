@@ -7,6 +7,8 @@ using BreatheKlere.REST;
 using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
 using System.Diagnostics;
+using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace BreatheKlere
 {
@@ -25,6 +27,10 @@ namespace BreatheKlere
         //location variables
         public string origin, destination, currentPos;
         public Position originPos, destinationPos;
+
+        // Point array 
+        List<Position> pollutionPoints;
+
         Pin startPin, endPin;
 
         public BreatheKlerePage()
@@ -51,6 +57,7 @@ namespace BreatheKlere
             map.UiSettings.ZoomControlsEnabled = true;
             map.UiSettings.ZoomGesturesEnabled = true;
 
+            pollutionPoints = new List<Position>();
             var entryGesture = new TapGestureRecognizer();
             entryGesture.Tapped += Home_Focused;
             entryAddress.GestureRecognizers.Add(entryGesture);
@@ -251,10 +258,11 @@ namespace BreatheKlere
             return poly;
         }
 
-        void Go_Clicked(object sender, System.EventArgs e)
+        async void Go_Clicked(object sender, System.EventArgs e)
         {
             CalculateRoute();
-            MQRoute();
+            await MQRoute();
+            DrawPollution();
         }
 
         void Home_Focused(object sender, EventArgs e)
@@ -269,34 +277,37 @@ namespace BreatheKlere
             Navigation.PushModalAsync(new LocationSelectionPage(this, false));
         }
 
-        void Driving_Clicked(object sender, System.EventArgs e)
+        async void Driving_Clicked(object sender, System.EventArgs e)
         {
             clearStyles();
             mode = 0;
             btnDriving.BackgroundColor = Color.White;
             btnDriving.TextColor = Color.FromHex("2196F3");
             CalculateRoute();
-            MQRoute();
+            await MQRoute();
+            DrawPollution();
         }
 
-        void Walking_Clicked(object sender, System.EventArgs e)
+        async void Walking_Clicked(object sender, System.EventArgs e)
         {
             clearStyles();
             mode = 1;
             btnWalking.BackgroundColor = Color.White;
             btnWalking.TextColor = Color.FromHex("2196F3");
             CalculateRoute();
-            MQRoute();
+            await MQRoute();
+            DrawPollution();
         }
 
-        void Bicycling_Clicked(object sender, System.EventArgs e)
+        async void Bicycling_Clicked(object sender, System.EventArgs e)
         {
             clearStyles();
             mode = 2;
             btnBicycling.BackgroundColor = Color.White;
             btnBicycling.TextColor = Color.FromHex("2196F3");
             CalculateRoute();
-            MQRoute();
+            await MQRoute();
+            DrawPollution();
         }
 
         void clearStyles()
@@ -369,9 +380,9 @@ namespace BreatheKlere
                 await this.DisplayAlert("Warning", "Please fill all the fields", "OK");
             }   
         }
-        async void MQRoute()
+        async Task<bool> MQRoute()
         {
-
+            pollutionPoints.Clear();
             var line = new Xamarin.Forms.GoogleMaps.Polyline();
             line.StrokeColor = Color.Blue;
             line.StrokeWidth = 5;
@@ -404,6 +415,7 @@ namespace BreatheKlere
                                 foreach (var point in points)
                                 {
                                     line.Positions.Add(point);
+                                    pollutionPoints.Add(point);
                                 }
 
                                 if (line.Positions.Count >= 2)
@@ -416,11 +428,50 @@ namespace BreatheKlere
                     }
                 }
 
-
+                return true;
             }
             else
             {
                 await this.DisplayAlert("Warning", "Please fill all the fields", "OK");
+            }
+            return false;
+        }
+        async void DrawPollution() 
+        {
+            if(pollutionPoints.Count > 0) 
+            {
+                
+                List<List<string>> list = new List<List<string>>();
+                for (int i = 0; i < pollutionPoints.Count; i++)
+                {
+                    List<string> point = new List<string>();
+                    point.Add(pollutionPoints[i].Latitude.ToString());
+                    point.Add(pollutionPoints[i].Longitude.ToString());
+                    list.Add(point);
+                }
+                PollutionRequest request = new PollutionRequest()
+                {
+                    RAD = 50,
+                    PAIRS = list
+                };
+                var result = await rest.GetPollution(JsonConvert.SerializeObject(request));
+                if(result!=null)
+                {
+                    for (var index = 0; index < result.val.Count; index++)
+                    {
+                        double lat, lng;
+                        lat = Convert.ToDouble(result.lat[index]);
+                        lng = Convert.ToDouble(result.lon[index]);
+
+                        var pin = new Pin
+                        {
+                            Type = PinType.SavedPin,
+                            Label = "Pollution: " + result.val[index].ToString(),
+                            Position = new Position(lat, lng),
+                        };
+                        map.Pins.Add(pin);
+                    }
+                }
             }
         }
 

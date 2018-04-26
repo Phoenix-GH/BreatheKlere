@@ -47,11 +47,7 @@
     <Compile Include="Config.cs" />
     <Compile Include="REST\RESTService.cs" />
     <Compile Include="REST\IRestService.cs" />
-    <Compile Include="REST\GeoResult.cs" />
-    <Compile Include="REST\Direction.cs" />
-    <Compile Include="REST\DistanceMatrix.cs" />
     <Compile Include="Properties\ClearEntryEffect.cs" />
-    <Compile Include="REST\Place.cs" />
     <Compile Include="Utils\Utils.cs" />
     <Compile Include="Pages\BreatheKlerePage.xaml.cs">
       <DependentUpon>BreatheKlerePage.xaml</DependentUpon>
@@ -62,7 +58,12 @@
     <Compile Include="Pages\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="REST\MQDirection.cs" />
+    <Compile Include="REST\Models\Direction.cs" />
+    <Compile Include="REST\Models\DistanceMatrix.cs" />
+    <Compile Include="REST\Models\GeoResult.cs" />
+    <Compile Include="REST\Models\MQDirection.cs" />
+    <Compile Include="REST\Models\Place.cs" />
+    <Compile Include="REST\Models\Pollution.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">
@@ -101,6 +102,7 @@
     <Folder Include="Effects\" />
     <Folder Include="Utils\" />
     <Folder Include="Pages\" />
+    <Folder Include="REST\Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.5.0.121934\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.5.0.121934\build\portable-win+net45+wp80+win81+wpa81\Xamarin.Forms.targets')" />
