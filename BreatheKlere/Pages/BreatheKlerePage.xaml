@@ -58,10 +58,9 @@
                     Grid.ColumnSpan="2"
                     Orientation="Horizontal"
                 >
-                    <Button x:Name="btnDriving" Text="Driving" Clicked="Driving_Clicked" TextColor="#2196F3" BackgroundColor="White">
-                    </Button>
+                    <Button x:Name="btnBicycling" Text="Bicycling" Clicked="Bicycling_Clicked" TextColor="#2196F3" BackgroundColor="White"></Button>
                     <Button x:Name="btnWalking" Text="Walking" Clicked="Walking_Clicked" BackgroundColor="#2196F3" TextColor="White"></Button>
-                    <Button x:Name="btnBicycling" Text="Bicycling" Clicked="Bicycling_Clicked" BackgroundColor="#2196F3" TextColor="White"></Button>
+
               
                 </StackLayout>
                 <Label
@@ -85,7 +84,7 @@
 
         <maps:Map Grid.Row="1" x:Name="map"
                   VerticalOptions="FillAndExpand"
-                  MyLocationEnabled="true"
+                  MyLocationEnabled="false"
                   />
     </Grid>
 </ContentPage>

@@ -18,8 +18,9 @@ namespace BreatheKlere
         public byte mapMode = 0;
         bool isFirstLaunch;
         public byte isHomeSet = 0, isDestinationSet = 0;
-        string[] modes = { "driving", "walking", "bicycling" };
-        string[] mqModes = { "fastest", "pedestrian", "bicycle" };
+        string[] modes = { "bicycling", "walking",  };
+        string[] mqModes = { "bicycle", "pedestrian" };
+        float maxPollution = 0;
         int mode = 0;
 
         RESTService rest;
@@ -29,9 +30,11 @@ namespace BreatheKlere
         public Position originPos, destinationPos;
 
         // Point array 
-        List<Position> pollutionPoints;
+
 
         Pin startPin, endPin;
+        Position hotspot;
+        float peak = 0;
 
         public BreatheKlerePage()
         {
@@ -45,7 +48,7 @@ namespace BreatheKlere
             }
             isFirstLaunch = true;
             map.MapType = mapTypeValues[0];
-            map.MyLocationEnabled = true;
+            map.MyLocationEnabled = false;
             map.IsTrafficEnabled = true;
             map.IsIndoorEnabled = false;
             map.UiSettings.CompassEnabled = true;
@@ -57,7 +60,6 @@ namespace BreatheKlere
             map.UiSettings.ZoomControlsEnabled = true;
             map.UiSettings.ZoomGesturesEnabled = true;
 
-            pollutionPoints = new List<Position>();
             var entryGesture = new TapGestureRecognizer();
             entryGesture.Tapped += Home_Focused;
             entryAddress.GestureRecognizers.Add(entryGesture);
@@ -116,13 +118,6 @@ namespace BreatheKlere
 
                 mapMode = 0;
 
-            };
-
-            // Map Long clicked
-            map.MapLongClicked += (sender, e) =>
-            {
-                var lat = e.Point.Latitude.ToString();
-                var lng = e.Point.Longitude.ToString();
             };
 
         }
@@ -260,9 +255,8 @@ namespace BreatheKlere
 
         async void Go_Clicked(object sender, System.EventArgs e)
         {
-            CalculateRoute();
-            await MQRoute();
-            DrawPollution();
+            await CalculateRoute();
+  
         }
 
         void Home_Focused(object sender, EventArgs e)
@@ -277,58 +271,41 @@ namespace BreatheKlere
             Navigation.PushModalAsync(new LocationSelectionPage(this, false));
         }
 
-        async void Driving_Clicked(object sender, System.EventArgs e)
-        {
-            clearStyles();
-            mode = 0;
-            btnDriving.BackgroundColor = Color.White;
-            btnDriving.TextColor = Color.FromHex("2196F3");
-            CalculateRoute();
-            await MQRoute();
-            DrawPollution();
-        }
-
         async void Walking_Clicked(object sender, System.EventArgs e)
         {
             clearStyles();
             mode = 1;
             btnWalking.BackgroundColor = Color.White;
             btnWalking.TextColor = Color.FromHex("2196F3");
-            CalculateRoute();
-            await MQRoute();
-            DrawPollution();
+            await CalculateRoute();
+          
+
         }
 
         async void Bicycling_Clicked(object sender, System.EventArgs e)
         {
             clearStyles();
-            mode = 2;
+            mode = 0;
             btnBicycling.BackgroundColor = Color.White;
             btnBicycling.TextColor = Color.FromHex("2196F3");
-            CalculateRoute();
-            await MQRoute();
-            DrawPollution();
+            await CalculateRoute();
+
+
         }
 
         void clearStyles()
         {
-            btnDriving.BackgroundColor = Color.FromHex("2196F3");
+            
             btnWalking.BackgroundColor = Color.FromHex("2196F3");
             btnBicycling.BackgroundColor = Color.FromHex("2196F3");
-          
-            btnDriving.TextColor = Color.White;
             btnWalking.TextColor = Color.White;
             btnBicycling.TextColor = Color.White;
-
         }
 
-        async void CalculateRoute() 
+        async Task<bool> CalculateRoute() 
         {
             map.Polylines.Clear();
 
-            var line = new Xamarin.Forms.GoogleMaps.Polyline();
-            line.StrokeColor = Color.Red;
-            line.StrokeWidth = 10;
 
             string originParam = originPos.Latitude.ToString() + ',' + originPos.Longitude.ToString();
             string destinationParam = destinationPos.Latitude.ToString() + ',' + destinationPos.Longitude.ToString();
@@ -339,7 +316,9 @@ namespace BreatheKlere
                 destinationParam = destination;
             
             distanceLabel.Text = "";
-
+            Bounds bounds = new Bounds(originPos, destinationPos);
+            map.MoveToRegion(MapSpan.FromBounds(bounds));
+            //map.MoveToRegion(MapSpan.FromCenterAndRadius(originPos, Distance.FromMeters(5000)));
             if (!string.IsNullOrEmpty(originParam) && !string.IsNullOrEmpty(destinationParam) && isHomeSet>0 && isDestinationSet>0)
             {
                 var distanceResult = await rest.GetDistance(originParam, destinationParam, modes[mode]);
@@ -349,7 +328,7 @@ namespace BreatheKlere
                     {
                         string distance = distanceResult.rows[0].elements[0].distance.text;
                         string duration = distanceResult.rows[0].elements[0].duration.text;
-                        distanceLabel.Text = $"Distance={distance}, Duration={duration}";
+                        distanceLabel.Text = $"Red Distance={distance}, Duration={duration}";
                     }
                 }
 
@@ -357,6 +336,9 @@ namespace BreatheKlere
 
                 if (result != null)
                 {
+                    var line = new Xamarin.Forms.GoogleMaps.Polyline();
+                    line.StrokeColor = Color.Red;
+                    line.StrokeWidth = 10;
                     foreach (var route in result.routes)
                     {
                         foreach (var leg in route.legs)
@@ -374,38 +356,19 @@ namespace BreatheKlere
                     if (line.Positions.Count >= 2)
                         map.Polylines.Add(line);
                 }
-            }
-            else
-            {
-                await this.DisplayAlert("Warning", "Please fill all the fields", "OK");
-            }   
-        }
-        async Task<bool> MQRoute()
-        {
-            pollutionPoints.Clear();
-            var line = new Xamarin.Forms.GoogleMaps.Polyline();
-            line.StrokeColor = Color.Blue;
-            line.StrokeWidth = 5;
 
-            string originParam = originPos.Latitude.ToString() + ',' + originPos.Longitude.ToString();
-            string destinationParam = destinationPos.Latitude.ToString() + ',' + destinationPos.Longitude.ToString();
-
-            distanceLabel.Text = "";
-
-            Bounds bounds = new Bounds(originPos, destinationPos);
-            map.MoveToRegion(MapSpan.FromBounds(bounds));
-
-            if (!string.IsNullOrEmpty(originParam) && !string.IsNullOrEmpty(destinationParam) && isHomeSet > 0 && isDestinationSet > 0)
-            {
-                var mqResult = await rest.GetMQDirection(originParam, destinationParam, mqModes[mode]);
-                var result = await rest.GetDirection(originParam, destinationParam, modes[mode]);
-
+                var mqResult = await rest.GetMQAlternativeDirection(originParam, destinationParam);
+                List<Position> pollutionPoints = new List<Position>();
+               
                 if (mqResult != null)
                 {
                     if (mqResult.route != null)
                     {
+                        var line = new Xamarin.Forms.GoogleMaps.Polyline();
+                        line.StrokeColor = Color.Blue;
+                        line.StrokeWidth = 7;
                         float distance = mqResult.route.distance;
-                        distanceLabel.Text += "\n" + $"MapQuest Distance={distance}";
+                        distanceLabel.Text += "\n" + $"Blue Distance={distance} Duration={mqResult.route.formattedTime}";
                         if (mqResult.route.shape != null)
                         {
 
@@ -421,13 +384,47 @@ namespace BreatheKlere
                                 if (line.Positions.Count >= 2)
                                 {
                                     map.Polylines.Add(line);
-                                    map.MoveToRegion(MapSpan.FromBounds(bounds));
+                                }
+                                maxPollution = await CalculatePollution(pollutionPoints, true);
+                                drawHotspot();
+                            }
+                        }
+
+                    }
+                    pollutionPoints.Clear();
+                    if (mqResult.route.alternateRoutes != null)
+                    {
+                        var line = new Xamarin.Forms.GoogleMaps.Polyline();
+                        line.StrokeColor = Color.Magenta;
+                        line.StrokeWidth = 4;
+
+                        foreach (var item in mqResult.route.alternateRoutes)
+                        {
+                            float distance = item.route.distance;
+                            distanceLabel.Text += "\n" + $"Cyan Distance={distance} Duration={item.route.formattedTime}";
+                            if (item.route.shape != null)
+                            {
+
+                                if (!string.IsNullOrEmpty(item.route.shape.shapePoints))
+                                {
+                                    var points = DecodePolyline(item.route.shape.shapePoints);
+                                    foreach (var point in points)
+                                    {
+                                        line.Positions.Add(point);
+                                        pollutionPoints.Add(point);
+                                    }
+                                    float pollutionValue = await CalculatePollution(pollutionPoints, true);
+                                    if (pollutionValue < maxPollution)
+                                        drawHotspot();
+                                    if (line.Positions.Count >= 2)
+                                    {
+                                        map.Polylines.Add(line);
+                                    }
                                 }
                             }
                         }
                     }
                 }
-
                 return true;
             }
             else
@@ -436,11 +433,14 @@ namespace BreatheKlere
             }
             return false;
         }
-        async void DrawPollution() 
+
+    
+        async Task<float> CalculatePollution(List<Position> pollutionPoints, bool main=false) 
         {
+
+            float overall = 0, max = 0;
             if(pollutionPoints.Count > 0) 
             {
-                
                 List<List<string>> list = new List<List<string>>();
                 for (int i = 0; i < pollutionPoints.Count; i++)
                 {
@@ -457,23 +457,44 @@ namespace BreatheKlere
                 var result = await rest.GetPollution(JsonConvert.SerializeObject(request));
                 if(result!=null)
                 {
-                    for (var index = 0; index < result.val.Count; index++)
+                    int maxIndex = 0;
+                    if (result.val.Count >= 5)
                     {
-                        double lat, lng;
-                        lat = Convert.ToDouble(result.lat[index]);
-                        lng = Convert.ToDouble(result.lon[index]);
-
-                        var pin = new Pin
+                        for (int index = 2; index < result.val.Count - 2; index++)
                         {
-                            Type = PinType.SavedPin,
-                            Label = "Pollution: " + result.val[index].ToString(),
-                            Position = new Position(lat, lng),
-                        };
-                        map.Pins.Add(pin);
+                            float subTotal = 0;
+                            for (int j = index - 2; j < index + 2; j++)
+                            {
+                                subTotal += (float)Convert.ToDouble(result.val[j]);
+                            }
+                            if (subTotal > max)
+                            {
+                                max = subTotal;
+                                maxIndex = index;
+                                peak = max;
+                            }
+                  
+                            overall += (float)Convert.ToDouble(result.val[index]);
+                        }
+                        double lat, lng;
+                        lat = Convert.ToDouble(result.lat[maxIndex]);
+                        lng = Convert.ToDouble(result.lon[maxIndex]);
+                        hotspot = new Position(lat, lng);
                     }
+
                 }
             }
+            return overall;
         }
-
+        void drawHotspot()
+        {
+            var pin = new Pin
+            {
+                Type = PinType.SavedPin,
+                Label = "Hotspot: " + peak.ToString(),
+                Position = hotspot,
+            };
+            map.Pins.Add(pin);
+        }
     }
 }

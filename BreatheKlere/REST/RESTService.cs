@@ -10,7 +10,7 @@ namespace BreatheKlere.REST
     public class RESTService : IRestService
     {
         string baseURL = "https://maps.googleapis.com/maps/api/";
-        string mqBaseURL = "http://www.mapquestapi.com/directions/v2/route";
+        string mqBaseURL = "http://www.mapquestapi.com/directions/v2/";
         string wilinskyURL = "http://www.wilinsky.com/Klere/?meth=multi";
 
         HttpClient client;
@@ -97,7 +97,7 @@ namespace BreatheKlere.REST
 
         public async Task<MQDirection> GetMQDirection(string from, string to, string mode)
         {
-            string url = mqBaseURL + "?fullShape=true&key=" + Config.mapquest_key + "&from=" + from + "&to=" + to + "&routeType=" + mode + "&shapeFormat=cmp";
+            string url = mqBaseURL + "route?fullShape=true&key=" + Config.mapquest_key + "&from=" + from + "&to=" + to + "&routeType=" + mode + "&shapeFormat=cmp";
             var uri = new Uri(url);
             try
             {
@@ -109,6 +109,26 @@ namespace BreatheKlere.REST
             catch (Exception ex)
             {
                 Debug.WriteLine(@"             GetMQDirection ERROR {0}", ex.Message);
+            }
+            return null;
+        }
+
+        public async Task<MQAlternativeDirection> GetMQAlternativeDirection(string from, string to)
+        {
+            string url = mqBaseURL + "alternateroutes?maxRoutes=2&key=" + Config.mapquest_key + "&from=" + from + "&to=" + to + "&shapeFormat=cmp";
+            var uri = new Uri(url);
+            try
+            {
+                var response = await client.GetAsync(uri);
+                var content = await response.Content.ReadAsStringAsync();
+                Debug.WriteLine("alternativeroutecontent", content);
+                var resultResponse = JsonConvert.DeserializeObject<MQAlternativeDirection>(content);
+
+                return resultResponse;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"             Get GetMQAlternativeDirection ERROR {0}", ex.Message);
             }
             return null;
         }
@@ -134,7 +154,7 @@ namespace BreatheKlere.REST
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(@"             Login ERROR {0}", ex.Message);
+                Debug.WriteLine(@"             GetPollution ERROR {0}", ex.Message);
             }
             return null;
         }

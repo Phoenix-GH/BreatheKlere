@@ -9,6 +9,17 @@ namespace BreatheKlere.REST
         public Object info { get; set; }
     }
 
+    public class MQAlternativeDirection
+    {
+        public AlternativeRoute route { get; set; }
+        public Object info { get; set; }
+    }
+
+    public class AlternativeRoute:MPRoute
+    {
+        public List<MQDirection> alternateRoutes { get; set; }
+    }
+
     public class MPRoute
     {
         public bool hasTollRoad { get; set; }

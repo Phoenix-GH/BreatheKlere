@@ -24,6 +24,8 @@ namespace BreatheKlere
             this.isHomeSelected = isHomeSelected;
             timer = new Stopwatch();
             rest = new RESTService();
+            if (isHomeSelected)
+                locationEntry.Placeholder = "Choose start point";
         }
 
         async void Your_Location_Tapped(object sender, System.EventArgs e)
