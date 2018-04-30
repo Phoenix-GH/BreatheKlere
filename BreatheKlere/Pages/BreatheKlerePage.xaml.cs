@@ -306,7 +306,7 @@ namespace BreatheKlere
         {
             map.Polylines.Clear();
 
-
+            map.Pins.Clear();
             string originParam = originPos.Latitude.ToString() + ',' + originPos.Longitude.ToString();
             string destinationParam = destinationPos.Latitude.ToString() + ',' + destinationPos.Longitude.ToString();
             if(isHomeSet == 1)
@@ -321,41 +321,41 @@ namespace BreatheKlere
             //map.MoveToRegion(MapSpan.FromCenterAndRadius(originPos, Distance.FromMeters(5000)));
             if (!string.IsNullOrEmpty(originParam) && !string.IsNullOrEmpty(destinationParam) && isHomeSet>0 && isDestinationSet>0)
             {
-                var distanceResult = await rest.GetDistance(originParam, destinationParam, modes[mode]);
-                if (distanceResult != null)
-                {
-                    if (distanceResult.rows[0].elements[0].distance != null)
-                    {
-                        string distance = distanceResult.rows[0].elements[0].distance.text;
-                        string duration = distanceResult.rows[0].elements[0].duration.text;
-                        distanceLabel.Text = $"Red Distance={distance}, Duration={duration}";
-                    }
-                }
+                //var distanceResult = await rest.GetDistance(originParam, destinationParam, modes[mode]);
+                //if (distanceResult != null)
+                //{
+                //    if (distanceResult.rows[0].elements[0].distance != null)
+                //    {
+                //        string distance = distanceResult.rows[0].elements[0].distance.text;
+                //        string duration = distanceResult.rows[0].elements[0].duration.text;
+                //        distanceLabel.Text = $"Red Distance={distance}, Duration={duration}";
+                //    }
+                //}
 
-                var result = await rest.GetDirection(originParam, destinationParam, modes[mode]);
+                //var result = await rest.GetDirection(originParam, destinationParam, modes[mode]);
 
-                if (result != null)
-                {
-                    var line = new Xamarin.Forms.GoogleMaps.Polyline();
-                    line.StrokeColor = Color.Red;
-                    line.StrokeWidth = 10;
-                    foreach (var route in result.routes)
-                    {
-                        foreach (var leg in route.legs)
-                        {
-                            foreach (var step in leg.steps)
-                            {
-                                var points = DecodePolyline(step.polyline.points);
-                                foreach (var point in points)
-                                {
-                                    line.Positions.Add(point);
-                                }
-                            }
-                        }
-                    }
-                    if (line.Positions.Count >= 2)
-                        map.Polylines.Add(line);
-                }
+                //if (result != null)
+                //{
+                //    var line = new Xamarin.Forms.GoogleMaps.Polyline();
+                //    line.StrokeColor = Color.Red;
+                //    line.StrokeWidth = 10;
+                //    foreach (var route in result.routes)
+                //    {
+                //        foreach (var leg in route.legs)
+                //        {
+                //            foreach (var step in leg.steps)
+                //            {
+                //                var points = DecodePolyline(step.polyline.points);
+                //                foreach (var point in points)
+                //                {
+                //                    line.Positions.Add(point);
+                //                }
+                //            }
+                //        }
+                //    }
+                //    if (line.Positions.Count >= 2)
+                //        map.Polylines.Add(line);
+                //}
 
                 var mqResult = await rest.GetMQAlternativeDirection(originParam, destinationParam);
                 List<Position> pollutionPoints = new List<Position>();
@@ -367,8 +367,7 @@ namespace BreatheKlere
                         var line = new Xamarin.Forms.GoogleMaps.Polyline();
                         line.StrokeColor = Color.Blue;
                         line.StrokeWidth = 7;
-                        float distance = mqResult.route.distance;
-                        distanceLabel.Text += "\n" + $"Blue Distance={distance} Duration={mqResult.route.formattedTime}";
+
                         if (mqResult.route.shape != null)
                         {
 
@@ -386,6 +385,8 @@ namespace BreatheKlere
                                     map.Polylines.Add(line);
                                 }
                                 maxPollution = await CalculatePollution(pollutionPoints, true);
+                                float distance = mqResult.route.distance;
+                                distanceLabel.Text += "\n" + $"Blue Distance={distance} Duration={mqResult.route.formattedTime} Pollution={maxPollution}";
                                 drawHotspot();
                             }
                         }
@@ -400,8 +401,6 @@ namespace BreatheKlere
 
                         foreach (var item in mqResult.route.alternateRoutes)
                         {
-                            float distance = item.route.distance;
-                            distanceLabel.Text += "\n" + $"Cyan Distance={distance} Duration={item.route.formattedTime}";
                             if (item.route.shape != null)
                             {
 
@@ -420,6 +419,8 @@ namespace BreatheKlere
                                     {
                                         map.Polylines.Add(line);
                                     }
+                                    float distance = item.route.distance;
+                                    distanceLabel.Text += "\n" + $"Cyan Distance={distance} Duration={item.route.formattedTime} Pollution={pollutionValue}";
                                 }
                             }
                         }
