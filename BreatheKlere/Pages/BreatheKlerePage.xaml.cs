@@ -165,6 +165,7 @@ namespace BreatheKlere
                 Debug.WriteLine(ex.Message);
             }
 
+            map.Pins.Clear();
             //Setting up the locations
             if(isHomeSet > 0)
             {
@@ -177,8 +178,9 @@ namespace BreatheKlere
 
                 entryAddress.Text = origin;
                 startPin.Address = origin;
-                if (map.Pins.Contains(startPin))
-                    map.Pins.Remove(startPin);
+                //if (map.Pins.Contains(startPin))
+                    //map.Pins.Remove(startPin);
+                
                 startPin.Position = originPos;
                 map.Pins.Add(startPin);
             }
@@ -193,11 +195,12 @@ namespace BreatheKlere
                 }
                 destinationAddress.Text = destination;
                 endPin.Address = destination;
-                if (map.Pins.Contains(endPin))
-                    map.Pins.Remove(endPin);
+                //if (map.Pins.Contains(endPin))
+                    //map.Pins.Remove(endPin);
                 endPin.Position = destinationPos;
                 map.Pins.Add(endPin);
             }
+          
 		}
 
         private List<Position> DecodePolyline(string encodedPoints)
@@ -316,8 +319,7 @@ namespace BreatheKlere
                 destinationParam = destination;
             
             distanceLabel.Text = "";
-            Bounds bounds = new Bounds(originPos, destinationPos);
-            map.MoveToRegion(MapSpan.FromBounds(bounds));
+
             //map.MoveToRegion(MapSpan.FromCenterAndRadius(originPos, Distance.FromMeters(5000)));
             if (!string.IsNullOrEmpty(originParam) && !string.IsNullOrEmpty(destinationParam) && isHomeSet>0 && isDestinationSet>0)
             {
@@ -358,6 +360,8 @@ namespace BreatheKlere
                 //}
 
                 var mqResult = await rest.GetMQAlternativeDirection(originParam, destinationParam);
+                Bounds bounds = new Bounds(originPos, destinationPos);
+                map.MoveToRegion(MapSpan.FromBounds(bounds));
                 List<Position> pollutionPoints = new List<Position>();
                
                 if (mqResult != null)
@@ -392,7 +396,7 @@ namespace BreatheKlere
                         }
 
                     }
-                    pollutionPoints.Clear();
+
                     if (mqResult.route.alternateRoutes != null)
                     {
                         var line = new Xamarin.Forms.GoogleMaps.Polyline();
@@ -401,6 +405,7 @@ namespace BreatheKlere
 
                         foreach (var item in mqResult.route.alternateRoutes)
                         {
+                            pollutionPoints.Clear();
                             if (item.route.shape != null)
                             {
 
@@ -411,22 +416,31 @@ namespace BreatheKlere
                                     {
                                         line.Positions.Add(point);
                                         pollutionPoints.Add(point);
+                                        if (point.Latitude.Equals(hotspot.Latitude) && point.Longitude.Equals(hotspot.Longitude))
+                                        {
+                                            continue;
+                                        }
                                     }
                                     float pollutionValue = await CalculatePollution(pollutionPoints, true);
-                                    if (pollutionValue < maxPollution)
-                                        drawHotspot();
-                                    if (line.Positions.Count >= 2)
+                                    if (pollutionValue > maxPollution)
+                                        continue;
+                                    else 
                                     {
-                                        map.Polylines.Add(line);
+                                        if (line.Positions.Count >= 2)
+                                        {
+                                            map.Polylines.Add(line);
+                                        }
+                                        float distance = item.route.distance;
+                                        distanceLabel.Text += "\n" + $"Cyan Distance={distance} Duration={item.route.formattedTime} Pollution={pollutionValue}";
                                     }
-                                    float distance = item.route.distance;
-                                    distanceLabel.Text += "\n" + $"Cyan Distance={distance} Duration={item.route.formattedTime} Pollution={pollutionValue}";
                                 }
                             }
+                            return true;
                         }
                     }
+
                 }
-                return true;
+
             }
             else
             {
