@@ -259,7 +259,6 @@ namespace BreatheKlere
         async void Go_Clicked(object sender, System.EventArgs e)
         {
             await CalculateRoute();
-  
         }
 
         void Home_Focused(object sender, EventArgs e)
@@ -281,8 +280,6 @@ namespace BreatheKlere
             btnWalking.BackgroundColor = Color.White;
             btnWalking.TextColor = Color.FromHex("2196F3");
             await CalculateRoute();
-          
-
         }
 
         async void Bicycling_Clicked(object sender, System.EventArgs e)
@@ -292,8 +289,6 @@ namespace BreatheKlere
             btnBicycling.BackgroundColor = Color.White;
             btnBicycling.TextColor = Color.FromHex("2196F3");
             await CalculateRoute();
-
-
         }
 
         void clearStyles()
@@ -436,6 +431,7 @@ namespace BreatheKlere
                                             }
                                             float distance = item.route.distance;
                                             distanceLabel.Text += "\n" + $"Cyan Distance={distance} Duration={item.route.formattedTime} Pollution={pollutionValue}";
+                                            drawHotspot();
                                             return true;
                                         }
 
