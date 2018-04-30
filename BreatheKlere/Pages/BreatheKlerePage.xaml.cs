@@ -359,7 +359,7 @@ namespace BreatheKlere
                 //        map.Polylines.Add(line);
                 //}
 
-                var mqResult = await rest.GetMQAlternativeDirection(originParam, destinationParam);
+                var mqResult = await rest.GetMQAlternativeDirection(originParam, destinationParam, mqModes[mode]);
                 Bounds bounds = new Bounds(originPos, destinationPos);
                 map.MoveToRegion(MapSpan.FromBounds(bounds));
                 List<Position> pollutionPoints = new List<Position>();
@@ -403,6 +403,7 @@ namespace BreatheKlere
                         line.StrokeColor = Color.Magenta;
                         line.StrokeWidth = 4;
 
+                        bool duplicated = false;
                         foreach (var item in mqResult.route.alternateRoutes)
                         {
                             pollutionPoints.Clear();
@@ -418,24 +419,30 @@ namespace BreatheKlere
                                         pollutionPoints.Add(point);
                                         if (point.Latitude.Equals(hotspot.Latitude) && point.Longitude.Equals(hotspot.Longitude))
                                         {
-                                            continue;
+                                            duplicated = true;
+                                            break;
                                         }
                                     }
-                                    float pollutionValue = await CalculatePollution(pollutionPoints, true);
-                                    if (pollutionValue > maxPollution)
-                                        continue;
-                                    else 
+                                    if (!duplicated)
                                     {
-                                        if (line.Positions.Count >= 2)
+                                        float pollutionValue = await CalculatePollution(pollutionPoints, true);
+                                        if (pollutionValue > maxPollution)
+                                            continue;
+                                        else
                                         {
-                                            map.Polylines.Add(line);
+                                            if (line.Positions.Count >= 2)
+                                            {
+                                                map.Polylines.Add(line);
+                                            }
+                                            float distance = item.route.distance;
+                                            distanceLabel.Text += "\n" + $"Cyan Distance={distance} Duration={item.route.formattedTime} Pollution={pollutionValue}";
+                                            return true;
                                         }
-                                        float distance = item.route.distance;
-                                        distanceLabel.Text += "\n" + $"Cyan Distance={distance} Duration={item.route.formattedTime} Pollution={pollutionValue}";
+
                                     }
                                 }
                             }
-                            return true;
+
                         }
                     }
 
