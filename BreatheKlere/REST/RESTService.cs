@@ -115,7 +115,7 @@ namespace BreatheKlere.REST
 
         public async Task<MQAlternativeDirection> GetMQAlternativeDirection(string from, string to, string mode)
         {
-            string url = mqBaseURL + "alternateroutes?maxRoutes=5&key=" + Config.mapquest_key + "&from=" + from + "&to=" + to + "&routeType=" + mode + "&shapeFormat=cmp";
+            string url = mqBaseURL + "alternateroutes?maxRoutes=6&key=" + Config.mapquest_key + "&from=" + from + "&to=" + to + "&routeType=" + mode + "&shapeFormat=cmp";
             var uri = new Uri(url);
             try
             {

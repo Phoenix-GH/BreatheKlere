@@ -25,6 +25,7 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -67,7 +68,13 @@
                     Grid.Row="3"
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
-                    x:Name="distanceLabel"
+                    x:Name="blueDistanceLabel"
+                />
+                <Label
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    x:Name="magentaDistanceLabel"
                 />
                 <Button
                     x:Name="buttonGo"
@@ -84,7 +91,7 @@
 
         <maps:Map Grid.Row="1" x:Name="map"
                   VerticalOptions="FillAndExpand"
-                  MyLocationEnabled="false"
+                  MyLocationEnabled="true"
                   />
     </Grid>
 </ContentPage>

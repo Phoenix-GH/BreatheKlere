@@ -48,7 +48,7 @@ namespace BreatheKlere
             }
             isFirstLaunch = true;
             map.MapType = mapTypeValues[0];
-            map.MyLocationEnabled = false;
+            map.MyLocationEnabled = true;
             map.IsTrafficEnabled = true;
             map.IsIndoorEnabled = false;
             map.UiSettings.CompassEnabled = true;
@@ -150,7 +150,7 @@ namespace BreatheKlere
                             currentPos = originPos.Latitude + "," + originPos.Longitude;
                             origin = currentPos;
                             isHomeSet = 2;
-                            map.MoveToRegion(MapSpan.FromCenterAndRadius(originPos, Distance.FromMeters(5000)));
+                            map.MoveToRegion(MapSpan.FromCenterAndRadius(originPos, Distance.FromMeters(5000)), false);
                         }
                     }
                     else if (status != PermissionStatus.Unknown)
@@ -231,7 +231,7 @@ namespace BreatheKlere
                 if (index >= polylineChars.Length)
                     break;
 
-                currentLat += (sum & 1) == 1 ? ~(sum >> 1) : (sum >> 1);
+                currentLat += (sum & 1) == 1 ? ~(sum >> 1) : (sum >> 1);  
                 sum = 0;
                 shifter = 0;
 
@@ -303,6 +303,12 @@ namespace BreatheKlere
         async Task<bool> CalculateRoute() 
         {
             map.Polylines.Clear();
+            var line1 = new Xamarin.Forms.GoogleMaps.Polyline();
+            line1.StrokeColor = Color.Blue;
+            line1.StrokeWidth = 7;
+            var line2 = new Xamarin.Forms.GoogleMaps.Polyline();
+            line2.StrokeColor = Color.Magenta;
+            line2.StrokeWidth = 4;
 
             map.Pins.Clear();
             string originParam = originPos.Latitude.ToString() + ',' + originPos.Longitude.ToString();
@@ -313,9 +319,10 @@ namespace BreatheKlere
             if (isDestinationSet == 1)
                 destinationParam = destination;
             
-            distanceLabel.Text = "";
-
-            //map.MoveToRegion(MapSpan.FromCenterAndRadius(originPos, Distance.FromMeters(5000)));
+            Bounds bounds = new Bounds(originPos, destinationPos);
+            map.MoveToRegion(MapSpan.FromBounds(bounds), false);
+            blueDistanceLabel.Text = "";
+            magentaDistanceLabel.Text = "";
             if (!string.IsNullOrEmpty(originParam) && !string.IsNullOrEmpty(destinationParam) && isHomeSet>0 && isDestinationSet>0)
             {
                 //var distanceResult = await rest.GetDistance(originParam, destinationParam, modes[mode]);
@@ -355,37 +362,30 @@ namespace BreatheKlere
                 //}
 
                 var mqResult = await rest.GetMQAlternativeDirection(originParam, destinationParam, mqModes[mode]);
-                Bounds bounds = new Bounds(originPos, destinationPos);
-                map.MoveToRegion(MapSpan.FromBounds(bounds));
+
                 List<Position> pollutionPoints = new List<Position>();
                
                 if (mqResult != null)
                 {
                     if (mqResult.route != null)
                     {
-                        var line = new Xamarin.Forms.GoogleMaps.Polyline();
-                        line.StrokeColor = Color.Blue;
-                        line.StrokeWidth = 7;
-
                         if (mqResult.route.shape != null)
                         {
-
                             if (!string.IsNullOrEmpty(mqResult.route.shape.shapePoints))
                             {
                                 var points = DecodePolyline(mqResult.route.shape.shapePoints);
                                 foreach (var point in points)
                                 {
-                                    line.Positions.Add(point);
+                                    line1.Positions.Add(point);
                                     pollutionPoints.Add(point);
                                 }
 
-                                if (line.Positions.Count >= 2)
+                                if (line1.Positions.Count >= 2)
                                 {
-                                    map.Polylines.Add(line);
+                                    map.Polylines.Add(line1);
                                 }
                                 maxPollution = await CalculatePollution(pollutionPoints, true);
-                                float distance = mqResult.route.distance;
-                                distanceLabel.Text += "\n" + $"Blue Distance={distance} Duration={mqResult.route.formattedTime} Pollution={maxPollution}";
+                                blueDistanceLabel.Text = $"Blue Distance={mqResult.route.distance} Duration={mqResult.route.formattedTime} Pollution={maxPollution}";
                                 drawHotspot();
                             }
                         }
@@ -394,13 +394,10 @@ namespace BreatheKlere
 
                     if (mqResult.route.alternateRoutes != null)
                     {
-                        var line = new Xamarin.Forms.GoogleMaps.Polyline();
-                        line.StrokeColor = Color.Magenta;
-                        line.StrokeWidth = 4;
-
                         bool duplicated = false;
                         foreach (var item in mqResult.route.alternateRoutes)
                         {
+                            line2.Positions.Clear();
                             pollutionPoints.Clear();
                             if (item.route.shape != null)
                             {
@@ -410,7 +407,7 @@ namespace BreatheKlere
                                     var points = DecodePolyline(item.route.shape.shapePoints);
                                     foreach (var point in points)
                                     {
-                                        line.Positions.Add(point);
+                                        line2.Positions.Add(point);
                                         pollutionPoints.Add(point);
                                         if (point.Latitude.Equals(hotspot.Latitude) && point.Longitude.Equals(hotspot.Longitude))
                                         {
@@ -425,12 +422,11 @@ namespace BreatheKlere
                                             continue;
                                         else
                                         {
-                                            if (line.Positions.Count >= 2)
+                                            if (line2.Positions.Count >= 2)
                                             {
-                                                map.Polylines.Add(line);
+                                                map.Polylines.Add(line2);
                                             }
-                                            float distance = item.route.distance;
-                                            distanceLabel.Text += "\n" + $"Cyan Distance={distance} Duration={item.route.formattedTime} Pollution={pollutionValue}";
+                                            magentaDistanceLabel.Text = $"Magenta Distance={item.route.distance} Duration={item.route.formattedTime} Pollution={pollutionValue}";
                                             drawHotspot();
                                             return true;
                                         }
@@ -441,6 +437,7 @@ namespace BreatheKlere
 
                         }
                     }
+
 
                 }
 
