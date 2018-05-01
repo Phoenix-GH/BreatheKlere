@@ -31,7 +31,6 @@ namespace BreatheKlere
 
         // Point array 
 
-
         Pin startPin, endPin;
         Position hotspot;
         float peak = 0;
@@ -79,6 +78,7 @@ namespace BreatheKlere
                 Label = "End Point",
             };
             // Map Clicked
+
             map.MapClicked += async (sender, e) =>
             {
                 if (mapMode == 2)
@@ -148,7 +148,15 @@ namespace BreatheKlere
                         {
                             originPos = await Utils.GetPosition();
                             currentPos = originPos.Latitude + "," + originPos.Longitude;
-                            origin = currentPos;
+                            GeoResult result = await rest.GetGeoResult(currentPos);
+                            if (result != null)
+                            {
+                                origin = result.results[0].formatted_address;
+                            }
+                            else
+                            {
+                                origin = currentPos;
+                            }
                             isHomeSet = 2;
                             map.MoveToRegion(MapSpan.FromCenterAndRadius(originPos, Distance.FromMeters(5000)), false);
                         }
@@ -178,8 +186,8 @@ namespace BreatheKlere
 
                 entryAddress.Text = origin;
                 startPin.Address = origin;
-                //if (map.Pins.Contains(startPin))
-                    //map.Pins.Remove(startPin);
+                if (map.Pins.Contains(startPin))
+                    map.Pins.Remove(startPin);
                 
                 startPin.Position = originPos;
                 map.Pins.Add(startPin);
@@ -195,8 +203,8 @@ namespace BreatheKlere
                 }
                 destinationAddress.Text = destination;
                 endPin.Address = destination;
-                //if (map.Pins.Contains(endPin))
-                    //map.Pins.Remove(endPin);
+                if (map.Pins.Contains(endPin))
+                    map.Pins.Remove(endPin);
                 endPin.Position = destinationPos;
                 map.Pins.Add(endPin);
             }
