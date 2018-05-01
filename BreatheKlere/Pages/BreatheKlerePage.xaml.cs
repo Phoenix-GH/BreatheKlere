@@ -148,6 +148,7 @@ namespace BreatheKlere
                         {
                             originPos = await Utils.GetPosition();
                             currentPos = originPos.Latitude + "," + originPos.Longitude;
+                            map.MoveToRegion(MapSpan.FromCenterAndRadius(originPos, Distance.FromMeters(5000)));
                             GeoResult result = await rest.GetGeoResult(currentPos);
                             if (result != null)
                             {
@@ -158,7 +159,6 @@ namespace BreatheKlere
                                 origin = currentPos;
                             }
                             isHomeSet = 2;
-                            map.MoveToRegion(MapSpan.FromCenterAndRadius(originPos, Distance.FromMeters(5000)), false);
                         }
                     }
                     else if (status != PermissionStatus.Unknown)
@@ -328,7 +328,7 @@ namespace BreatheKlere
                 destinationParam = destination;
             
             Bounds bounds = new Bounds(originPos, destinationPos);
-            map.MoveToRegion(MapSpan.FromBounds(bounds), false);
+            map.MoveToRegion(MapSpan.FromBounds(bounds));
             blueDistanceLabel.Text = "";
             magentaDistanceLabel.Text = "";
             if (!string.IsNullOrEmpty(originParam) && !string.IsNullOrEmpty(destinationParam) && isHomeSet>0 && isDestinationSet>0)
@@ -393,7 +393,7 @@ namespace BreatheKlere
                                     map.Polylines.Add(line1);
                                 }
                                 maxPollution = await CalculatePollution(pollutionPoints, true);
-                                blueDistanceLabel.Text = $"Blue Distance={mqResult.route.distance} Duration={mqResult.route.formattedTime} Pollution={maxPollution}";
+                                blueDistanceLabel.Text = $"Blue Distance={mqResult.route.distance} Time={mqResult.route.formattedTime} Pollution={maxPollution}";
                                 drawHotspot();
                             }
                         }
@@ -434,7 +434,7 @@ namespace BreatheKlere
                                             {
                                                 map.Polylines.Add(line2);
                                             }
-                                            magentaDistanceLabel.Text = $"Magenta Distance={item.route.distance} Duration={item.route.formattedTime} Pollution={pollutionValue}";
+                                            magentaDistanceLabel.Text = $"Magenta Distance={item.route.distance} Time={item.route.formattedTime} Pollution={pollutionValue}";
                                             drawHotspot();
                                             return true;
                                         }
@@ -499,6 +499,7 @@ namespace BreatheKlere
                   
                             overall += (float)Convert.ToDouble(result.val[index]);
                         }
+                        overall /= result.val.Count;
                         double lat, lng;
                         lat = Convert.ToDouble(result.lat[maxIndex]);
                         lng = Convert.ToDouble(result.lon[maxIndex]);

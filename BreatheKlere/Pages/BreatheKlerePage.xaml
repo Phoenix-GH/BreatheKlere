@@ -24,8 +24,8 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="20" />
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -61,8 +61,6 @@
                 >
                     <Button x:Name="btnBicycling" Text="Bicycling" Clicked="Bicycling_Clicked" TextColor="#2196F3" BackgroundColor="White"></Button>
                     <Button x:Name="btnWalking" Text="Walking" Clicked="Walking_Clicked" BackgroundColor="#2196F3" TextColor="White"></Button>
-
-              
                 </StackLayout>
                 <Label
                     Grid.Row="3"
