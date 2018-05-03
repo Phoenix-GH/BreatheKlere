@@ -393,7 +393,7 @@ namespace BreatheKlere
                                     map.Polylines.Add(line1);
                                 }
                                 maxPollution = await CalculatePollution(pollutionPoints, true);
-                                blueDistanceLabel.Text = $"Blue Distance={mqResult.route.distance} Time={mqResult.route.formattedTime} Pollution={maxPollution}";
+                                blueDistanceLabel.Text = $"Blue Distance:{mqResult.route.distance} Time:{mqResult.route.formattedTime} Pollution:{maxPollution}";
                                 drawHotspot();
                             }
                         }
@@ -434,7 +434,7 @@ namespace BreatheKlere
                                             {
                                                 map.Polylines.Add(line2);
                                             }
-                                            magentaDistanceLabel.Text = $"Magenta Distance={item.route.distance} Time={item.route.formattedTime} Pollution={pollutionValue}";
+                                            magentaDistanceLabel.Text = $"Magenta Distance:{item.route.distance} Time:{item.route.formattedTime} Pollution:{pollutionValue}";
                                             drawHotspot();
                                             return true;
                                         }

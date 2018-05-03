@@ -40,6 +40,7 @@
                     Grid.Column="0"
                     HeightRequest="30"
                     BackgroundColor="White"
+                    FontSize="12"
                 >
                    
                 </Label>
@@ -51,6 +52,7 @@
                     Grid.Column="0"
                     HeightRequest="30"
                     BackgroundColor="White"
+                    FontSize="12"
                 >
                 </Label>
                 <StackLayout
@@ -67,12 +69,14 @@
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
                     x:Name="blueDistanceLabel"
+                    FontSize="12"
                 />
                 <Label
                     Grid.Row="4"
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
                     x:Name="magentaDistanceLabel"
+                    FontSize="12"
                 />
                 <Button
                     x:Name="buttonGo"
