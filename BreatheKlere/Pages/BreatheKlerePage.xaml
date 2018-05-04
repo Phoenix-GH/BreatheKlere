@@ -69,14 +69,14 @@
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
                     x:Name="blueDistanceLabel"
-                    FontSize="12"
+                    FontSize="10"
                 />
                 <Label
                     Grid.Row="4"
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
                     x:Name="magentaDistanceLabel"
-                    FontSize="12"
+                    FontSize="10"
                 />
                 <Button
                     x:Name="buttonGo"
