@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -119,7 +120,7 @@ namespace BreatheKlere.REST
             var uri = new Uri(url);
             try
             {
-                var response = await client.GetAsync(uri);
+                var response = await client.GetAsync(uri).ConfigureAwait(false);
                 var content = await response.Content.ReadAsStringAsync();
                 Debug.WriteLine("alternativeroutecontent", content);
                 var resultResponse = JsonConvert.DeserializeObject<MQAlternativeDirection>(content);
@@ -138,13 +139,14 @@ namespace BreatheKlere.REST
             var uri = new Uri(url);
             try
             {
+                Debug.WriteLine("Pollution request------" + request);
                 var formContent = new FormUrlEncodedContent(new[]
                 {
                     new KeyValuePair<string, string>("request", request),
                 });
-
                 HttpResponseMessage response = null;
-                response = await client.PostAsync(uri, formContent);
+
+                response = await client.PostAsync(uri, formContent).ConfigureAwait(false);
                 Debug.WriteLine("Pollution response------" + response);
                 var result = await response.Content.ReadAsStringAsync();
                 Debug.WriteLine("Pollution result------" + result);

@@ -31,7 +31,7 @@ namespace BreatheKlere
 
         // Point array 
 
-        Pin startPin, endPin;
+        Pin startPin, endPin, hotspotPin;
         Position hotspot;
         float peak = 0;
 
@@ -127,21 +127,23 @@ namespace BreatheKlere
             base.OnAppearing();
             try
             {
-                var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
-                if (status != PermissionStatus.Granted)
-                {
-                    if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(Permission.Location))
-                    {
-                        await DisplayAlert("Need location", "Gunna need that location", "OK");
-                    }
-
-                    var results = await CrossPermissions.Current.RequestPermissionsAsync(Permission.Location);
-                    //Best practice to always check that the key exists
-                    if (results.ContainsKey(Permission.Location))
-                        status = results[Permission.Location];
-                }
                 if (isFirstLaunch)
                 {
+                    isFirstLaunch = false;
+                    var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
+                    if (status != PermissionStatus.Granted)
+                    {
+                        if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(Permission.Location))
+                        {
+                            await DisplayAlert("Need location", "Gunna need that location", "OK");
+                        }
+
+                        var results = await CrossPermissions.Current.RequestPermissionsAsync(Permission.Location);
+                        //Best practice to always check that the key exists
+                        if (results.ContainsKey(Permission.Location))
+                            status = results[Permission.Location];
+                    }
+
                     if (status == PermissionStatus.Granted)
                     {
                         if (Utils.IsLocationAvailable())
@@ -165,7 +167,7 @@ namespace BreatheKlere
                     {
                         await DisplayAlert("Location Denied", "Can not continue, try again.", "OK");
                     }
-                    isFirstLaunch = false;
+
                 }
             }
             catch (Exception ex)
@@ -173,7 +175,6 @@ namespace BreatheKlere
                 Debug.WriteLine(ex.Message);
             }
 
-            map.Pins.Clear();
             //Setting up the locations
             if(isHomeSet > 0)
             {
@@ -318,7 +319,6 @@ namespace BreatheKlere
             line2.StrokeColor = Color.Magenta;
             line2.StrokeWidth = 4;
 
-            map.Pins.Clear();
             string originParam = originPos.Latitude.ToString() + ',' + originPos.Longitude.ToString();
             string destinationParam = destinationPos.Latitude.ToString() + ',' + destinationPos.Longitude.ToString();
             if(isHomeSet == 1)
@@ -512,13 +512,14 @@ namespace BreatheKlere
         }
         void drawHotspot()
         {
-            var pin = new Pin
+            map.Pins.Remove(hotspotPin);
+            hotspotPin = new Pin
             {
                 Type = PinType.SavedPin,
                 Label = "Hotspot: " + peak.ToString(),
                 Position = hotspot,
             };
-            map.Pins.Add(pin);
+            map.Pins.Add(hotspotPin);
         }
     }
 }

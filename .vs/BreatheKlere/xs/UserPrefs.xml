@@ -1,23 +1,17 @@
-﻿<Properties StartupConfiguration="{19773627-9912-42ED-9597-E2C9AAAEB6DE}|Default">
-  <MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.7A8F4250-966B-4CFC-8E04-3F8DB7BC057C" automaticSigning="False" />
-  <MonoDevelop.Ide.ItemProperties.BreatheKlere.Droid AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.06157df6bb041820" AndroidDesignerPreferredTheme="Theme.DeviceDefault.NoActionBar.Fullscreen" />
-  <MonoDevelop.Ide.Workbench>
+﻿<Properties StartupConfiguration="{B27F91C8-DF42-4131-B165-254F2BC60605}|Default">
+  <MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.0c254cef12992243e6403d82f9ab07d40174217a" automaticSigning="False" />
+  <MonoDevelop.Ide.ItemProperties.BreatheKlere.Droid AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.Android_Accelerated_Nougat" AndroidDesignerPreferredTheme="Theme.DeviceDefault.NoActionBar.Fullscreen" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="BreatheKlere/Pages/BreatheKlerePage.xaml.cs">
     <Files>
-      <File FileName="BreatheKlere/REST/Models/MQDirection.cs" Line="83" Column="11" />
-      <File FileName="BreatheKlere/Pages/LocationSelectionPage.xaml.cs" Line="46" Column="18" />
-      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml.cs" Line="437" Column="156" />
-      <File FileName="BreatheKlere/REST/RESTService.cs" Line="124" Column="60" />
-      <File FileName="BreatheKlere/REST/IRestService.cs" Line="4" Column="22" />
-      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml" Line="70" Column="40" />
-      <File FileName="BreatheKlere/Pages/LocationSelectionPage.xaml" Line="22" Column="32" />
-      <File FileName="BreatheKlere/Pages/LoginPage.xaml" Line="16" Column="1" />
-      <File FileName="BreatheKlere/obj/Debug/BreatheKlere.Pages.BreatheKlerePage.xaml.g.cs" Line="44" Column="1" />
+      <File FileName="BreatheKlere/REST/RESTService.cs" Line="153" Column="34" />
+      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml.cs" Line="171" Column="18" />
     </Files>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/Users/phoenix/Projects/BreatheKlere copy/BreatheKlere/BreatheKlerePage.xaml" relfile="BreatheKlere/BreatheKlerePage.xaml" line="20" column="1" />
+      <Breakpoint file="/Users/phoenix/Projects/BreatheKlere copy/BreatheKlere/Pages/BreatheKlerePage.xaml.cs" relfile="BreatheKlere/Pages/BreatheKlerePage.xaml.cs" line="173" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
