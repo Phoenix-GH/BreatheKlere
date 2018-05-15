@@ -534,59 +534,63 @@ namespace BreatheKlere
                     point.Add(X.ToString());
 
                     (request.PAIRS).Add(point);
+                    if(request.PAIRS.Count >= 60 || (Y+unit > Math.Max(bounds.SouthWest.Latitude, bounds.NorthWest.Latitude) && X-unit < Math.Min(bounds.SouthWest.Longitude, bounds.SouthEast.Longitude)))
+                    {
+                        var result = await rest.GetPollution(JsonConvert.SerializeObject(request));
+                        if (result != null)
+                        {
+                            // get the results
+                            var x = 0;
+                            double lvl = 0;
+                            // loop through the results
+                            for (x = 0; x < result.lon.Count; x++)
+                            {
+                                string level = (result.val)[x];
+                                lvl = Convert.ToDouble(level) * 1;
+                                Color fc = Color.FromRgba(0, 0, 0, 0.5);
+
+                                if (lvl <= 4)
+                                {
+                                    fc = Color.FromRgba(0, 255, 0, 0.5);
+                                }
+                                else
+                                {
+                                    if (lvl <= 8)
+                                    {
+                                        fc = Color.FromRgba(255, 255, 0, 0.5);
+                                    }
+                                    else
+                                    {
+                                        fc = Color.FromRgba(255, 0, 0, 0.5);
+                                    }
+                                }
+
+
+                                var rectangle = new Xamarin.Forms.GoogleMaps.Polygon();
+
+                                var north = Convert.ToDouble(result.lat[x]) * 1 + halfU;
+                                var south = Convert.ToDouble(result.lat[x]) * 1 - halfU;
+
+                                var east = Convert.ToDouble(result.lon[x]) * 1 + halfU;
+                                var west = Convert.ToDouble(result.lon[x]) * 1 - halfU;
+                                var tileBounds = new Bounds(new Position(south, west), new Position(north, east));
+                                rectangle.StrokeColor = fc;
+                                rectangle.FillColor = fc;
+                                rectangle.Positions.Add(tileBounds.NorthEast);
+                                rectangle.Positions.Add(tileBounds.NorthWest);
+                                rectangle.Positions.Add(tileBounds.SouthWest);
+                                rectangle.Positions.Add(tileBounds.SouthEast);
+
+                                map.Polygons.Add(rectangle);
+
+                            }
+
+                        }
+                        request.PAIRS.Clear();
+                    }
                 }
             }
-            // send the request
-            var result = await rest.GetPollution(JsonConvert.SerializeObject(request));
-            if (result != null)
-            {
-                // get the results
-                var x = 0;
-                double lvl = 0;
-                // loop through the results
-                for (x = 0; x < result.lon.Count; x++)
-                {
-                    string level = (result.val)[x];
-                    lvl = Convert.ToDouble(level) * 1;
-                    Color fc = Color.Black;
-                    if (lvl <= 4)
-                    {
-                        fc = Color.Green;
-                    }
-                    else
-                    {
-                        if (lvl <= 8)
-                        {
-                            fc = Color.FromHex("ffff00");
-                        }
-                        else
-                        {
-                            fc = Color.Red;
-                        }
-                    }
-
-
-                    var rectangle = new Xamarin.Forms.GoogleMaps.Polygon();
-
-                    var north = Convert.ToDouble(result.lat[x]) * 1 + halfU;
-                    var south = Convert.ToDouble(result.lat[x]) * 1 - halfU;
-
-                    var east = Convert.ToDouble(result.lon[x]) * 1 + halfU;
-                    var west = Convert.ToDouble(result.lon[x]) * 1 - halfU;
-                    var tileBounds = new Bounds(new Position(south, west), new Position(north, east));
-                    rectangle.StrokeColor = fc;
-                    rectangle.FillColor = fc;
-                    rectangle.Positions.Add(tileBounds.NorthEast);
-                    rectangle.Positions.Add(tileBounds.NorthWest);
-                    rectangle.Positions.Add(tileBounds.SouthWest);
-                    rectangle.Positions.Add(tileBounds.SouthEast);
-
-                    map.Polygons.Add(rectangle);
-                }
-                return true;
-            }
-
-            return false;
+            return true;
         }
 
         void drawHotspot()

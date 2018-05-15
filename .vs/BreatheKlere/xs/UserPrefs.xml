@@ -1,9 +1,9 @@
-﻿<Properties StartupConfiguration="{19773627-9912-42ED-9597-E2C9AAAEB6DE}|Default">
-  <MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.7A8F4250-966B-4CFC-8E04-3F8DB7BC057C" automaticSigning="False" />
+﻿<Properties StartupConfiguration="{B27F91C8-DF42-4131-B165-254F2BC60605}|Default">
+  <MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.0c254cef12992243e6403d82f9ab07d40174217a" automaticSigning="False" />
   <MonoDevelop.Ide.ItemProperties.BreatheKlere.Droid AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.1115fb2998170c03" AndroidDesignerPreferredTheme="Theme.DeviceDefault.NoActionBar.Fullscreen" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="BreatheKlere/REST/RESTService.cs">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="BreatheKlere/REST/RESTService.cs" Line="135" Column="10" />
+      <File FileName="BreatheKlere/REST/RESTService.cs" Line="157" Column="33" />
       <File FileName="BreatheKlere/Pages/LocationSelectionPage.xaml.cs" Line="65" Column="26" />
       <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml" Line="14" Column="31" />
       <File FileName="BreatheKlere/REST/Models/Pollution.cs" Line="16" Column="29" />
@@ -11,7 +11,7 @@
       <File FileName="iOS/Info.plist" NotebookId="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/Users/phoenix/Projects/BreatheKlere copy/BreatheKlere/BreatheKlerePage.xaml" relfile="BreatheKlere/BreatheKlerePage.xaml" line="20" column="1" />
