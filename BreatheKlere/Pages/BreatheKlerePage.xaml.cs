@@ -516,25 +516,33 @@ namespace BreatheKlere
         {
             // set the size of the pixel in degrees lat / lon
             map.Polygons.Clear();
-            var unit = .00075;
+            var unit = .0015;
             var halfU = unit / 2;
             // build the request for polution info
             var request = new PollutionRequest();
             request.RAD = 100;
             request.PAIRS = new List<List<string>>();
 
-            // the x and y max and min are the bounds for your map
 
-            for (var Y = Math.Min(bounds.SouthWest.Latitude, bounds.NorthWest.Latitude); Y <= Math.Max(bounds.SouthWest.Latitude, bounds.NorthWest.Latitude); Y += unit)
+            var center = map.VisibleRegion.Center;
+            var halfheightDegrees = map.VisibleRegion.LatitudeDegrees / 2;
+            var halfwidthDegrees = map.VisibleRegion.LongitudeDegrees / 2;
+
+            var left = center.Longitude + halfwidthDegrees;
+            var right = center.Longitude - halfwidthDegrees;
+            var top = center.Latitude + halfheightDegrees;
+            var bottom = center.Latitude - halfheightDegrees;
+
+            for (var Y = bottom; Y <= top; Y += unit)
             {
-                for (var X = Math.Max(bounds.SouthWest.Longitude, bounds.SouthEast.Longitude); X >= Math.Min(bounds.SouthWest.Longitude, bounds.SouthEast.Longitude); X -= unit)
+                for (var X = left; X >= right; X -= unit)
                 {
                     List<string> point = new List<string>();
                     point.Add(Y.ToString());
                     point.Add(X.ToString());
 
                     (request.PAIRS).Add(point);
-                    if(request.PAIRS.Count >= 60 || (Y+unit > Math.Max(bounds.SouthWest.Latitude, bounds.NorthWest.Latitude) && X-unit < Math.Min(bounds.SouthWest.Longitude, bounds.SouthEast.Longitude)))
+                    if(request.PAIRS.Count >= 60 || (Y+unit > top && X-unit < right))
                     {
                         var result = await rest.GetPollution(JsonConvert.SerializeObject(request));
                         if (result != null)
@@ -547,21 +555,21 @@ namespace BreatheKlere
                             {
                                 string level = (result.val)[x];
                                 lvl = Convert.ToDouble(level) * 1;
-                                Color fc = Color.FromRgba(0, 0, 0, 0.5);
+                                Color fc = Color.Black;
 
-                                if (lvl <= 4)
+                                if (lvl <= 50)
                                 {
-                                    fc = Color.FromRgba(0, 255, 0, 0.5);
+                                    fc = Color.Green;
                                 }
                                 else
                                 {
-                                    if (lvl <= 8)
+                                    if (lvl <= 100)
                                     {
-                                        fc = Color.FromRgba(255, 255, 0, 0.5);
+                                        fc = Color.Yellow;
                                     }
                                     else
                                     {
-                                        fc = Color.FromRgba(255, 0, 0, 0.5);
+                                        fc = Color.Red;
                                     }
                                 }
 
@@ -574,8 +582,9 @@ namespace BreatheKlere
                                 var east = Convert.ToDouble(result.lon[x]) * 1 + halfU;
                                 var west = Convert.ToDouble(result.lon[x]) * 1 - halfU;
                                 var tileBounds = new Bounds(new Position(south, west), new Position(north, east));
-                                rectangle.StrokeColor = fc;
-                                rectangle.FillColor = fc;
+                                rectangle.StrokeColor = Color.FromRgba(255, 0, 0, 0.35);
+                                rectangle.StrokeWidth = 0;
+                                rectangle.FillColor = Color.FromRgba(255, 0, 0, (lvl-70)/50);
                                 rectangle.Positions.Add(tileBounds.NorthEast);
                                 rectangle.Positions.Add(tileBounds.NorthWest);
                                 rectangle.Positions.Add(tileBounds.SouthWest);

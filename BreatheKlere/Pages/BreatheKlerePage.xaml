@@ -92,6 +92,8 @@
         </ScrollView>
 
         <maps:Map Grid.Row="1" x:Name="map"
+                  InitialCameraUpdate="51.5074, 0.1278, 13, 30, 60"
+
                   VerticalOptions="FillAndExpand"
                   MyLocationEnabled="true"
                   />
