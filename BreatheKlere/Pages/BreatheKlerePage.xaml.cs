@@ -516,7 +516,7 @@ namespace BreatheKlere
         {
             // set the size of the pixel in degrees lat / lon
             map.Polygons.Clear();
-            var unit = .0075;
+            var unit = .00075;
             var halfU = unit / 2;
             // build the request for polution info
             var request = new PollutionRequest();
