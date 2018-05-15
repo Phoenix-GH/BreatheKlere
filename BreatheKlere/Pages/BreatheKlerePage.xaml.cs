@@ -18,7 +18,7 @@ namespace BreatheKlere
         public byte mapMode = 0;
         bool isFirstLaunch;
         public byte isHomeSet = 0, isDestinationSet = 0;
-        string[] modes = { "bicycling", "walking",  };
+        string[] modes = { "bicycling", "walking" };
         string[] mqModes = { "bicycle", "pedestrian" };
         float maxPollution = 0;
         int mode = 0;
@@ -395,6 +395,7 @@ namespace BreatheKlere
                                 maxPollution = await CalculatePollution(pollutionPoints, true);
                                 blueDistanceLabel.Text = $"Blue Distance:{mqResult.route.distance} Time:{mqResult.route.formattedTime} Pollution:{maxPollution}";
                                 drawHotspot();
+                                await GetHeatMap(bounds);
                             }
                         }
 
@@ -457,7 +458,7 @@ namespace BreatheKlere
             return false;
         }
 
-    
+        
         async Task<float> CalculatePollution(List<Position> pollutionPoints, bool main=false) 
         {
 
@@ -510,6 +511,84 @@ namespace BreatheKlere
             }
             return overall;
         }
+
+        async Task<bool> GetHeatMap(Bounds bounds)
+        {
+            // set the size of the pixel in degrees lat / lon
+            map.Polygons.Clear();
+            var unit = .0075;
+            var halfU = unit / 2;
+            // build the request for polution info
+            var request = new PollutionRequest();
+            request.RAD = 100;
+            request.PAIRS = new List<List<string>>();
+
+            // the x and y max and min are the bounds for your map
+
+            for (var Y = Math.Min(bounds.SouthWest.Latitude, bounds.NorthWest.Latitude); Y <= Math.Max(bounds.SouthWest.Latitude, bounds.NorthWest.Latitude); Y += unit)
+            {
+                for (var X = Math.Max(bounds.SouthWest.Longitude, bounds.SouthEast.Longitude); X >= Math.Min(bounds.SouthWest.Longitude, bounds.SouthEast.Longitude); X -= unit)
+                {
+                    List<string> point = new List<string>();
+                    point.Add(Y.ToString());
+                    point.Add(X.ToString());
+
+                    (request.PAIRS).Add(point);
+                }
+            }
+            // send the request
+            var result = await rest.GetPollution(JsonConvert.SerializeObject(request));
+            if (result != null)
+            {
+                // get the results
+                var x = 0;
+                double lvl = 0;
+                // loop through the results
+                for (x = 0; x < result.lon.Count; x++)
+                {
+                    string level = (result.val)[x];
+                    lvl = Convert.ToDouble(level) * 1;
+                    Color fc = Color.Black;
+                    if (lvl <= 4)
+                    {
+                        fc = Color.Green;
+                    }
+                    else
+                    {
+                        if (lvl <= 8)
+                        {
+                            fc = Color.FromHex("ffff00");
+                        }
+                        else
+                        {
+                            fc = Color.Red;
+                        }
+                    }
+
+
+                    var rectangle = new Xamarin.Forms.GoogleMaps.Polygon();
+
+                    var north = Convert.ToDouble(result.lat[x]) * 1 + halfU;
+                    var south = Convert.ToDouble(result.lat[x]) * 1 - halfU;
+
+                    var east = Convert.ToDouble(result.lon[x]) * 1 + halfU;
+                    var west = Convert.ToDouble(result.lon[x]) * 1 - halfU;
+                    var tileBounds = new Bounds(new Position(south, west), new Position(north, east));
+                    rectangle.StrokeColor = fc;
+                    rectangle.FillColor = fc;
+                    rectangle.Positions.Add(tileBounds.NorthEast);
+                    rectangle.Positions.Add(tileBounds.NorthWest);
+                    rectangle.Positions.Add(tileBounds.SouthWest);
+                    rectangle.Positions.Add(tileBounds.SouthEast);
+
+                    map.Polygons.Add(rectangle);
+                }
+                return true;
+            }
+
+            return false;
+        }
+
         void drawHotspot()
         {
             map.Pins.Remove(hotspotPin);
