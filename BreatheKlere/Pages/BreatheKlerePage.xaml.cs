@@ -321,11 +321,11 @@ namespace BreatheKlere
 
             string originParam = originPos.Latitude.ToString() + ',' + originPos.Longitude.ToString();
             string destinationParam = destinationPos.Latitude.ToString() + ',' + destinationPos.Longitude.ToString();
-            if(isHomeSet == 1)
-                originParam = origin;
+            //if(isHomeSet == 1)
+            //    originParam = origin;
             
-            if (isDestinationSet == 1)
-                destinationParam = destination;
+            //if (isDestinationSet == 1)
+                //destinationParam = destination;
             
             Bounds bounds = new Bounds(originPos, destinationPos);
             map.MoveToRegion(MapSpan.FromBounds(bounds));
@@ -369,10 +369,11 @@ namespace BreatheKlere
                 //        map.Polylines.Add(line);
                 //}
 
+                await GetHeatMap(bounds);
+
                 var mqResult = await rest.GetMQAlternativeDirection(originParam, destinationParam, mqModes[mode]);
 
                 List<Position> pollutionPoints = new List<Position>();
-               
                 if (mqResult != null)
                 {
                     if (mqResult.route != null)
@@ -395,7 +396,7 @@ namespace BreatheKlere
                                 maxPollution = await CalculatePollution(pollutionPoints, true);
                                 blueDistanceLabel.Text = $"Blue Distance:{mqResult.route.distance} Time:{mqResult.route.formattedTime} Pollution:{maxPollution}";
                                 drawHotspot();
-                                await GetHeatMap(bounds);
+
                             }
                         }
 
@@ -446,8 +447,6 @@ namespace BreatheKlere
 
                         }
                     }
-
-
                 }
 
             }
@@ -522,7 +521,6 @@ namespace BreatheKlere
             var request = new PollutionRequest();
             request.RAD = 100;
             request.PAIRS = new List<List<string>>();
-
 
             var center = map.VisibleRegion.Center;
             var halfheightDegrees = map.VisibleRegion.LatitudeDegrees / 2;
