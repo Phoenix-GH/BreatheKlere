@@ -536,11 +536,12 @@ namespace BreatheKlere
                 for (var X = left; X >= right; X -= unit)
                 {
                     List<string> point = new List<string>();
-                    point.Add(Y.ToString());
-                    point.Add(X.ToString());
+
+                    point.Add(Y.ToString("F6"));
+                    point.Add(X.ToString("F6"));
 
                     (request.PAIRS).Add(point);
-                    if(request.PAIRS.Count >= 60 || (Y+unit > top && X-unit < right))
+                    if(request.PAIRS.Count >= 300 || (Y+unit > top && X-unit < right))
                     {
                         var result = await rest.GetPollution(JsonConvert.SerializeObject(request));
                         if (result != null)
