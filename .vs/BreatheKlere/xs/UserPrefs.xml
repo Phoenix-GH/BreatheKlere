@@ -1,1 +1,18 @@
-﻿<Properties />
+﻿<Properties StartupConfiguration="{19773627-9912-42ED-9597-E2C9AAAEB6DE}|Default">
+  <MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.7A8F4250-966B-4CFC-8E04-3F8DB7BC057C" />
+  <MonoDevelop.Ide.ItemProperties.BreatheKlere.Droid PreferredExecutionTarget="Android.1115fb2998170c03" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="BreatheKlere/Pages/BreatheKlerePage.xaml.cs">
+    <Files>
+      <File FileName="BreatheKlere/Pages/LocationSelectionPage.xaml" Line="49" Column="1" />
+      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml" Line="20" Column="42" />
+      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml.cs" Line="535" Column="52" />
+      <File FileName="Source Not Available" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>

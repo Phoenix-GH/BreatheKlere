@@ -522,26 +522,25 @@ namespace BreatheKlere
             request.RAD = 100;
             request.PAIRS = new List<List<string>>();
 
-            var center = map.VisibleRegion.Center;
-            var halfheightDegrees = map.VisibleRegion.LatitudeDegrees / 2;
-            var halfwidthDegrees = map.VisibleRegion.LongitudeDegrees / 2;
+            var radius = Math.Max(bounds.HeightDegrees / 2, bounds.WidthDegrees / 2);
 
-            var left = center.Longitude + halfwidthDegrees;
-            var right = center.Longitude - halfwidthDegrees;
-            var top = center.Latitude + halfheightDegrees;
-            var bottom = center.Latitude - halfheightDegrees;
+            var left = Convert.ToDouble((bounds.Center.Longitude + radius * 2).ToString("F6"));
+            var right = Convert.ToDouble((bounds.Center.Longitude - radius * 2).ToString("F6"));
+            var top = Convert.ToDouble((bounds.Center.Latitude + radius).ToString("F6"));
+            var bottom = Convert.ToDouble((bounds.Center.Latitude - radius).ToString("F6"));
+
 
             for (var Y = bottom; Y <= top; Y += unit)
             {
                 for (var X = left; X >= right; X -= unit)
                 {
                     List<string> point = new List<string>();
-
-                    point.Add(Y.ToString("F6"));
-                    point.Add(X.ToString("F6"));
+                   
+                    point.Add(Y.ToString());
+                    point.Add(X.ToString());
 
                     (request.PAIRS).Add(point);
-                    if(request.PAIRS.Count >= 300 || (Y+unit > top && X-unit < right))
+                    if(request.PAIRS.Count >= 400 || (Y+unit > top && X-unit < right))
                     {
                         var result = await rest.GetPollution(JsonConvert.SerializeObject(request));
                         if (result != null)
@@ -572,18 +571,17 @@ namespace BreatheKlere
                                     }
                                 }
 
-
-                                var rectangle = new Xamarin.Forms.GoogleMaps.Polygon();
-
                                 var north = Convert.ToDouble(result.lat[x]) * 1 + halfU;
                                 var south = Convert.ToDouble(result.lat[x]) * 1 - halfU;
 
                                 var east = Convert.ToDouble(result.lon[x]) * 1 + halfU;
                                 var west = Convert.ToDouble(result.lon[x]) * 1 - halfU;
                                 var tileBounds = new Bounds(new Position(south, west), new Position(north, east));
-                                rectangle.StrokeColor = Color.FromRgba(255, 0, 0, 0.35);
+                                var rectangle = new Xamarin.Forms.GoogleMaps.Polygon();
+ 
                                 rectangle.StrokeWidth = 0;
                                 rectangle.FillColor = Color.FromRgba(255, 0, 0, (lvl-70)/50);
+                              
                                 rectangle.Positions.Add(tileBounds.NorthEast);
                                 rectangle.Positions.Add(tileBounds.NorthWest);
                                 rectangle.Positions.Add(tileBounds.SouthWest);
