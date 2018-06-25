@@ -1260,44 +1260,44 @@ namespace BreatheKlere.Droid
 		public partial class Color
 		{
 			
-			// aapt resource value: 0x7f070052
-			public const int abc_background_cache_hint_selector_material_dark = 2131165266;
-			
-			// aapt resource value: 0x7f070053
-			public const int abc_background_cache_hint_selector_material_light = 2131165267;
-			
-			// aapt resource value: 0x7f070054
-			public const int abc_btn_colored_borderless_text_material = 2131165268;
-			
-			// aapt resource value: 0x7f070055
-			public const int abc_btn_colored_text_material = 2131165269;
-			
-			// aapt resource value: 0x7f070056
-			public const int abc_color_highlight_material = 2131165270;
-			
 			// aapt resource value: 0x7f070057
-			public const int abc_hint_foreground_material_dark = 2131165271;
+			public const int abc_background_cache_hint_selector_material_dark = 2131165271;
 			
 			// aapt resource value: 0x7f070058
-			public const int abc_hint_foreground_material_light = 2131165272;
+			public const int abc_background_cache_hint_selector_material_light = 2131165272;
+			
+			// aapt resource value: 0x7f070059
+			public const int abc_btn_colored_borderless_text_material = 2131165273;
+			
+			// aapt resource value: 0x7f07005a
+			public const int abc_btn_colored_text_material = 2131165274;
+			
+			// aapt resource value: 0x7f07005b
+			public const int abc_color_highlight_material = 2131165275;
+			
+			// aapt resource value: 0x7f07005c
+			public const int abc_hint_foreground_material_dark = 2131165276;
+			
+			// aapt resource value: 0x7f07005d
+			public const int abc_hint_foreground_material_light = 2131165277;
 			
 			// aapt resource value: 0x7f07000d
 			public const int abc_input_method_navigation_guard = 2131165197;
 			
-			// aapt resource value: 0x7f070059
-			public const int abc_primary_text_disable_only_material_dark = 2131165273;
+			// aapt resource value: 0x7f07005e
+			public const int abc_primary_text_disable_only_material_dark = 2131165278;
 			
-			// aapt resource value: 0x7f07005a
-			public const int abc_primary_text_disable_only_material_light = 2131165274;
+			// aapt resource value: 0x7f07005f
+			public const int abc_primary_text_disable_only_material_light = 2131165279;
 			
-			// aapt resource value: 0x7f07005b
-			public const int abc_primary_text_material_dark = 2131165275;
+			// aapt resource value: 0x7f070060
+			public const int abc_primary_text_material_dark = 2131165280;
 			
-			// aapt resource value: 0x7f07005c
-			public const int abc_primary_text_material_light = 2131165276;
+			// aapt resource value: 0x7f070061
+			public const int abc_primary_text_material_light = 2131165281;
 			
-			// aapt resource value: 0x7f07005d
-			public const int abc_search_url_text = 2131165277;
+			// aapt resource value: 0x7f070062
+			public const int abc_search_url_text = 2131165282;
 			
 			// aapt resource value: 0x7f07000e
 			public const int abc_search_url_text_normal = 2131165198;
@@ -1308,32 +1308,35 @@ namespace BreatheKlere.Droid
 			// aapt resource value: 0x7f070010
 			public const int abc_search_url_text_selected = 2131165200;
 			
-			// aapt resource value: 0x7f07005e
-			public const int abc_secondary_text_material_dark = 2131165278;
-			
-			// aapt resource value: 0x7f07005f
-			public const int abc_secondary_text_material_light = 2131165279;
-			
-			// aapt resource value: 0x7f070060
-			public const int abc_tint_btn_checkable = 2131165280;
-			
-			// aapt resource value: 0x7f070061
-			public const int abc_tint_default = 2131165281;
-			
-			// aapt resource value: 0x7f070062
-			public const int abc_tint_edittext = 2131165282;
-			
 			// aapt resource value: 0x7f070063
-			public const int abc_tint_seek_thumb = 2131165283;
+			public const int abc_secondary_text_material_dark = 2131165283;
 			
 			// aapt resource value: 0x7f070064
-			public const int abc_tint_spinner = 2131165284;
+			public const int abc_secondary_text_material_light = 2131165284;
 			
 			// aapt resource value: 0x7f070065
-			public const int abc_tint_switch_thumb = 2131165285;
+			public const int abc_tint_btn_checkable = 2131165285;
 			
 			// aapt resource value: 0x7f070066
-			public const int abc_tint_switch_track = 2131165286;
+			public const int abc_tint_default = 2131165286;
+			
+			// aapt resource value: 0x7f070067
+			public const int abc_tint_edittext = 2131165287;
+			
+			// aapt resource value: 0x7f070068
+			public const int abc_tint_seek_thumb = 2131165288;
+			
+			// aapt resource value: 0x7f070069
+			public const int abc_tint_spinner = 2131165289;
+			
+			// aapt resource value: 0x7f07006a
+			public const int abc_tint_switch_thumb = 2131165290;
+			
+			// aapt resource value: 0x7f07006b
+			public const int abc_tint_switch_track = 2131165291;
+			
+			// aapt resource value: 0x7f070054
+			public const int accent = 2131165268;
 			
 			// aapt resource value: 0x7f070011
 			public const int accent_material_dark = 2131165201;
@@ -1389,8 +1392,8 @@ namespace BreatheKlere.Droid
 			// aapt resource value: 0x7f07000b
 			public const int cardview_shadow_start_color = 2131165195;
 			
-			// aapt resource value: 0x7f070067
-			public const int common_google_signin_btn_text_dark = 2131165287;
+			// aapt resource value: 0x7f07006c
+			public const int common_google_signin_btn_text_dark = 2131165292;
 			
 			// aapt resource value: 0x7f070000
 			public const int common_google_signin_btn_text_dark_default = 2131165184;
@@ -1404,8 +1407,8 @@ namespace BreatheKlere.Droid
 			// aapt resource value: 0x7f070003
 			public const int common_google_signin_btn_text_dark_pressed = 2131165187;
 			
-			// aapt resource value: 0x7f070068
-			public const int common_google_signin_btn_text_light = 2131165288;
+			// aapt resource value: 0x7f07006d
+			public const int common_google_signin_btn_text_light = 2131165293;
 			
 			// aapt resource value: 0x7f070004
 			public const int common_google_signin_btn_text_light_default = 2131165188;
@@ -1419,14 +1422,14 @@ namespace BreatheKlere.Droid
 			// aapt resource value: 0x7f070007
 			public const int common_google_signin_btn_text_light_pressed = 2131165191;
 			
-			// aapt resource value: 0x7f070069
-			public const int common_google_signin_btn_tint = 2131165289;
+			// aapt resource value: 0x7f07006e
+			public const int common_google_signin_btn_tint = 2131165294;
 			
 			// aapt resource value: 0x7f070047
 			public const int design_bottom_navigation_shadow_color = 2131165255;
 			
-			// aapt resource value: 0x7f07006a
-			public const int design_error = 2131165290;
+			// aapt resource value: 0x7f07006f
+			public const int design_error = 2131165295;
 			
 			// aapt resource value: 0x7f070048
 			public const int design_fab_shadow_end_color = 2131165256;
@@ -1458,8 +1461,8 @@ namespace BreatheKlere.Droid
 			// aapt resource value: 0x7f070051
 			public const int design_textinput_error_color_light = 2131165265;
 			
-			// aapt resource value: 0x7f07006b
-			public const int design_tint_password_toggle = 2131165291;
+			// aapt resource value: 0x7f070070
+			public const int design_tint_password_toggle = 2131165296;
 			
 			// aapt resource value: 0x7f07001f
 			public const int dim_foreground_disabled_material_dark = 2131165215;
@@ -1530,6 +1533,12 @@ namespace BreatheKlere.Droid
 			// aapt resource value: 0x7f070034
 			public const int notification_material_background_media_default_color = 2131165236;
 			
+			// aapt resource value: 0x7f070052
+			public const int primary = 2131165266;
+			
+			// aapt resource value: 0x7f070053
+			public const int primaryDark = 2131165267;
+			
 			// aapt resource value: 0x7f070035
 			public const int primary_dark_material_dark = 2131165237;
 			
@@ -1572,23 +1581,29 @@ namespace BreatheKlere.Droid
 			// aapt resource value: 0x7f070042
 			public const int secondary_text_disabled_material_light = 2131165250;
 			
+			// aapt resource value: 0x7f070056
+			public const int splash_background = 2131165270;
+			
 			// aapt resource value: 0x7f070043
 			public const int switch_thumb_disabled_material_dark = 2131165251;
 			
 			// aapt resource value: 0x7f070044
 			public const int switch_thumb_disabled_material_light = 2131165252;
 			
-			// aapt resource value: 0x7f07006c
-			public const int switch_thumb_material_dark = 2131165292;
+			// aapt resource value: 0x7f070071
+			public const int switch_thumb_material_dark = 2131165297;
 			
-			// aapt resource value: 0x7f07006d
-			public const int switch_thumb_material_light = 2131165293;
+			// aapt resource value: 0x7f070072
+			public const int switch_thumb_material_light = 2131165298;
 			
 			// aapt resource value: 0x7f070045
 			public const int switch_thumb_normal_material_dark = 2131165253;
 			
 			// aapt resource value: 0x7f070046
 			public const int switch_thumb_normal_material_light = 2131165254;
+			
+			// aapt resource value: 0x7f070055
+			public const int window_background = 2131165269;
 			
 			static Color()
 			{
@@ -2312,26 +2327,26 @@ namespace BreatheKlere.Droid
 			// aapt resource value: 0x7f020053
 			public const int avd_hide_password = 2130837587;
 			
-			// aapt resource value: 0x7f020124
-			public const int avd_hide_password_1 = 2130837796;
-			
 			// aapt resource value: 0x7f020125
-			public const int avd_hide_password_2 = 2130837797;
+			public const int avd_hide_password_1 = 2130837797;
 			
 			// aapt resource value: 0x7f020126
-			public const int avd_hide_password_3 = 2130837798;
+			public const int avd_hide_password_2 = 2130837798;
+			
+			// aapt resource value: 0x7f020127
+			public const int avd_hide_password_3 = 2130837799;
 			
 			// aapt resource value: 0x7f020054
 			public const int avd_show_password = 2130837588;
 			
-			// aapt resource value: 0x7f020127
-			public const int avd_show_password_1 = 2130837799;
-			
 			// aapt resource value: 0x7f020128
-			public const int avd_show_password_2 = 2130837800;
+			public const int avd_show_password_1 = 2130837800;
 			
 			// aapt resource value: 0x7f020129
-			public const int avd_show_password_3 = 2130837801;
+			public const int avd_show_password_2 = 2130837801;
+			
+			// aapt resource value: 0x7f02012a
+			public const int avd_show_password_3 = 2130837802;
 			
 			// aapt resource value: 0x7f020055
 			public const int common_full_open_on_phone = 2130837589;
@@ -2942,17 +2957,20 @@ namespace BreatheKlere.Droid
 			// aapt resource value: 0x7f02011f
 			public const int notification_icon_background = 2130837791;
 			
-			// aapt resource value: 0x7f020122
-			public const int notification_template_icon_bg = 2130837794;
-			
 			// aapt resource value: 0x7f020123
-			public const int notification_template_icon_low_bg = 2130837795;
+			public const int notification_template_icon_bg = 2130837795;
+			
+			// aapt resource value: 0x7f020124
+			public const int notification_template_icon_low_bg = 2130837796;
 			
 			// aapt resource value: 0x7f020120
 			public const int notification_tile_bg = 2130837792;
 			
 			// aapt resource value: 0x7f020121
 			public const int notify_panel_notification_icon_bg = 2130837793;
+			
+			// aapt resource value: 0x7f020122
+			public const int splash_screen = 2130837794;
 			
 			static Drawable()
 			{
@@ -3823,13 +3841,16 @@ namespace BreatheKlere.Droid
 			public const int select_dialog_singlechoice_material = 2130903104;
 			
 			// aapt resource value: 0x7f030041
-			public const int support_simple_spinner_dropdown_item = 2130903105;
+			public const int splash = 2130903105;
 			
 			// aapt resource value: 0x7f030042
-			public const int Tabbar = 2130903106;
+			public const int support_simple_spinner_dropdown_item = 2130903106;
 			
 			// aapt resource value: 0x7f030043
-			public const int Toolbar = 2130903107;
+			public const int Tabbar = 2130903107;
+			
+			// aapt resource value: 0x7f030044
+			public const int Toolbar = 2130903108;
 			
 			static Layout()
 			{
@@ -4109,8 +4130,8 @@ namespace BreatheKlere.Droid
 			// aapt resource value: 0x7f0c0170
 			public const int Animation_Design_BottomSheetDialog = 2131493232;
 			
-			// aapt resource value: 0x7f0c018b
-			public const int AppCompatDialogStyle = 2131493259;
+			// aapt resource value: 0x7f0c018c
+			public const int AppCompatDialogStyle = 2131493260;
 			
 			// aapt resource value: 0x7f0c00b2
 			public const int Base_AlertDialog_AppCompat = 2131493042;
@@ -4591,6 +4612,9 @@ namespace BreatheKlere.Droid
 			
 			// aapt resource value: 0x7f0c018a
 			public const int MyTheme_Base = 2131493258;
+			
+			// aapt resource value: 0x7f0c018b
+			public const int MyTheme_Splash = 2131493259;
 			
 			// aapt resource value: 0x7f0c002d
 			public const int Platform_AppCompat = 2131492909;
