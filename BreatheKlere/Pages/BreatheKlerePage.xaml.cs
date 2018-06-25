@@ -468,8 +468,8 @@ namespace BreatheKlere
                 for (int i = 0; i < pollutionPoints.Count; i++)
                 {
                     List<string> point = new List<string>();
-                    point.Add(pollutionPoints[i].Latitude.ToString());
-                    point.Add(pollutionPoints[i].Longitude.ToString());
+                    point.Add(pollutionPoints[i].Latitude.ToString("F6"));
+                    point.Add(pollutionPoints[i].Longitude.ToString("F6"));
                     list.Add(point);
                 }
                 PollutionRequest request = new PollutionRequest()
