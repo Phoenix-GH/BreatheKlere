@@ -64,6 +64,7 @@
     <Compile Include="REST\Models\MQDirection.cs" />
     <Compile Include="REST\Models\Place.cs" />
     <Compile Include="REST\Models\Pollution.cs" />
+    <Compile Include="REST\Models\Login.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">

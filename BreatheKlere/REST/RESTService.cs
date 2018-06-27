@@ -12,7 +12,7 @@ namespace BreatheKlere.REST
     {
         string baseURL = "https://maps.googleapis.com/maps/api/";
         string mqBaseURL = "http://www.mapquestapi.com/directions/v2/";
-        string wilinskyURL = "http://www.wilinsky.com/Klere/?meth=multi";
+        string wilinskyURL = "http://www.wilinsky.com/Klere/?meth=";
 
         HttpClient client;
         public RESTService()
@@ -135,7 +135,7 @@ namespace BreatheKlere.REST
         }
 
         public async Task<Pollution> GetPollution(string request) {
-            string url = wilinskyURL;
+            string url = wilinskyURL + "multi";
             var uri = new Uri(url);
             try
             {
@@ -157,6 +157,58 @@ namespace BreatheKlere.REST
             catch (Exception ex)
             {
                 Debug.WriteLine(@"             GetPollution ERROR {0}", ex.Message);
+            }
+            return null;
+        }
+
+        public async Task<Login> Login(string UN, string PW)
+        {
+            string url = wilinskyURL + "start";
+            var uri = new Uri(url);
+            try
+            {
+                var formContent = new FormUrlEncodedContent(new[]
+                {
+                    new KeyValuePair<string, string>("UN", UN),
+                    new KeyValuePair<string, string>("PW", PW),
+                });
+                HttpResponseMessage response = null;
+
+                response = await client.PostAsync(uri, formContent).ConfigureAwait(false);
+                var result = await response.Content.ReadAsStringAsync();
+                var login = JsonConvert.DeserializeObject<Login>(result);
+                return login;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"             LoginError ERROR {0}", ex.Message);
+            }
+            return null;
+        }
+
+        public async Task<Login> Register(string UN, string PW)
+        {
+            string url = wilinskyURL + "reg";
+            var uri = new Uri(url);
+            try
+            {
+                var formContent = new FormUrlEncodedContent(new[]
+                {
+                    new KeyValuePair<string, string>("UN", UN),
+                    new KeyValuePair<string, string>("PW", PW),
+                });
+                HttpResponseMessage response = null;
+
+                response = await client.PostAsync(uri, formContent).ConfigureAwait(false);
+                var result = await response.Content.ReadAsStringAsync();
+                var login = JsonConvert.DeserializeObject<Login>(result);
+                return login;
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"             RegError ERROR {0}", ex.Message);
             }
             return null;
         }

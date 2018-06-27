@@ -10,6 +10,10 @@ namespace BreatheKlere
         public LoginPage()
         {
             InitializeComponent();
+            var genderList = new List<string>();
+            genderList.Add("Male");
+            genderList.Add("Female");
+            genderPicker.ItemsSource = genderList;
         }
 
         void OnLogin(object sender, System.EventArgs e)
@@ -21,5 +25,10 @@ namespace BreatheKlere
         {
             Navigation.PushAsync(new BreatheKlerePage());
         }    
+
+        void Handle_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

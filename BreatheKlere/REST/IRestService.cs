@@ -9,5 +9,8 @@ namespace BreatheKlere.REST
         Task<Place> GetPlaces(string locationName, string location);
         Task<MQDirection> GetMQDirection(string from, string to, string mode);
         Task<MQAlternativeDirection> GetMQAlternativeDirection(string from, string to, string mode);
+
+        Task<Login> Login(string UN, string PW);
+        Task<Login> Register(string UN, string PW);
     }
 }
