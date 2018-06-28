@@ -17,6 +17,7 @@
                 Placeholder="Choose destination"
                 TextChanged="Handle_TextChanged"
                 Grid.Row="0"
+                FontSize="14"
                 Grid.Column="0"
             >
                 <Entry.Effects>

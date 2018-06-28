@@ -22,7 +22,7 @@ namespace BreatheKlere
 
         async void OnLogin(object sender, System.EventArgs e)
         {
-            if(genderPicker.SelectedIndex == 0)
+            if(genderPicker.SelectedItem == null)
             {
                 await DisplayAlert("Warning", "Please select all fields", "OK");
                 return;

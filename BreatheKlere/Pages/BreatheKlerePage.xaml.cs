@@ -21,7 +21,7 @@ namespace BreatheKlere
         string[] modes = { "bicycling", "walking" };
         string[] mqModes = { "bicycle", "pedestrian" };
         float maxPollution = 0;
-        int mode = 0;
+        int mode = 1;
 
         RESTService rest;
 
@@ -97,6 +97,7 @@ namespace BreatheKlere
                         map.Pins.Remove(endPin);
                     map.Pins.Add(endPin);
                     isDestinationSet = 2;
+                    await CalculateRoute();
                 }
                 else if (mapMode == 1)
                 {
@@ -208,6 +209,7 @@ namespace BreatheKlere
                     map.Pins.Remove(endPin);
                 endPin.Position = destinationPos;
                 map.Pins.Add(endPin);
+                await CalculateRoute();
             }
           
 		}
@@ -265,11 +267,6 @@ namespace BreatheKlere
             return poly;
         }
 
-        async void Go_Clicked(object sender, System.EventArgs e)
-        {
-            await CalculateRoute();
-        }
-
         void Home_Focused(object sender, EventArgs e)
         {
             entryAddress.Unfocus();
@@ -300,9 +297,8 @@ namespace BreatheKlere
 
         void clearStyles()
         {
-            
-            btnWalking.BackgroundColor = Color.FromHex("2196F3");
-            btnBicycling.BackgroundColor = Color.FromHex("2196F3");
+            btnWalking.BackgroundColor = Color.Gray;
+            btnBicycling.BackgroundColor = Color.Gray;
         }
 
         async Task<bool> CalculateRoute() 

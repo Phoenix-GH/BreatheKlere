@@ -22,7 +22,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="40" />
+                    <RowDefinition Height="50" />
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -37,7 +37,7 @@
                     Grid.Column="0"
                     HeightRequest="30"
                     BackgroundColor="White"
-                    FontSize="12"
+                    FontSize="14"
                     Margin="5, 2, 5, 1"
                 >
                    
@@ -50,7 +50,7 @@
                     Grid.Column="0"
                     HeightRequest="30"
                     BackgroundColor="White"
-                    FontSize="12"
+                    FontSize="14"
                     Margin="5, 1, 5, 2"
                 >
                 </Label>
@@ -66,11 +66,13 @@
                        HeightRequest="50"
                        Grid.Row="0"
                        Grid.Column="0"
+                       BackgroundColor="Gray"
                     />
                     <Image Source="bicycling.png"
                            Aspect="AspectFit"
                            Grid.Row="0"
                            Grid.Column="0"
+                           InputTransparent="true"
                      />
                     <Button
                         x:Name="btnWalking"
@@ -79,11 +81,13 @@
                         HeightRequest="50"
                         Grid.Row="0"
                         Grid.Column="1"
+                        BackgroundColor="White"
                     />
                     <Image Source="walking.png"
                            Aspect="AspectFit"
                            Grid.Row="0"
                            Grid.Column="1"
+                           InputTransparent="true"
                      />
                 </Grid>
 
@@ -97,7 +101,7 @@
                         Grid.Row="0"
                         Grid.Column="0"
                         x:Name="blueDistanceLabel"
-                        FontSize="10"
+                        FontSize="14"
                         BackgroundColor="Transparent"
                         TextColor="White"
                     />
@@ -105,8 +109,8 @@
                         Grid.Row="0"
                         Grid.Column="1"
                         x:Name="magentaDistanceLabel"
-                        FontSize="10"
-                        BackgroundColor="Lime"
+                        FontSize="14"
+                        BackgroundColor="#00e36f"
                         TextColor="White"
                     />
                 </Grid>
