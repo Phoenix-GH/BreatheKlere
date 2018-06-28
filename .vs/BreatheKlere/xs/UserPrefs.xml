@@ -1,16 +1,18 @@
-﻿<Properties StartupConfiguration="{B27F91C8-DF42-4131-B165-254F2BC60605}|Default">
-  <MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.7A8F4250-966B-4CFC-8E04-3F8DB7BC057C" automaticSigning="False" />
+﻿<Properties StartupConfiguration="{19773627-9912-42ED-9597-E2C9AAAEB6DE}|Default">
+  <MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.e3a63e27895990e050d9caa50e096205978b93e7" automaticSigning="False" />
   <MonoDevelop.Ide.ItemProperties.BreatheKlere.Droid AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.1115fb2998170c03" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="BreatheKlere/REST/Models/Login.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="BreatheKlere copy Status">
     <Files>
-      <File FileName="BreatheKlere/Pages/LoginPage.xaml.cs" Line="15" Column="38" />
-      <File FileName="BreatheKlere/Pages/LocationSelectionPage.xaml.cs" Line="107" Column="9" />
-      <File FileName="BreatheKlere/REST/IRestService.cs" Line="14" Column="1" />
-      <File FileName="BreatheKlere/REST/RESTService.cs" Line="65" Column="16" />
-      <File FileName="BreatheKlere/REST/Models/Login.cs" Line="14" Column="1" />
+      <File FileName="BreatheKlere/Pages/LoginPage.xaml" Line="16" Column="1" />
+      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml" Line="27" Column="1" />
+      <File FileName="Source Not Available" />
+      <File FileName="BreatheKlere/Pages/LoginPage.xaml.cs" Line="35" Column="19" NotebookId="1" />
+      <File FileName="BreatheKlere/REST/RESTService.cs" Line="192" Column="35" NotebookId="1" />
+      <File FileName="BreatheKlere/obj/Debug/BreatheKlere.Pages.LoginPage.xaml.g.cs" Line="25" Column="9" NotebookId="1" />
+      <File FileName="BreatheKlere copy Status" NotebookId="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

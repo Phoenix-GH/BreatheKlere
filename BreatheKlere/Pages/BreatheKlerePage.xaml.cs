@@ -287,7 +287,6 @@ namespace BreatheKlere
             clearStyles();
             mode = 1;
             btnWalking.BackgroundColor = Color.White;
-            btnWalking.TextColor = Color.FromHex("2196F3");
             await CalculateRoute();
         }
 
@@ -296,7 +295,6 @@ namespace BreatheKlere
             clearStyles();
             mode = 0;
             btnBicycling.BackgroundColor = Color.White;
-            btnBicycling.TextColor = Color.FromHex("2196F3");
             await CalculateRoute();
         }
 
@@ -305,8 +303,6 @@ namespace BreatheKlere
             
             btnWalking.BackgroundColor = Color.FromHex("2196F3");
             btnBicycling.BackgroundColor = Color.FromHex("2196F3");
-            btnWalking.TextColor = Color.White;
-            btnBicycling.TextColor = Color.White;
         }
 
         async Task<bool> CalculateRoute() 

@@ -178,6 +178,8 @@
     <AndroidResource Include="Resources\drawable\splash_screen.xml" />
     <AndroidResource Include="Resources\values\colors.xml" />
     <AndroidResource Include="Resources\layout\splash.axml" />
+    <AndroidResource Include="Resources\drawable\bicycling.png" />
+    <AndroidResource Include="Resources\drawable\walking.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Effects\" />

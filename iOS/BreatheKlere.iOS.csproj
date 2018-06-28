@@ -143,6 +143,10 @@
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Effects\ClearEntryEffect.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\bicycling.png" />
+    <BundleResource Include="Resources\walking.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.5.0.121934\build\netstandard1.0\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.5.0.121934\build\netstandard1.0\Xamarin.Forms.targets')" />
   <Import Project="..\packages\Xamarin.Build.Download.0.4.7\build\Xamarin.Build.Download.targets" Condition="Exists('..\packages\Xamarin.Build.Download.0.4.7\build\Xamarin.Build.Download.targets')" />

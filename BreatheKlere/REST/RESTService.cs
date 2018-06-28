@@ -187,7 +187,7 @@ namespace BreatheKlere.REST
             return null;
         }
 
-        public async Task<Login> Register(string UN, string PW)
+        public async Task<Login> Register(string N, string UN, string PW, string PC, string G)
         {
             string url = wilinskyURL + "reg";
             var uri = new Uri(url);
@@ -195,8 +195,11 @@ namespace BreatheKlere.REST
             {
                 var formContent = new FormUrlEncodedContent(new[]
                 {
+                    new KeyValuePair<string, string>("N", N),
                     new KeyValuePair<string, string>("UN", UN),
                     new KeyValuePair<string, string>("PW", PW),
+                    new KeyValuePair<string, string>("PC", PC),
+                    new KeyValuePair<string, string>("G", G),
                 });
                 HttpResponseMessage response = null;
 
