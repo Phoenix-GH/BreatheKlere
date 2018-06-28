@@ -123,6 +123,24 @@ namespace BreatheKlere
 
         }
 
+        void ReverseRoute() 
+        {
+            var temp = origin;
+            origin = destination;
+            destination = temp;
+
+            var tempPos = originPos;
+            originPos = destinationPos;
+            destinationPos = tempPos;
+
+            var isSet = isHomeSet;
+            isHomeSet = isDestinationSet;
+            isDestinationSet = isSet;
+
+            entryAddress.Text = origin;
+            destinationAddress.Text = destination;
+        }
+
 		async protected override void OnAppearing()
 		{
             base.OnAppearing();
@@ -293,6 +311,11 @@ namespace BreatheKlere
             mode = 0;
             btnBicycling.BackgroundColor = Color.White;
             await CalculateRoute();
+        }
+
+        void Reverse_Clicked(object sender, System.EventArgs e)
+        {
+            ReverseRoute();
         }
 
         void clearStyles()

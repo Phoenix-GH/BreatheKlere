@@ -26,15 +26,29 @@
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="100" />
                 </Grid.ColumnDefinitions>
+                <Button Clicked="Reverse_Clicked"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        WidthRequest="20"
+                        HeightRequest="20"
+                        />
+                <Image WidthRequest="20"
+                       HeightRequest="20"
+                       Grid.Row="0"
+                       Grid.Column="0"
+                       Source="switch.png"
+                       InputTransparent="true"
+                />
                 <Label
                     x:Name="entryAddress"
                     VerticalOptions="Center"
                     Text="Your location"
                     Grid.Row="0"
-                    Grid.Column="0"
+                    Grid.Column="1"
                     HeightRequest="30"
                     BackgroundColor="White"
                     FontSize="14"
@@ -47,17 +61,17 @@
                     VerticalOptions="Center"
                     Text="Destination"
                     Grid.Row="1"
-                    Grid.Column="0"
+                    Grid.Column="1"
                     HeightRequest="30"
                     BackgroundColor="White"
                     FontSize="14"
                     Margin="5, 1, 5, 2"
                 >
                 </Label>
-               <Grid
+                <Grid
                     Grid.Row="0"
                     Grid.RowSpan="2"
-                    Grid.Column="1"
+                    Grid.Column="2"
                 >
                     <Button
                        x:Name="btnBicycling"
@@ -95,7 +109,7 @@
                     HorizontalOptions="Fill"
                     Grid.Row="2"
                     Grid.Column="0"
-                    Grid.ColumnSpan="2">
+                    Grid.ColumnSpan="3">
                    
                     <Label
                         Grid.Row="0"

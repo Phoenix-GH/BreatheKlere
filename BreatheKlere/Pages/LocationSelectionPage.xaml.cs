@@ -28,6 +28,11 @@ namespace BreatheKlere
                 locationEntry.Placeholder = "Choose start point";
         }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            locationEntry.Focus();
+        }
         async void Your_Location_Tapped(object sender, System.EventArgs e)
         {
             try
