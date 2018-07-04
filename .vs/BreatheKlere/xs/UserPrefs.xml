@@ -1,12 +1,13 @@
-﻿<Properties StartupConfiguration="{B27F91C8-DF42-4131-B165-254F2BC60605}|Default">
-  <MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.7A8F4250-966B-4CFC-8E04-3F8DB7BC057C" automaticSigning="False" />
-  <MonoDevelop.Ide.ItemProperties.BreatheKlere.Droid AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.1115fb2998170c03" />
-  <MonoDevelop.Ide.Workbench>
+﻿<Properties StartupConfiguration="{19773627-9912-42ED-9597-E2C9AAAEB6DE}|Default">
+  <MonoDevelop.Ide.ItemProperties.BreatheKlere.Droid PreferredExecutionTarget="Android.1115fb2998170c03" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="BreatheKlere/Pages/BreatheKlerePage.xaml">
     <Files>
-      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml" Line="26" Column="39" />
+      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml.cs" Line="9" Column="26" />
+      <File FileName="BreatheKlere/Pages/LocationSelectionPage.xaml" Line="50" Column="1" />
+      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml" Line="49" Column="41" />
     </Files>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

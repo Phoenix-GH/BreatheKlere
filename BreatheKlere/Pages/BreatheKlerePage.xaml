@@ -40,7 +40,7 @@
                        HeightRequest="20"
                        Grid.Row="0"
                        Grid.Column="0"
-                       Source="switch.png"
+                       Source="reverse.png"
                        InputTransparent="true"
                 />
                 <Label
