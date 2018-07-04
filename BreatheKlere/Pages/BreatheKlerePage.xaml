@@ -32,13 +32,16 @@
                 </Grid.ColumnDefinitions>
                 <Button Clicked="Reverse_Clicked"
                         Grid.Row="0"
+                        Grid.RowSpan="2"
                         Grid.Column="0"
-                        WidthRequest="20"
-                        HeightRequest="20"
+                        HeightRequest="40"
+                        BackgroundColor="Transparent"
+                        BorderColor="Transparent"
                         />
-                <Image WidthRequest="20"
-                       HeightRequest="20"
+                <Image 
+                       HeightRequest="40"
                        Grid.Row="0"
+                       Grid.RowSpan="2"
                        Grid.Column="0"
                        Source="reverse.png"
                        InputTransparent="true"
@@ -112,14 +115,16 @@
                     Grid.ColumnSpan="3">
                    
                     <Label
+                        XAlign="Center"
                         Grid.Row="0"
                         Grid.Column="0"
                         x:Name="blueDistanceLabel"
                         FontSize="14"
-                        BackgroundColor="Transparent"
+                        BackgroundColor="Blue"
                         TextColor="White"
                     />
                     <Label
+                        XAlign="Center"
                         Grid.Row="0"
                         Grid.Column="1"
                         x:Name="magentaDistanceLabel"

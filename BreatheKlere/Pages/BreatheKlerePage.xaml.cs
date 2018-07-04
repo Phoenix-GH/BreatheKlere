@@ -331,7 +331,7 @@ namespace BreatheKlere
             line1.StrokeColor = Color.Blue;
             line1.StrokeWidth = 7;
             var line2 = new Xamarin.Forms.GoogleMaps.Polyline();
-            line2.StrokeColor = Color.Magenta;
+            line2.StrokeColor = Color.FromHex("00e36f");
             line2.StrokeWidth = 4;
 
             string originParam = originPos.Latitude.ToString() + ',' + originPos.Longitude.ToString();
@@ -409,7 +409,8 @@ namespace BreatheKlere
                                     map.Polylines.Add(line1);
                                 }
                                 maxPollution = await CalculatePollution(pollutionPoints, true);
-                                blueDistanceLabel.Text = $"Blue Distance:{mqResult.route.distance} Time:{mqResult.route.formattedTime} Pollution:{maxPollution}";
+                                blueDistanceLabel.Text = $"{mqResult.route.distance.ToString("F1")} {mqResult.route.formattedTime} Pollution: {maxPollution}";
+
                                 drawHotspot();
 
                             }
@@ -451,7 +452,8 @@ namespace BreatheKlere
                                             {
                                                 map.Polylines.Add(line2);
                                             }
-                                            magentaDistanceLabel.Text = $"Magenta Distance:{item.route.distance} Time:{item.route.formattedTime} Pollution:{pollutionValue}";
+                                            magentaDistanceLabel.Text = $"{item.route.distance.ToString("F1")} {item.route.formattedTime} Pollution: {pollutionValue}";
+                                        
                                             drawHotspot();
                                             return true;
                                         }
