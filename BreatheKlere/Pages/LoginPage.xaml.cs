@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using BreatheKlere.REST;
 using Xamarin.Forms;
 
@@ -13,21 +10,12 @@ namespace BreatheKlere
         public LoginPage()
         {
             InitializeComponent();
-            var genderList = new List<string>();
-            genderList.Add("Y");
-            genderList.Add("N");
-            genderPicker.ItemsSource = genderList;
             rest = new RESTService();
         }
 
         async void OnLogin(object sender, System.EventArgs e)
         {
-            if(genderPicker.SelectedItem == null)
-            {
-                await DisplayAlert("Warning", "Please select all fields", "OK");
-                return;
-            }
-            var result = await rest.Register(nameEntry.Text, emailEntry.Text, "password", postcodeEntry.Text, genderPicker.SelectedItem.ToString());
+            var result = await rest.Login(emailEntry.Text, passwordEntry.Text);
             Debug.WriteLine(result.ToString());
             if(result!=null) {
                 await Navigation.PushAsync(new BreatheKlerePage());
@@ -35,11 +23,11 @@ namespace BreatheKlere
             else {
                 await DisplayAlert("Error", "Error on signing up", "OK");
             }
-        } 
+        }
 
-        void Handle_SelectedIndexChanged(object sender, System.EventArgs e)
+        void OnRegistration(object sender, System.EventArgs e)
         {
-            DisplayAlert("Notice", "Thank you for your feedback. This feature will be available soon.", "OK");
+            Navigation.PushAsync(new RegistrationPage());
         }
     }
 }

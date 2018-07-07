@@ -182,7 +182,7 @@ namespace BreatheKlere.REST
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(@"             LoginError ERROR {0}", ex.Message);
+                Debug.WriteLine(@"             Login ERROR {0}", ex.Message);
             }
             return null;
         }
@@ -211,7 +211,7 @@ namespace BreatheKlere.REST
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(@"             RegError ERROR {0}", ex.Message);
+                Debug.WriteLine(@"             Reg ERROR {0}", ex.Message);
             }
             return null;
         }

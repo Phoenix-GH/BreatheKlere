@@ -42,6 +42,9 @@
                             >
                         </ImageCell>>
                     </TableSection>
+                    <TableSection x:Name="recentList">
+                        
+                    </TableSection>
                  </TableRoot>
             </TableView>
         </Grid>

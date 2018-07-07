@@ -3,12 +3,14 @@
     <ContentPage.Content>
         <ScrollView BackgroundColor="#94b2d6">
             <StackLayout VerticalOptions="StartAndExpand">
-                <Entry x:Name="nameEntry" Placeholder="Name" HorizontalOptions="Fill" Margin="20, 30, 20, 0" TextColor="White" BackgroundColor="Transparent" PlaceholderColor="White"/>
+                
                 <Entry x:Name="emailEntry" Placeholder="Email" HorizontalOptions="Fill" Margin="20, 30, 20, 0" TextColor="White" Keyboard="Email" BackgroundColor="Transparent" PlaceholderColor="White" />
-                <Entry x:Name="postcodeEntry" Placeholder="Home Postcode" HorizontalOptions="Fill" Margin="20, 30, 20, 0" TextColor="White" BackgroundColor="Transparent" PlaceholderColor="White" />
-                <Picker x:Name="genderPicker" Title="Would you like text updates about pollution hotspots on your route?" Margin="20, 30, 20, 0" SelectedIndexChanged="Handle_SelectedIndexChanged" BackgroundColor="Transparent" TextColor="White"/>
-               
-                <Button Text="Next" Clicked="OnLogin" HorizontalOptions="End" WidthRequest="150" HeightRequest="50" Margin="0, 20, 20, 20" TextColor="White"/>
+                <Entry x:Name="passwordEntry" Placeholder="Password" HorizontalOptions="Fill" Margin="20, 30, 20, 0" TextColor="White" IsPassword="true" BackgroundColor="Transparent" PlaceholderColor="White" />
+                <StackLayout Orientation="Horizontal" Margin="0, 20, 20, 20" Padding="20" HorizontalOptions="Center">
+                    <Button Text="Register new user" Clicked="OnRegistration" HorizontalOptions="Start" WidthRequest="150" HeightRequest="50"  TextColor="White"/>
+                    <Button Text="Next" Clicked="OnLogin" HorizontalOptions="End" WidthRequest="150" HeightRequest="50"  TextColor="White"/>
+     
+                </StackLayout>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
