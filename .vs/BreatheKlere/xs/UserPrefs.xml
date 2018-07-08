@@ -1,16 +1,18 @@
 ﻿<Properties StartupConfiguration="{19773627-9912-42ED-9597-E2C9AAAEB6DE}|Default">
   <MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.7A8F4250-966B-4CFC-8E04-3F8DB7BC057C" automaticSigning="False" />
   <MonoDevelop.Ide.ItemProperties.BreatheKlere.Droid PreferredExecutionTarget="Android.1115fb2998170c03" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="BreatheKlere/App.xaml.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Droid/FlatButtonRenderer.cs">
     <Files>
       <File FileName="BreatheKlere/Pages/LocationSelectionPage.xaml.cs" Line="32" Column="62" />
-      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml" Line="18" Column="23" />
-      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml.cs" Line="132" Column="37" />
+      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml" Line="17" Column="223" />
+      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml.cs" Line="346" Column="11" />
       <File FileName="BreatheKlere/Pages/LocationSelectionPage.xaml" Line="17" Column="37" />
       <File FileName="BreatheKlere/Pages/LoginPage.xaml" Line="18" Column="1" />
       <File FileName="BreatheKlere/Pages/RegistrationPage.xaml" Line="17" Column="1" />
       <File FileName="BreatheKlere/Pages/RegistrationPage.xaml.cs" Line="33" Column="17" />
-      <File FileName="BreatheKlere/App.xaml.cs" Line="10" Column="22" />
+      <File FileName="BreatheKlere/App.xaml.cs" Line="10" Column="60" />
+      <File FileName="Droid/FlatButtonRenderer.cs" Line="15" Column="2" />
+      <File FileName="Droid/MainActivity.cs" Line="12" Column="23" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

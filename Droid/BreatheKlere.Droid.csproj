@@ -157,6 +157,7 @@
     <Compile Include="MainApplication.cs" />
     <Compile Include="Effects\ClearEntryEffect.cs" />
     <Compile Include="SplashActivity.cs" />
+    <Compile Include="FlatButtonRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

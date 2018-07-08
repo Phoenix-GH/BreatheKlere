@@ -6,6 +6,7 @@
              xmlns:maps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
 >
     <Grid
+        RowSpacing="0"
         HorizontalOptions="Fill"
         VerticalOptions="Fill">
         <Grid.RowDefinitions>
@@ -13,8 +14,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <StackLayout BackgroundColor="#2196F3">
-            <Button Clicked="Handle_Clicked" Text="←" Grid.Row="0" WidthRequest="50" BackgroundColor="Transparent" TextColor="White" HorizontalOptions="Start" VerticalOptions="Center" FontSize="20"/>
+        <StackLayout BackgroundColor="#2196F3" VerticalOptions="FillAndExpand">
+            <Button Clicked="Handle_Clicked" Text="←" Grid.Row="0" WidthRequest="50" BackgroundColor="Transparent" TextColor="White" HorizontalOptions="Start" VerticalOptions="Center" FontSize="20" BorderColor="Transparent"/>
         </StackLayout>
         <ScrollView Grid.Row="1"
                     Orientation="Vertical">
@@ -146,5 +147,9 @@
                   VerticalOptions="FillAndExpand"
                   MyLocationEnabled="true"
                   />
+        <Grid VerticalOptions="End" HorizontalOptions="FillAndExpand" x:Name="buttonGrid" IsVisible="false" Grid.Row="2">
+            <Button BackgroundColor="#2196F3" Text="Go fastest" TextColor="White" Grid.Column="0" FontSize="20" Clicked="Handle_Fastest" x:Name="btnFastest" />
+            <Button BackgroundColor="#00e36f" Text="Go cleanest" TextColor="White" Grid.Column="1" FontSize="20" Clicked="Handle_Cleanest" x:Name="btnCleanest" />
+        </Grid>
     </Grid>
 </ContentPage>

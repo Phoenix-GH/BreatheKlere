@@ -34,6 +34,7 @@ namespace BreatheKlere
         Pin startPin, endPin, hotspotPin;
         Position hotspot;
         float peak = 0;
+        Xamarin.Forms.GoogleMaps.Polyline line1, line2;
 
         public BreatheKlerePage()
         {
@@ -58,6 +59,14 @@ namespace BreatheKlere
             map.UiSettings.TiltGesturesEnabled = false;
             map.UiSettings.ZoomControlsEnabled = true;
             map.UiSettings.ZoomGesturesEnabled = true;
+
+            line1 = new Xamarin.Forms.GoogleMaps.Polyline();
+            line2 = new Xamarin.Forms.GoogleMaps.Polyline();
+
+            line1.StrokeColor = Color.Blue;
+            line1.StrokeWidth = 7;
+            line2.StrokeColor = Color.FromHex("00e36f");
+            line2.StrokeWidth = 4;
 
             var entryGesture = new TapGestureRecognizer();
             entryGesture.Tapped += Home_Focused;
@@ -288,12 +297,14 @@ namespace BreatheKlere
 
         void Home_Focused(object sender, EventArgs e)
         {
+            isDestinationSet = 0;
             entryAddress.Unfocus();
             Navigation.PushModalAsync(new LocationSelectionPage(this, true));
         }
 
         void Destination_Focused(object sender, EventArgs e)
         {
+            isDestinationSet = 0;
             destinationAddress.Unfocus();
             Navigation.PushModalAsync(new LocationSelectionPage(this, false));
         }
@@ -327,14 +338,10 @@ namespace BreatheKlere
 
         async Task<bool> CalculateRoute() 
         {
-            map.Polylines.Clear();
-            var line1 = new Xamarin.Forms.GoogleMaps.Polyline();
-            line1.StrokeColor = Color.Blue;
-            line1.StrokeWidth = 7;
-            var line2 = new Xamarin.Forms.GoogleMaps.Polyline();
-            line2.StrokeColor = Color.FromHex("00e36f");
-            line2.StrokeWidth = 4;
-
+            buttonGrid.IsVisible = false;
+            line1.Positions.Clear();
+            line2.Positions.Clear();
+            routeReset();
             string originParam = originPos.Latitude.ToString() + ',' + originPos.Longitude.ToString();
             string destinationParam = destinationPos.Latitude.ToString() + ',' + destinationPos.Longitude.ToString();
             //if(isHomeSet == 1)
@@ -457,17 +464,15 @@ namespace BreatheKlere
                                             magentaDistanceLabel.Text = $"{item.route.distance.ToString("F1")} {item.route.formattedTime} Pollution: {pollutionValue}";
                                         
                                             drawHotspot();
+                                            buttonGrid.IsVisible = true;
                                             return true;
                                         }
-
                                     }
                                 }
                             }
-
                         }
                     }
                 }
-
             }
             else
             {
@@ -637,6 +642,32 @@ namespace BreatheKlere
                 Navigation.PushModalAsync(new LocationSelectionPage(this, false));
             else
                 Navigation.PushModalAsync(new LocationSelectionPage(this, true));
+        }
+
+        void Handle_Fastest(object sender, System.EventArgs e)
+        {
+            routeReset();
+            blueDistanceLabel.BackgroundColor = Color.Gray;
+            btnFastest.BackgroundColor = Color.Gray;
+            map.Polylines.Add(line1);
+        }
+
+        void Handle_Cleanest(object sender, System.EventArgs e)
+        {
+            routeReset();
+            magentaDistanceLabel.BackgroundColor = Color.Gray;
+            btnCleanest.BackgroundColor = Color.Gray;
+
+            map.Polylines.Add(line2);
+        }
+
+        void routeReset()
+        {
+            blueDistanceLabel.BackgroundColor = Color.FromHex("2196F3");
+            btnFastest.BackgroundColor = Color.FromHex("2196F3");
+            magentaDistanceLabel.BackgroundColor = Color.FromHex("00e36f");
+            btnCleanest.BackgroundColor = Color.FromHex("00e36f");
+            map.Polylines.Clear();
         }
     }
 }
