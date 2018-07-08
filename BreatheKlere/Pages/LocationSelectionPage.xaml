@@ -42,8 +42,7 @@
                             >
                         </ImageCell>>
                     </TableSection>
-                    <TableSection x:Name="recentList">
-                        
+                    <TableSection x:Name="recentList" Title="Recent Searches">
                     </TableSection>
                  </TableRoot>
             </TableView>

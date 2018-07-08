@@ -1,9 +1,11 @@
 ﻿/* Location Selection Modal */
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using BreatheKlere.REST;
+using Newtonsoft.Json;
 using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
 using Xamarin.Forms;
@@ -17,6 +19,8 @@ namespace BreatheKlere
         Stopwatch timer;
         RESTService rest;
         bool isHomeSelected;
+        List<string> recentSearchList;
+
         public LocationSelectionPage(BreatheKlerePage parent, bool isHomeSelected = true)
         {
             InitializeComponent();
@@ -26,13 +30,42 @@ namespace BreatheKlere
             rest = new RESTService();
             if (isHomeSelected)
                 locationEntry.Placeholder = "Choose start point";
+            recentSearchList = new List<string>();
+
+            if (App.Current.Properties.ContainsKey("recentList"))
+                recentSearchList = JsonConvert.DeserializeObject<List<string>>(App.Current.Properties["recentList"].ToString());
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
+
+            foreach (var item in recentSearchList)
+            {
+                var cell = new TextCell()
+                {
+                    Text = item,
+                };
+                cell.Tapped += (sender, e) => {
+
+                    if (isHomeSelected)
+                    {
+                        parent.origin = item;
+                        parent.isHomeSet = 1;
+                    }
+                    else
+                    {
+                        parent.destination = item;
+                        parent.isDestinationSet = 1;
+                    }
+
+                    Navigation.PopModalAsync();
+                };
+                recentList.Add(cell);
+            }
             locationEntry.Focus();
         }
+
         async void Your_Location_Tapped(object sender, System.EventArgs e)
         {
             try
@@ -101,64 +134,12 @@ namespace BreatheKlere
                 {
                     if (timer.ElapsedMilliseconds >= 1000)
                     {
-                        //GetLocation(locationEntry.Text);
                         GetPlaces(locationEntry.Text, parent.currentPos);
                         timer.Stop();
                     }
                     return false;
                 });
             }
-        }
-
-        async Task<bool> GeoLocation(string location)
-        {
-            locationList.Clear();
-
-            GeoResult result = await rest.GetGeoResult(location);
-            if (result != null)
-            {
-                if (result.results.Count > 0)
-                {
-                    foreach(var item in result.results) 
-                    {
-                        var cell = new TextCell()
-                        {
-                            Text = item.formatted_address,
-                        };
-                        cell.Tapped += (sender, e) => {
-                            double lat = item.geometry.location.lat;
-                            double lng = item.geometry.location.lng;
-                            if (isHomeSelected)
-                            {
-                                parent.originPos = new Position(lat, lng);
-                                parent.origin = item.formatted_address;
-                                parent.isHomeSet = 2;
-                            }
-                            else
-                            {
-                                parent.destinationPos = new Position(lat, lng);
-                                parent.destination = item.formatted_address;
-                                parent.isDestinationSet = 2;
-                            }
-
-                            Navigation.PopModalAsync();
-                        };
-                        locationList.Add(cell);
-                    }
-                    return true;
-                }
-                else
-                {
-                    Debug.WriteLine("Could not get info of home address");
-                    return false;
-                }
-            }
-            else
-            {
-                Debug.WriteLine("Geocoder returns no results");
-                return false;
-            }
-
         }
 
         async Task<bool> GetPlaces(string locationName, string location = null)
@@ -189,6 +170,8 @@ namespace BreatheKlere
                                 parent.isDestinationSet = 1;
                             }
 
+                            recentSearchList.Add(item.description);
+                            App.Current.Properties["recentList"] = JsonConvert.SerializeObject(recentSearchList);
                             Navigation.PopModalAsync();
                         };
                         locationList.Add(cell);
@@ -209,5 +192,6 @@ namespace BreatheKlere
             }
 
         }
-    }
+
+      }
 }
