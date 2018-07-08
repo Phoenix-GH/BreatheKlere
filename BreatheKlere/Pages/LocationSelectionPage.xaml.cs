@@ -39,7 +39,7 @@ namespace BreatheKlere
         protected override void OnAppearing()
         {
             base.OnAppearing();
-
+            
             foreach (var item in recentSearchList)
             {
                 var cell = new TextCell()

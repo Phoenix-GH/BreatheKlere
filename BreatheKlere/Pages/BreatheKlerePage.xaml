@@ -10,10 +10,13 @@
         VerticalOptions="Fill">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-
-        <ScrollView Grid.Row="0"
+        <StackLayout BackgroundColor="#2196F3">
+            <Button Clicked="Handle_Clicked" Text="←" Grid.Row="0" WidthRequest="50" BackgroundColor="Transparent" TextColor="White" HorizontalOptions="Start" VerticalOptions="Center" FontSize="20"/>
+        </StackLayout>
+        <ScrollView Grid.Row="1"
                     Orientation="Vertical">
 
             <Grid
@@ -137,7 +140,7 @@
             </Grid>
         </ScrollView>
 
-        <maps:Map Grid.Row="1" x:Name="map"
+        <maps:Map Grid.Row="2" x:Name="map"
                   InitialCameraUpdate="51.5074, 0.1278, 13, 30, 60"
 
                   VerticalOptions="FillAndExpand"

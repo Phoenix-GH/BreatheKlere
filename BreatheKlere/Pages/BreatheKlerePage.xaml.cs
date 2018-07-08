@@ -144,6 +144,7 @@ namespace BreatheKlere
 		async protected override void OnAppearing()
 		{
             base.OnAppearing();
+            NavigationPage.SetHasNavigationBar(this, false);
             try
             {
                 if (isFirstLaunch)
@@ -342,12 +343,13 @@ namespace BreatheKlere
             //if (isDestinationSet == 1)
                 //destinationParam = destination;
             
-            Bounds bounds = new Bounds(originPos, destinationPos);
-            map.MoveToRegion(MapSpan.FromBounds(bounds));
-            blueDistanceLabel.Text = "";
-            magentaDistanceLabel.Text = "";
+          
             if (!string.IsNullOrEmpty(originParam) && !string.IsNullOrEmpty(destinationParam) && isHomeSet>0 && isDestinationSet>0)
             {
+                Bounds bounds = new Bounds(originPos, destinationPos);
+                map.MoveToRegion(MapSpan.FromBounds(bounds));
+                blueDistanceLabel.Text = "";
+                magentaDistanceLabel.Text = "";
                 //var distanceResult = await rest.GetDistance(originParam, destinationParam, modes[mode]);
                 //if (distanceResult != null)
                 //{
@@ -532,14 +534,15 @@ namespace BreatheKlere
         {
             // set the size of the pixel in degrees lat / lon
             map.Polygons.Clear();
-            var unit = .0015;
-            var halfU = unit / 2;
+
             // build the request for polution info
             var request = new PollutionRequest();
             request.RAD = 100;
             request.PAIRS = new List<List<string>>();
 
             var radius = Math.Max(bounds.HeightDegrees / 2, bounds.WidthDegrees / 2);
+            var unit = Math.Max(.0015, radius / 100);
+            var halfU = unit / 2;
 
             var left = Convert.ToDouble((bounds.Center.Longitude + radius * 2).ToString("F6"));
             var right = Convert.ToDouble((bounds.Center.Longitude - radius * 2).ToString("F6"));
@@ -626,6 +629,14 @@ namespace BreatheKlere
                 Position = hotspot,
             };
             map.Pins.Add(hotspotPin);
+        }
+
+        void Handle_Clicked(object sender, System.EventArgs e)
+        {
+            if(mapMode == 2)
+                Navigation.PushModalAsync(new LocationSelectionPage(this, false));
+            else
+                Navigation.PushModalAsync(new LocationSelectionPage(this, true));
         }
     }
 }

@@ -28,7 +28,9 @@ namespace BreatheKlere
 
             if (result != null)
             {
+                App.Current.Properties["isRegistered"] = true;
                 await Navigation.PushAsync(new BreatheKlerePage());
+
             }
             else
             {
