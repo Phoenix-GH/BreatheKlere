@@ -32,6 +32,8 @@
 	<string>This app needs access to the current location.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>This app needs access to the current location always.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Needs Calendar Permission</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>

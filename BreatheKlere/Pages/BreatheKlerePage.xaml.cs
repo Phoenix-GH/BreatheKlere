@@ -173,7 +173,7 @@ namespace BreatheKlere
                             status = results[Permission.Location];
                     }
 
-                    if (status == PermissionStatus.Granted)
+                    if (status == PermissionStatus.Granted || status != PermissionStatus.Unknown)
                     {
                         if (Utils.IsLocationAvailable())
                         {
@@ -193,7 +193,7 @@ namespace BreatheKlere
                             isHomeSet = 2;
                         }
                     }
-                    else if (status != PermissionStatus.Unknown)
+                    else
                     {
                         await DisplayAlert("Location Denied", "Can not continue, try again.", "OK");
                     }
