@@ -179,7 +179,7 @@ namespace BreatheKlere
                         {
                             originPos = await Utils.GetPosition();
                             currentPos = originPos.Latitude + "," + originPos.Longitude;
-                            map.MoveToRegion(MapSpan.FromCenterAndRadius(originPos, Distance.FromMeters(5000)));
+
                             GeoResult result = await rest.GetGeoResult(currentPos);
                             if (result != null)
                             {
@@ -189,6 +189,7 @@ namespace BreatheKlere
                             {
                                 origin = currentPos;
                             }
+                            map.MoveToRegion(MapSpan.FromCenterAndRadius(originPos, Distance.FromMeters(5000)));
                             isHomeSet = 2;
                         }
                     }
@@ -341,58 +342,20 @@ namespace BreatheKlere
             buttonGrid.IsVisible = false;
             line1.Positions.Clear();
             line2.Positions.Clear();
+            line1.StrokeColor = Color.Blue;
+            line2.StrokeColor = Color.FromHex("00e36f");
             routeReset();
+
             string originParam = originPos.Latitude.ToString() + ',' + originPos.Longitude.ToString();
             string destinationParam = destinationPos.Latitude.ToString() + ',' + destinationPos.Longitude.ToString();
-            //if(isHomeSet == 1)
-            //    originParam = origin;
-            
-            //if (isDestinationSet == 1)
-                //destinationParam = destination;
-            
-          
+         
             if (!string.IsNullOrEmpty(originParam) && !string.IsNullOrEmpty(destinationParam) && isHomeSet>0 && isDestinationSet>0)
             {
                 Bounds bounds = new Bounds(originPos, destinationPos);
                 map.MoveToRegion(MapSpan.FromBounds(bounds));
                 blueDistanceLabel.Text = "";
                 magentaDistanceLabel.Text = "";
-                //var distanceResult = await rest.GetDistance(originParam, destinationParam, modes[mode]);
-                //if (distanceResult != null)
-                //{
-                //    if (distanceResult.rows[0].elements[0].distance != null)
-                //    {
-                //        string distance = distanceResult.rows[0].elements[0].distance.text;
-                //        string duration = distanceResult.rows[0].elements[0].duration.text;
-                //        distanceLabel.Text = $"Red Distance={distance}, Duration={duration}";
-                //    }
-                //}
-
-                //var result = await rest.GetDirection(originParam, destinationParam, modes[mode]);
-
-                //if (result != null)
-                //{
-                //    var line = new Xamarin.Forms.GoogleMaps.Polyline();
-                //    line.StrokeColor = Color.Red;
-                //    line.StrokeWidth = 10;
-                //    foreach (var route in result.routes)
-                //    {
-                //        foreach (var leg in route.legs)
-                //        {
-                //            foreach (var step in leg.steps)
-                //            {
-                //                var points = DecodePolyline(step.polyline.points);
-                //                foreach (var point in points)
-                //                {
-                //                    line.Positions.Add(point);
-                //                }
-                //            }
-                //        }
-                //    }
-                //    if (line.Positions.Count >= 2)
-                //        map.Polylines.Add(line);
-                //}
-
+               
                 await GetHeatMap(bounds);
 
                 var mqResult = await rest.GetMQAlternativeDirection(originParam, destinationParam, mqModes[mode]);
@@ -472,11 +435,20 @@ namespace BreatheKlere
                             }
                         }
                     }
+                    else {
+                        blueDistanceLabel.BackgroundColor = Color.Gray;
+                        line1.StrokeColor = Color.FromHex("00e36f");
+
+                        if (line1.Positions.Count >= 2)
+                        {
+                            map.Polylines.Add(line1);
+                        }
+                    }
                 }
             }
             else
             {
-                await this.DisplayAlert("Warning", "Please fill all the fields", "OK");
+                await DisplayAlert("Warning", "Please fill all the fields", "OK");
             }
             return false;
         }
@@ -657,7 +629,6 @@ namespace BreatheKlere
             routeReset();
             magentaDistanceLabel.BackgroundColor = Color.Gray;
             btnCleanest.BackgroundColor = Color.Gray;
-
             map.Polylines.Add(line2);
         }
 
