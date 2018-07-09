@@ -17,7 +17,7 @@ namespace BreatheKlere
         public async static Task<Position> GetPosition() 
         {
             var locator = CrossGeolocator.Current;
-            var pos = await locator.GetPositionAsync(TimeSpan.FromTicks(10000));
+            var pos = await locator.GetPositionAsync(TimeSpan.FromTicks(15000));
             Position position = new Position(pos.Latitude, pos.Longitude);
             return position;
         }

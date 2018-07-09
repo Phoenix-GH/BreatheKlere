@@ -34,6 +34,7 @@
 	<string>This app needs access to the current location always.</string>
 	<key>NSCalendarsUsageDescription</key>
 	<string>Needs Calendar Permission</string>
+
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
@@ -58,6 +59,6 @@
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>CFBundleVersion</key>
-	<string>2</string>
+	<string>3</string>
 </dict>
 </plist>

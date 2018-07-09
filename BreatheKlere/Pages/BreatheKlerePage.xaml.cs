@@ -60,6 +60,7 @@ namespace BreatheKlere
             map.UiSettings.ZoomControlsEnabled = true;
             map.UiSettings.ZoomGesturesEnabled = true;
 
+          
             line1 = new Xamarin.Forms.GoogleMaps.Polyline();
             line2 = new Xamarin.Forms.GoogleMaps.Polyline();
 
@@ -173,7 +174,7 @@ namespace BreatheKlere
                             status = results[Permission.Location];
                     }
 
-                    if (status == PermissionStatus.Granted || status != PermissionStatus.Unknown)
+                    if (status == PermissionStatus.Granted)
                     {
                         if (Utils.IsLocationAvailable())
                         {
@@ -438,7 +439,8 @@ namespace BreatheKlere
                     else {
                         blueDistanceLabel.BackgroundColor = Color.Gray;
                         line1.StrokeColor = Color.FromHex("00e36f");
-
+                        magentaDistanceLabel.Text = blueDistanceLabel.Text;
+                        blueDistanceLabel.Text = "";
                         if (line1.Positions.Count >= 2)
                         {
                             map.Polylines.Add(line1);
