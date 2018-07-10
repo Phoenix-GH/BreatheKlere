@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BreatheKlere.RegistrationPage">
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="BreatheKlere.RegistrationPage" xmlns:local="clr-namespace:BreatheKlere;assembly=BreatheKlere">
      <ContentPage.Content>
         <ScrollView BackgroundColor="#94b2d6">
             <StackLayout VerticalOptions="StartAndExpand">
@@ -7,7 +7,7 @@
                 <Entry x:Name="emailEntry" Placeholder="Email" HorizontalOptions="Fill" Margin="20, 30, 20, 0" TextColor="White" Keyboard="Email" BackgroundColor="Transparent" PlaceholderColor="White" />
                 <Entry x:Name="passwordEntry" Placeholder="Password" HorizontalOptions="Fill" Margin="20, 30, 20, 0" TextColor="White" IsPassword="true" BackgroundColor="Transparent" PlaceholderColor="White" />
                 <Entry x:Name="postcodeEntry" Placeholder="Home Postcode" HorizontalOptions="Fill" Margin="20, 30, 20, 0" TextColor="White" BackgroundColor="Transparent" PlaceholderColor="White" />
-                <Picker x:Name="genderPicker" Title="Would you like text updates about pollution hotspots on your route?" Margin="20, 30, 20, 0" SelectedIndexChanged="Handle_SelectedIndexChanged" BackgroundColor="Transparent" TextColor="White"/>
+                <local:CustomPicker PlaceholderColor="#FFFFFF" x:Name="genderPicker" Title="Would you like text updates about pollution hotspots on your route?" Margin="20, 30, 20, 0" SelectedIndexChanged="Handle_SelectedIndexChanged" BackgroundColor="Transparent" TextColor="White"/>
                
                 <Button Text="Next" Clicked="OnRegistration" HorizontalOptions="End" WidthRequest="150" HeightRequest="50" Margin="0, 20, 20, 20" TextColor="White"/>
             </StackLayout>

@@ -142,6 +142,7 @@
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Effects\ClearEntryEffect.cs" />
+    <Compile Include="CustomPickerRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\bicycling.png" />
