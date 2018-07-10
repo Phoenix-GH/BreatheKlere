@@ -161,7 +161,7 @@ namespace BreatheKlere.REST
             return null;
         }
 
-        public async Task<Login> Login(string UN, string PW)
+        public async Task<Login> Login(string UN, string PW, string DID)
         {
             string url = wilinskyURL + "start";
             var uri = new Uri(url);
@@ -171,6 +171,7 @@ namespace BreatheKlere.REST
                 {
                     new KeyValuePair<string, string>("UN", UN),
                     new KeyValuePair<string, string>("PW", PW),
+                    new KeyValuePair<string, string>("DID", DID),
                 });
                 HttpResponseMessage response = null;
 

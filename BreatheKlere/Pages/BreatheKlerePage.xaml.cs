@@ -177,7 +177,7 @@ namespace BreatheKlere
                     {
                         originPos = await Utils.GetPosition();
                         currentPos = originPos.Latitude + "," + originPos.Longitude;
-
+                        map.MoveToRegion(MapSpan.FromCenterAndRadius(originPos, Distance.FromMeters(5000)));
                         GeoResult result = await rest.GetGeoResult(currentPos);
                         if (result != null)
                         {
@@ -187,7 +187,7 @@ namespace BreatheKlere
                         {
                             origin = currentPos;
                         }
-                        map.MoveToRegion(MapSpan.FromCenterAndRadius(originPos, Distance.FromMeters(5000)));
+                       
                         isHomeSet = 2;
                     }
                 }
@@ -341,11 +341,13 @@ namespace BreatheKlere
         async Task<bool> CalculateRoute() 
         {
             buttonGrid.IsVisible = false;
-            line1.Positions.Clear();
-            line2.Positions.Clear();
-            line1.StrokeColor = Color.Blue;
-            line2.StrokeColor = Color.FromHex("00e36f");
             routeReset();
+            line1 = new Xamarin.Forms.GoogleMaps.Polyline();
+            line2 = new Xamarin.Forms.GoogleMaps.Polyline();
+            line1.StrokeColor = Color.Blue;
+            line1.StrokeWidth = 7;
+            line2.StrokeColor = Color.FromHex("00e36f");
+            line2.StrokeWidth = 4;
 
             string originParam = originPos.Latitude.ToString() + ',' + originPos.Longitude.ToString();
             string destinationParam = destinationPos.Latitude.ToString() + ',' + destinationPos.Longitude.ToString();
@@ -382,7 +384,7 @@ namespace BreatheKlere
                                     map.Polylines.Add(line1);
                                 }
                                 maxPollution = await CalculatePollution(pollutionPoints, true);
-                                blueDistanceLabel.Text = $"{mqResult.route.distance.ToString("F1")} {mqResult.route.formattedTime} Pollution: {maxPollution}";
+                                blueDistanceLabel.Text = $"{mqResult.route.distance.ToString("F1")} miles {timeToMin(mqResult.route.formattedTime)} Pollution: {(int)maxPollution}";
 
                                 drawHotspot();
 
@@ -425,7 +427,7 @@ namespace BreatheKlere
                                             {
                                                 map.Polylines.Add(line2);
                                             }
-                                            magentaDistanceLabel.Text = $"{item.route.distance.ToString("F1")} {item.route.formattedTime} Pollution: {pollutionValue}";
+                                            magentaDistanceLabel.Text = $"{item.route.distance.ToString("F1")} miles {timeToMin(item.route.formattedTime)} Pollution: {(int)pollutionValue}";
                                         
                                             drawHotspot();
                                             buttonGrid.IsVisible = true;
@@ -570,11 +572,11 @@ namespace BreatheKlere
                                     }
                                 }
 
-                                var north = Convert.ToDouble(result.lat[x]) * 1 + halfU;
-                                var south = Convert.ToDouble(result.lat[x]) * 1 - halfU;
+                                var north = Convert.ToDouble(result.lat[x]) * 1 + halfU * 1.1;
+                                var south = Convert.ToDouble(result.lat[x]) * 1 - halfU * 1.1;
 
-                                var east = Convert.ToDouble(result.lon[x]) * 1 + halfU;
-                                var west = Convert.ToDouble(result.lon[x]) * 1 - halfU;
+                                var east = Convert.ToDouble(result.lon[x]) * 1 + halfU * 1.1;
+                                var west = Convert.ToDouble(result.lon[x]) * 1 - halfU * 1.1;
                                 var tileBounds = new Bounds(new Position(south, west), new Position(north, east));
                                 var rectangle = new Xamarin.Forms.GoogleMaps.Polygon();
  
@@ -641,6 +643,12 @@ namespace BreatheKlere
             btnFastest.BackgroundColor = Color.FromHex("2196F3");
             magentaDistanceLabel.BackgroundColor = Color.FromHex("00e36f");
             btnCleanest.BackgroundColor = Color.FromHex("00e36f");
+        }
+
+        string timeToMin(string time)
+        {
+            var array = time.Split(':');
+            return $"{ array[0]}:{ array[1]} mins";
         }
     }
 }

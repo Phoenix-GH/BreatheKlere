@@ -15,7 +15,7 @@ namespace BreatheKlere
 
         async void OnLogin(object sender, System.EventArgs e)
         {
-            var result = await rest.Login(emailEntry.Text, passwordEntry.Text);
+            var result = await rest.Login(emailEntry.Text, passwordEntry.Text, "1234567");
             Debug.WriteLine(result.ToString());
             if(result!=null) {
                 await Navigation.PushAsync(new BreatheKlerePage());
