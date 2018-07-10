@@ -5,14 +5,21 @@
          <Grid
             HorizontalOptions="Fill"
             VerticalOptions="Fill"
-            Padding="0,20,0,0">
+            >
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackLayout BackgroundColor="#2196F3" VerticalOptions="FillAndExpand">
-                <Button Clicked="Handle_Clicked" Text="←" Grid.Row="0" WidthRequest="50" BackgroundColor="Transparent" TextColor="White" HorizontalOptions="Start" VerticalOptions="Center" FontSize="20" BorderColor="Transparent" />
+                <Button Clicked="Handle_Clicked" Text="←" Grid.Row="0" WidthRequest="50" BackgroundColor="Transparent" TextColor="White" HorizontalOptions="Start" VerticalOptions="Center" FontSize="20" BorderColor="Transparent">
+                    <Button.Margin>
+                        <OnPlatform x:TypeArguments="Thickness">
+                            <On Platform="iOS" Value="0, 20, 0, 0" />
+                            <On Platform="Android, UWP" Value="0, 0, 0, 0" /> 
+                        </OnPlatform>
+                    </Button.Margin>
+                </Button>
             </StackLayout>
             <Entry
                 x:Name="locationEntry"

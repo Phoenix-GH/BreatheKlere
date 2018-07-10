@@ -636,11 +636,11 @@ namespace BreatheKlere
 
         void routeReset()
         {
+            map.Polylines.Clear();
             blueDistanceLabel.BackgroundColor = Color.FromHex("2196F3");
             btnFastest.BackgroundColor = Color.FromHex("2196F3");
             magentaDistanceLabel.BackgroundColor = Color.FromHex("00e36f");
             btnCleanest.BackgroundColor = Color.FromHex("00e36f");
-            map.Polylines.Clear();
         }
     }
 }

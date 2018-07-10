@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
         <StackLayout BackgroundColor="#2196F3" VerticalOptions="FillAndExpand">
             <Button Clicked="Handle_Clicked" Text="←" Grid.Row="0" WidthRequest="50" BackgroundColor="Transparent" TextColor="White" HorizontalOptions="Start" VerticalOptions="Center" FontSize="20" BorderColor="Transparent">
-                   <Button.Margin>
+                <Button.Margin>
                     <OnPlatform x:TypeArguments="Thickness">
                         <On Platform="iOS" Value="0, 20, 0, 0" />
                         <On Platform="Android, UWP" Value="0, 0, 0, 0" /> 

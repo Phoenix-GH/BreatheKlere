@@ -11,7 +11,7 @@ namespace BreatheKlere.Droid
         protected override void OnElementChanged(ElementChangedEventArgs<Picker> e)
         {
             base.OnElementChanged(e);
-            this.Control.Background = Forms.Context.GetDrawable(Resource.Drawable.CustomPickerBackground);
+           
             Control?.SetPadding(20, 20, 20, 20);
             if (e.OldElement != null || e.NewElement != null)
             {
