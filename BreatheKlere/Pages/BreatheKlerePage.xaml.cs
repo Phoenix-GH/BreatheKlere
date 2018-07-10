@@ -157,53 +157,53 @@ namespace BreatheKlere
             NavigationPage.SetHasNavigationBar(this, false);
             try
             {
+                var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
+                if (status != PermissionStatus.Granted)
+                {
+                    if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(Permission.Location))
+                    {
+                        await DisplayAlert("Need location", "Gunna need that location", "OK");
+                    }
+
+                    var results = await CrossPermissions.Current.RequestPermissionsAsync(Permission.Location);
+                    //Best practice to always check that the key exists
+                    if (results.ContainsKey(Permission.Location))
+                        status = results[Permission.Location];
+                }
+           
+                if (status == PermissionStatus.Granted)
+                {
+                    if (Utils.IsLocationAvailable() && isFirstLaunch)
+                    {
+                        originPos = await Utils.GetPosition();
+                        currentPos = originPos.Latitude + "," + originPos.Longitude;
+
+                        GeoResult result = await rest.GetGeoResult(currentPos);
+                        if (result != null)
+                        {
+                            origin = result.results[0].formatted_address;
+                        }
+                        else
+                        {
+                            origin = currentPos;
+                        }
+                        map.MoveToRegion(MapSpan.FromCenterAndRadius(originPos, Distance.FromMeters(5000)));
+                        isHomeSet = 2;
+                    }
+                }
+                else
+                {
+                    await DisplayAlert("Location Denied", "Can not continue, try again.", "OK");
+                }
+
                 if (isFirstLaunch)
                 {
                     isFirstLaunch = false;
-                    var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
-                    if (status != PermissionStatus.Granted)
-                    {
-                        if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(Permission.Location))
-                        {
-                            await DisplayAlert("Need location", "Gunna need that location", "OK");
-                        }
-
-                        var results = await CrossPermissions.Current.RequestPermissionsAsync(Permission.Location);
-                        //Best practice to always check that the key exists
-                        if (results.ContainsKey(Permission.Location))
-                            status = results[Permission.Location];
-                    }
-
-                    if (status == PermissionStatus.Granted)
-                    {
-                        if (Utils.IsLocationAvailable())
-                        {
-                            originPos = await Utils.GetPosition();
-                            currentPos = originPos.Latitude + "," + originPos.Longitude;
-
-                            GeoResult result = await rest.GetGeoResult(currentPos);
-                            if (result != null)
-                            {
-                                origin = result.results[0].formatted_address;
-                            }
-                            else
-                            {
-                                origin = currentPos;
-                            }
-                            map.MoveToRegion(MapSpan.FromCenterAndRadius(originPos, Distance.FromMeters(5000)));
-                            isHomeSet = 2;
-                        }
-                    }
-                    else
-                    {
-                        await DisplayAlert("Location Denied", "Can not continue, try again.", "OK");
-                    }
-
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                await DisplayAlert("Error", ex.Message, "OK");
             }
 
             //Setting up the locations

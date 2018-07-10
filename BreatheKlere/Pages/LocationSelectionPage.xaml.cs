@@ -125,6 +125,13 @@ namespace BreatheKlere
             Navigation.PopModalAsync();
         }
 
+        void Handle_Clicked(object sender, System.EventArgs e)
+        {
+
+            Navigation.PopModalAsync();
+        }
+
+
         void Handle_TextChanged(object sender, Xamarin.Forms.TextChangedEventArgs e)
         {
             if (!string.IsNullOrEmpty(locationEntry.Text))

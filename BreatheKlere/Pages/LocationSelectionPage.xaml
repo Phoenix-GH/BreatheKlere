@@ -8,15 +8,19 @@
             Padding="0,20,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+            <StackLayout BackgroundColor="#2196F3" VerticalOptions="FillAndExpand">
+                <Button Clicked="Handle_Clicked" Text="←" Grid.Row="0" WidthRequest="50" BackgroundColor="Transparent" TextColor="White" HorizontalOptions="Start" VerticalOptions="Center" FontSize="20" BorderColor="Transparent" />
+            </StackLayout>
             <Entry
                 x:Name="locationEntry"
                 VerticalOptions="Fill"
                 HorizontalOptions="Fill"
                 Placeholder="Choose destination"
                 TextChanged="Handle_TextChanged"
-                Grid.Row="0"
+                Grid.Row="1"
                 FontSize="14"
                 Grid.Column="0"
             >
@@ -25,7 +29,7 @@
                 </Entry.Effects>
             </Entry>
             <TableView Intent="Settings"
-                       Grid.Row="1"
+                       Grid.Row="2"
                        Grid.Column="0">
                 <TableRoot>
                     <TableSection x:Name="locationList">
