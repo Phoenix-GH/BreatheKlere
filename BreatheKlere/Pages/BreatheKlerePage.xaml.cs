@@ -344,10 +344,13 @@ namespace BreatheKlere
             routeReset();
             line1 = new Xamarin.Forms.GoogleMaps.Polyline();
             line2 = new Xamarin.Forms.GoogleMaps.Polyline();
+            line1.Positions.Clear();
+            line2.Positions.Clear();
             line1.StrokeColor = Color.Blue;
             line1.StrokeWidth = 7;
             line2.StrokeColor = Color.FromHex("00e36f");
             line2.StrokeWidth = 4;
+            map.Polylines.Clear();
 
             string originParam = originPos.Latitude.ToString() + ',' + originPos.Longitude.ToString();
             string destinationParam = destinationPos.Latitude.ToString() + ',' + destinationPos.Longitude.ToString();
