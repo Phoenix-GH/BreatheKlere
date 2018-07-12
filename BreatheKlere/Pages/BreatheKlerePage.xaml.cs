@@ -34,8 +34,7 @@ namespace BreatheKlere
         Pin startPin, endPin, hotspotPin;
         Position hotspot;
         float peak = 0;
-        Xamarin.Forms.GoogleMaps.Polyline line1, line2;
-
+        Xamarin.Forms.GoogleMaps.Polyline fastest, cleanest;
         public BreatheKlerePage()
         {
             InitializeComponent();
@@ -61,13 +60,7 @@ namespace BreatheKlere
             map.UiSettings.ZoomGesturesEnabled = true;
 
           
-            line1 = new Xamarin.Forms.GoogleMaps.Polyline();
-            line2 = new Xamarin.Forms.GoogleMaps.Polyline();
 
-            line1.StrokeColor = Color.Blue;
-            line1.StrokeWidth = 7;
-            line2.StrokeColor = Color.FromHex("00e36f");
-            line2.StrokeWidth = 4;
 
             var entryGesture = new TapGestureRecognizer();
             entryGesture.Tapped += Home_Focused;
@@ -239,8 +232,10 @@ namespace BreatheKlere
                     map.Pins.Remove(endPin);
                 endPin.Position = destinationPos;
                 map.Pins.Add(endPin);
-                await CalculateRoute();
+
             }
+            if(isHomeSet > 0 && isDestinationSet > 0)
+                await CalculateRoute();
           
 		}
 
@@ -299,7 +294,7 @@ namespace BreatheKlere
 
         void Home_Focused(object sender, EventArgs e)
         {
-            isDestinationSet = 0;
+            isHomeSet = 0;
             entryAddress.Unfocus();
             Navigation.PushModalAsync(new LocationSelectionPage(this, true));
         }
@@ -313,18 +308,28 @@ namespace BreatheKlere
 
         async void Walking_Clicked(object sender, System.EventArgs e)
         {
+            btnWalking.IsEnabled = false;
+            btnBicycling.IsEnabled = false;
+            RouteReset();
             clearStyles();
             mode = 1;
-            btnWalking.BackgroundColor = Color.White;
             await CalculateRoute();
+            btnWalking.BackgroundColor = Color.White;
+            btnWalking.IsEnabled = true;
+            btnBicycling.IsEnabled = true;
         }
 
         async void Bicycling_Clicked(object sender, System.EventArgs e)
         {
+            btnWalking.IsEnabled = false;
+            btnBicycling.IsEnabled = false;
+            RouteReset();
             clearStyles();
             mode = 0;
-            btnBicycling.BackgroundColor = Color.White;
             await CalculateRoute();
+            btnBicycling.BackgroundColor = Color.White;
+            btnWalking.IsEnabled = true;
+            btnBicycling.IsEnabled = true;
         }
 
         void Reverse_Clicked(object sender, System.EventArgs e)
@@ -341,16 +346,17 @@ namespace BreatheKlere
         async Task<bool> CalculateRoute() 
         {
             buttonGrid.IsVisible = false;
-            routeReset();
-            line1 = new Xamarin.Forms.GoogleMaps.Polyline();
-            line2 = new Xamarin.Forms.GoogleMaps.Polyline();
-            line1.Positions.Clear();
-            line2.Positions.Clear();
+            RouteReset();
+            var line1 = new Xamarin.Forms.GoogleMaps.Polyline();
+            var line2 = new Xamarin.Forms.GoogleMaps.Polyline();
+
+            fastest = new Xamarin.Forms.GoogleMaps.Polyline();
+            cleanest = new Xamarin.Forms.GoogleMaps.Polyline();
+
             line1.StrokeColor = Color.Blue;
             line1.StrokeWidth = 7;
             line2.StrokeColor = Color.FromHex("00e36f");
             line2.StrokeWidth = 4;
-            map.Polylines.Clear();
 
             string originParam = originPos.Latitude.ToString() + ',' + originPos.Longitude.ToString();
             string destinationParam = destinationPos.Latitude.ToString() + ',' + destinationPos.Longitude.ToString();
@@ -373,8 +379,11 @@ namespace BreatheKlere
                     {
                         if (mqResult.route.shape != null)
                         {
+
                             if (!string.IsNullOrEmpty(mqResult.route.shape.shapePoints))
                             {
+                                map.Polylines.Clear();
+                                line1.Positions.Clear();
                                 var points = DecodePolyline(mqResult.route.shape.shapePoints);
                                 foreach (var point in points)
                                 {
@@ -419,36 +428,47 @@ namespace BreatheKlere
                                             break;
                                         }
                                     }
-                                    if (!duplicated)
+
+                                    float pollutionValue = await CalculatePollution(pollutionPoints, true);
+                                    if (pollutionValue > maxPollution)
+                                        continue;
+                                    else
                                     {
-                                        float pollutionValue = await CalculatePollution(pollutionPoints, true);
-                                        if (pollutionValue > maxPollution)
-                                            continue;
+
+                                        if (duplicated)
+                                        {
+                                            buttonGrid.IsVisible = false;
+                                            Device.StartTimer(TimeSpan.FromMilliseconds(3000), () =>
+                                            {
+                                                
+                                                map.Polylines.Clear();
+ 
+                                                if (line2.Positions.Count >= 2)
+                                                {
+                                                    map.Polylines.Add(line2);
+                                                }
+                                                blueDistanceLabel.BackgroundColor = Color.Gray;
+                                                blueDistanceLabel.Text = "";
+
+                                                return false;
+                                            });
+                                        }
                                         else
                                         {
                                             if (line2.Positions.Count >= 2)
                                             {
                                                 map.Polylines.Add(line2);
                                             }
-                                            magentaDistanceLabel.Text = $"{item.route.distance.ToString("F1")} miles {timeToMin(item.route.formattedTime)} Pollution: {(int)pollutionValue}";
-                                        
-                                            drawHotspot();
+                                            fastest = line1;
+                                            cleanest = line2;
                                             buttonGrid.IsVisible = true;
-                                            return true;
                                         }
+                                        magentaDistanceLabel.Text = $"{item.route.distance.ToString("F1")} miles {timeToMin(item.route.formattedTime)} Pollution: {(int)pollutionValue}";
+                                        drawHotspot();
+                                        return true;
                                     }
                                 }
                             }
-                        }
-                    }
-                    else {
-                        blueDistanceLabel.BackgroundColor = Color.Gray;
-                        line1.StrokeColor = Color.FromHex("00e36f");
-                        magentaDistanceLabel.Text = blueDistanceLabel.Text;
-                        blueDistanceLabel.Text = "";
-                        if (line1.Positions.Count >= 2)
-                        {
-                            map.Polylines.Add(line1);
                         }
                     }
                 }
@@ -511,6 +531,7 @@ namespace BreatheKlere
 
                 }
             }
+           
             return overall;
         }
 
@@ -518,7 +539,7 @@ namespace BreatheKlere
         {
             // set the size of the pixel in degrees lat / lon
             map.Polygons.Clear();
-
+            map.Polylines.Clear();
             // build the request for polution info
             var request = new PollutionRequest();
             request.RAD = 100;
@@ -625,21 +646,23 @@ namespace BreatheKlere
 
         void Handle_Fastest(object sender, System.EventArgs e)
         {
-            routeReset();
-            blueDistanceLabel.BackgroundColor = Color.Gray;
-            btnFastest.BackgroundColor = Color.Gray;
-            map.Polylines.Add(line1);
+            RouteReset();
+            magentaDistanceLabel.BackgroundColor = Color.Gray;
+            btnCleanest.BackgroundColor = Color.Gray;
+            if(fastest.Positions.Count >= 2)
+                map.Polylines.Add(fastest);
         }
 
         void Handle_Cleanest(object sender, System.EventArgs e)
         {
-            routeReset();
-            magentaDistanceLabel.BackgroundColor = Color.Gray;
-            btnCleanest.BackgroundColor = Color.Gray;
-            map.Polylines.Add(line2);
+            RouteReset();
+            blueDistanceLabel.BackgroundColor = Color.Gray;
+            btnFastest.BackgroundColor = Color.Gray;
+            if(cleanest.Positions.Count >=2 )
+                map.Polylines.Add(cleanest);
         }
 
-        void routeReset()
+        void RouteReset()
         {
             map.Polylines.Clear();
             blueDistanceLabel.BackgroundColor = Color.FromHex("2196F3");

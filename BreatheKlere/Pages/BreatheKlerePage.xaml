@@ -14,7 +14,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <StackLayout BackgroundColor="#2196F3" VerticalOptions="FillAndExpand">
+        <StackLayout BackgroundColor="#2196F3" VerticalOptions="FillAndExpand" Orientation="Horizontal">
             <Button Clicked="Handle_Clicked" Text="←" Grid.Row="0" WidthRequest="50" BackgroundColor="Transparent" TextColor="White" HorizontalOptions="Start" VerticalOptions="Center" FontSize="20" BorderColor="Transparent">
                 <Button.Margin>
                     <OnPlatform x:TypeArguments="Thickness">
@@ -23,6 +23,7 @@
                     </OnPlatform>
                 </Button.Margin>
              </Button>
+            <Label Text="Version 9" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White"/>
         </StackLayout>
         <ScrollView Grid.Row="1"
                     Orientation="Vertical">

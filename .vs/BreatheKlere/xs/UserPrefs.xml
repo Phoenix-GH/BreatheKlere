@@ -1,23 +1,20 @@
-﻿<Properties StartupConfiguration="{19773627-9912-42ED-9597-E2C9AAAEB6DE}|Default">
-  <MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.844F9964-3210-4867-A810-26AEB64E379A" automaticSigning="False" />
-  <MonoDevelop.Ide.ItemProperties.BreatheKlere.Droid PreferredExecutionTarget="Android.06157df6bb041820" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="BreatheKlere/Pages/BreatheKlerePage.xaml.cs">
+﻿<Properties StartupConfiguration="{B27F91C8-DF42-4131-B165-254F2BC60605}|Default">
+  <MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.e3a63e27895990e050d9caa50e096205978b93e7" automaticSigning="False" />
+  <MonoDevelop.Ide.ItemProperties.BreatheKlere.Droid PreferredExecutionTarget="Android.1115fb2998170c03" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="iOS/Info.plist">
     <Files>
-      <File FileName="Droid/CustomPickerRenderer.cs" Line="16" Column="40" />
-      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml" Line="164" Column="1" />
-      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml.cs" Line="657" Column="2" />
+      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml.cs" Line="81" Column="30" />
+      <File FileName="BreatheKlere/Pages/LocationSelectionPage.xaml.cs" Line="152" Column="53" />
+      <File FileName="BreatheKlere/Pages/LoginPage.xaml" Line="18" Column="1" />
+      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml" Line="19" Column="32" />
+      <File FileName="iOS/Info.plist" />
+      <File FileName="iOS/CustomPickerRenderer.cs" Line="1" Column="1" />
+      <File FileName="iOS/AppDelegate.cs" Line="1" Column="1" />
       <File FileName="BreatheKlere/Pages/LocationSelectionPage.xaml" Line="63" Column="1" />
-      <File FileName="BreatheKlere/Pages/LocationSelectionPage.xaml.cs" Line="128" Column="28" />
-      <File FileName="BreatheKlere/REST/RESTService.cs" Line="164" Column="73" />
-      <File FileName="BreatheKlere/REST/IRestService.cs" Line="13" Column="59" />
-      <File FileName="BreatheKlere/Pages/LoginPage.xaml.cs" Line="12" Column="35" />
       <File FileName="Source Not Available" />
-      <File FileName="Droid/MainActivity.cs" Line="14" Column="116" />
-      <File FileName="Droid/SplashActivity.cs" Line="30" Column="29" />
-      <File FileName="Droid/Resources/drawable/splash_screen.xml" Line="11" Column="10" />
     </Files>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
