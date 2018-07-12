@@ -1,17 +1,12 @@
 ﻿<Properties StartupConfiguration="{B27F91C8-DF42-4131-B165-254F2BC60605}|Default">
-  <MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.e3a63e27895990e050d9caa50e096205978b93e7" automaticSigning="False" />
+  <MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.7b09835e43e8bb87fdc37d389992fe255406cac1" automaticSigning="False" />
   <MonoDevelop.Ide.ItemProperties.BreatheKlere.Droid PreferredExecutionTarget="Android.1115fb2998170c03" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="iOS/Info.plist">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml.cs" Line="81" Column="30" />
-      <File FileName="BreatheKlere/Pages/LocationSelectionPage.xaml.cs" Line="152" Column="53" />
-      <File FileName="BreatheKlere/Pages/LoginPage.xaml" Line="18" Column="1" />
-      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml" Line="19" Column="32" />
+      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml" Line="20" Column="48" />
+      <File FileName="BreatheKlere/Pages/LocationSelectionPage.xaml" Line="34" Column="32" />
+      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml.cs" Line="446" Column="59" />
       <File FileName="iOS/Info.plist" />
-      <File FileName="iOS/CustomPickerRenderer.cs" Line="1" Column="1" />
-      <File FileName="iOS/AppDelegate.cs" Line="1" Column="1" />
-      <File FileName="BreatheKlere/Pages/LocationSelectionPage.xaml" Line="63" Column="1" />
-      <File FileName="Source Not Available" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />

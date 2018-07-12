@@ -435,25 +435,7 @@ namespace BreatheKlere
                                     else
                                     {
 
-                                        if (duplicated)
-                                        {
-                                            buttonGrid.IsVisible = false;
-                                            Device.StartTimer(TimeSpan.FromMilliseconds(3000), () =>
-                                            {
-                                                
-                                                map.Polylines.Clear();
- 
-                                                if (line2.Positions.Count >= 2)
-                                                {
-                                                    map.Polylines.Add(line2);
-                                                }
-                                                blueDistanceLabel.BackgroundColor = Color.Gray;
-                                                blueDistanceLabel.Text = "";
-
-                                                return false;
-                                            });
-                                        }
-                                        else
+                                        if (!duplicated)
                                         {
                                             if (line2.Positions.Count >= 2)
                                             {
@@ -461,16 +443,34 @@ namespace BreatheKlere
                                             }
                                             fastest = line1;
                                             cleanest = line2;
+                                            magentaDistanceLabel.Text = $"{item.route.distance.ToString("F1")} miles {timeToMin(item.route.formattedTime)} Pollution: {(int)pollutionValue}";
                                             buttonGrid.IsVisible = true;
+                                            drawHotspot();
+
+                                            return true;
                                         }
-                                        magentaDistanceLabel.Text = $"{item.route.distance.ToString("F1")} miles {timeToMin(item.route.formattedTime)} Pollution: {(int)pollutionValue}";
-                                        drawHotspot();
-                                        return true;
                                     }
                                 }
                             }
                         }
                     }
+
+                    buttonGrid.IsVisible = false;
+                    Device.StartTimer(TimeSpan.FromMilliseconds(3000), () =>
+                    {
+                        
+                        if (line1.Positions.Count >= 2)
+                        {
+                            map.Polylines.Clear();
+                            line1.StrokeColor = Color.FromHex("00e36f");
+                            map.Polylines.Add(line1);
+                        }
+                        magentaDistanceLabel.Text = blueDistanceLabel.Text;
+                        blueDistanceLabel.BackgroundColor = Color.Gray;
+                        blueDistanceLabel.Text = "No faster route available.";
+
+                        return false;
+                    });
                 }
             }
             else
