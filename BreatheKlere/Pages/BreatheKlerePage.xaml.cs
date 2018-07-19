@@ -20,7 +20,7 @@ namespace BreatheKlere
         public byte isHomeSet = 0, isDestinationSet = 0;
         string[] modes = { "bicycling", "walking" };
         string[] mqModes = { "bicycle", "pedestrian" };
-        float maxPollution = 0;
+        float maxPollution = 0, maxTime = 0, fastestPollution = 0;
         int mode = 1;
 
         RESTService rest;
@@ -391,14 +391,10 @@ namespace BreatheKlere
                                     pollutionPoints.Add(point);
                                 }
 
-                                if (line1.Positions.Count >= 2)
-                                {
-                                    map.Polylines.Add(line1);
-                                }
                                 maxPollution = await CalculatePollution(pollutionPoints, true);
-                                blueDistanceLabel.Text = $"{mqResult.route.distance.ToString("F1")} miles {timeToMin(mqResult.route.formattedTime)} Pollution: {(int)maxPollution}";
-
-                                drawHotspot();
+                                maxTime = mqResult.route.time;
+                                fastest = line1;
+                                cleanest = line1;
 
                             }
                         }
@@ -408,6 +404,10 @@ namespace BreatheKlere
                     if (mqResult.route.alternateRoutes != null)
                     {
                         bool duplicated = false;
+                        MQDirection fastestRoute = new MQDirection();
+                        MQDirection cleanestRoute = new MQDirection();
+                        fastestRoute = mqResult.route.alternateRoutes[0];
+                        cleanestRoute = mqResult.route.alternateRoutes[0];
                         foreach (var item in mqResult.route.alternateRoutes)
                         {
                             line2.Positions.Clear();
@@ -417,6 +417,7 @@ namespace BreatheKlere
 
                                 if (!string.IsNullOrEmpty(item.route.shape.shapePoints))
                                 {
+                                    
                                     var points = DecodePolyline(item.route.shape.shapePoints);
                                     foreach (var point in points)
                                     {
@@ -428,31 +429,41 @@ namespace BreatheKlere
                                             break;
                                         }
                                     }
-
-                                    float pollutionValue = await CalculatePollution(pollutionPoints, true);
-                                    if (pollutionValue > maxPollution)
-                                        continue;
-                                    else
+                                    if (!duplicated)
                                     {
+                                        float pollutionValue = await CalculatePollution(pollutionPoints, true);
 
-                                        if (!duplicated)
+                                        if (pollutionValue < maxPollution)
                                         {
-                                            if (line2.Positions.Count >= 2)
-                                            {
-                                                map.Polylines.Add(line2);
-                                            }
-                                            fastest = line1;
                                             cleanest = line2;
-                                            magentaDistanceLabel.Text = $"{item.route.distance.ToString("F1")} miles {timeToMin(item.route.formattedTime)} Pollution: {(int)pollutionValue}";
-                                            buttonGrid.IsVisible = true;
-                                            drawHotspot();
-
-                                            return true;
+                                            cleanestRoute = item;
+                                            maxPollution = pollutionValue;
+                                            continue;
+                                        }
+                                        if (item.route.time < maxTime)
+                                        {
+                                            fastest = line2;
+                                            fastestRoute = item;
+                                            maxTime = item.route.time;
+                                            fastestPollution = pollutionValue;
                                         }
                                     }
                                 }
                             }
                         }
+                        if (fastest.Positions.Count >= 2)
+                        {
+                            map.Polylines.Add(fastest);
+                        }
+                        if (cleanest.Positions.Count >= 2)
+                        {
+                            map.Polylines.Add(cleanest);
+                        }
+                        blueDistanceLabel.Text = $"{mqResult.route.distance.ToString("F1")} miles {timeToMin(mqResult.route.time)} Pollution: {(int)fastestPollution}";
+                        magentaDistanceLabel.Text = $"{cleanestRoute.route.distance.ToString("F1")} miles {timeToMin(cleanestRoute.route.time)} Pollution: {(int)maxPollution}";
+                        buttonGrid.IsVisible = true;
+                        drawHotspot();
+                        return true;
                     }
 
                     buttonGrid.IsVisible = false;
@@ -671,10 +682,12 @@ namespace BreatheKlere
             btnCleanest.BackgroundColor = Color.FromHex("00e36f");
         }
 
-        string timeToMin(string time)
+        string timeToMin(float time)
         {
-            var array = time.Split(':');
-            return $"{ array[0]}:{ array[1]} mins";
+            int min = (int)time / 60 % 60;
+            int hour = (int)time / 3600;
+
+            return $"{ hour}:{ min} mins";
         }
     }
 }
