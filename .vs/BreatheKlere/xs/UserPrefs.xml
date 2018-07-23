@@ -1,11 +1,12 @@
-﻿<Properties StartupConfiguration="{19773627-9912-42ED-9597-E2C9AAAEB6DE}|Default">
-  <MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.7A8F4250-966B-4CFC-8E04-3F8DB7BC057C" automaticSigning="False" />
-  <MonoDevelop.Ide.ItemProperties.BreatheKlere.Droid PreferredExecutionTarget="Android.1115fb2998170c03" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="iOS/Info.plist">
+﻿<Properties StartupConfiguration="{B27F91C8-DF42-4131-B165-254F2BC60605}|Default">
+  <MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.DE3AAE74-8CD9-4F82-8B8C-F06FCF13E837" automaticSigning="False" />
+  <MonoDevelop.Ide.ItemProperties.BreatheKlere.Droid PreferredExecutionTarget="Android.Android_Accelerated_Nougat" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="BreatheKlere/Pages/BreatheKlerePage.xaml">
     <Files>
-      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml.cs" Line="445" Column="40" />
-      <File FileName="Source Not Available" />
-      <File FileName="iOS/Info.plist" />
+      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml.cs" Line="226" Column="40" />
+      <File FileName="BreatheKlere/Pages/RegistrationPage.xaml" Line="17" Column="1" />
+      <File FileName="BreatheKlere/Pages/LoginPage.xaml" Line="18" Column="1" />
+      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml" Line="16" Column="31" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
