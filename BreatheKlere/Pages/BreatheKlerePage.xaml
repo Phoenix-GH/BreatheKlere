@@ -23,7 +23,7 @@
                     </OnPlatform>
                 </Button.Margin>
              </Button>
-            <Label Text="Version 13" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White"/>
+            <Label Text="Version 14.1" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White"/>
         </StackLayout>
         <ScrollView Grid.Row="1"
                     Orientation="Vertical">
