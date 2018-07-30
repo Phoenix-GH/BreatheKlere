@@ -1,15 +1,14 @@
 ﻿<Properties StartupConfiguration="{B27F91C8-DF42-4131-B165-254F2BC60605}|Default">
-  <MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.FFEC46F9-5481-4D98-997C-B104E50CC475" automaticSigning="False" />
-  <MonoDevelop.Ide.ItemProperties.BreatheKlere.Droid PreferredExecutionTarget="Android.Android_Accelerated_Nougat" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="BreatheKlere/REST/RESTService.cs">
+  <MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget" automaticSigning="False" />
+  <MonoDevelop.Ide.ItemProperties.BreatheKlere.Droid PreferredExecutionTarget="Android.1115fb2998170c03" />
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml" Line="165" Column="1" />
-      <File FileName="BreatheKlere/Pages/LocationSelectionPage.xaml.cs" Line="35" Column="63" />
-      <File FileName="BreatheKlere/REST/IRestService.cs" Line="1" Column="1" />
-      <File FileName="BreatheKlere/REST/RESTService.cs" Line="19" Column="10" />
+      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml.cs" Line="488" Column="26" />
+      <File FileName="iOS/Main.cs" Line="17" Column="1" />
+      <File FileName="iOS/Info.plist" />
     </Files>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhone" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

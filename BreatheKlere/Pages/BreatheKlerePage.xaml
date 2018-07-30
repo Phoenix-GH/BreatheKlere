@@ -23,7 +23,6 @@
                     </OnPlatform>
                 </Button.Margin>
              </Button>
-            <Label Text="Version 14.1" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White"/>
         </StackLayout>
         <ScrollView Grid.Row="1"
                     Orientation="Vertical">
@@ -43,21 +42,21 @@
                     <ColumnDefinition Width="100" />
                 </Grid.ColumnDefinitions>
                 <Button Clicked="Reverse_Clicked"
-                        Grid.Row="0"
-                        Grid.RowSpan="2"
-                        Grid.Column="0"
-                        HeightRequest="40"
-                        BackgroundColor="Transparent"
-                        BorderColor="Transparent"
-                        />
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="0"
+                    HeightRequest="40"
+                    BackgroundColor="Transparent"
+                    BorderColor="Transparent"
+                />
                 <Image 
-                       HeightRequest="40"
-                       Grid.Row="0"
-                       Grid.RowSpan="2"
-                       Grid.Column="0"
-                       Source="reverse.png"
-                       InputTransparent="true"
-                       HorizontalOptions="Center"
+                   HeightRequest="40"
+                   Grid.Row="0"
+                   Grid.RowSpan="2"
+                   Grid.Column="0"
+                   Source="reverse.png"
+                   InputTransparent="true"
+                   HorizontalOptions="Center"
                 />
                 <Label
                     x:Name="entryAddress"
@@ -103,6 +102,8 @@
                            Grid.Row="0"
                            Grid.Column="0"
                            InputTransparent="true"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
                      />
                     <Button
                         x:Name="btnWalking"
@@ -114,10 +115,12 @@
                         BackgroundColor="White"
                     />
                     <Image Source="walking.png"
-                           Aspect="AspectFit"
-                           Grid.Row="0"
-                           Grid.Column="1"
-                           InputTransparent="true"
+                       Aspect="AspectFit"
+                       Grid.Row="0"
+                       Grid.Column="1"
+                       InputTransparent="true"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
                      />
                 </Grid>
 

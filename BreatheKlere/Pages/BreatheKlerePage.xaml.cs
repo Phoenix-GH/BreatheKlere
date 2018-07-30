@@ -353,7 +353,10 @@ namespace BreatheKlere
 
             fastest = new Xamarin.Forms.GoogleMaps.Polyline();
             cleanest = new Xamarin.Forms.GoogleMaps.Polyline();
-
+            fastest.StrokeColor = Color.Blue;
+            fastest.StrokeWidth = 7;
+            cleanest.StrokeColor = Color.FromHex("00e36f");
+            cleanest.StrokeWidth = 4;
 
             line1.StrokeColor = Color.Blue;
             line1.StrokeWidth = 7;
@@ -388,117 +391,123 @@ namespace BreatheKlere
                     {
                         if (mqResult.route.shape != null)
                         {
-                            line1.Positions.Clear();
+                            fastest.Positions.Clear();
+                            cleanest.Positions.Clear();
                             if (!string.IsNullOrEmpty(mqResult.route.shape.shapePoints))
                             {
                                 var points = DecodePolyline(mqResult.route.shape.shapePoints);
                                 foreach (var point in points)
                                 {
+                                    fastest.Positions.Add(point);
+                                    cleanest.Positions.Add(point);
                                     pollutionPoints.Add(point);
                                 }
-
                                 maxPollution = await CalculatePollution(pollutionPoints, true);
                                 fastestPollution = maxPollution;
                                 maxTime = mqResult.route.time;
-                                fastest = line1;
-                                cleanest = line1;
+
                             }
                         }
 
                     }
                     MQDirection fastestRoute = new MQDirection();
                     MQDirection cleanestRoute = new MQDirection();
-                    fastestRoute = mqResult.route.alternateRoutes[0];
-                    cleanestRoute = mqResult.route.alternateRoutes[0];
+                   
                     if (mqResult.route.alternateRoutes != null)
                     {
-                        bool duplicated = false;
-
-                       
-                        foreach (var item in mqResult.route.alternateRoutes)
+                        if(mqResult.route.alternateRoutes.Count > 0)
                         {
+                            bool duplicated = false;
 
-                            line1.Positions.Clear();
-                            line2.Positions.Clear();
-                            pollutionPoints.Clear();
-                            if (item.route.shape != null)
+                            fastestRoute = mqResult.route.alternateRoutes[0];
+                            cleanestRoute = mqResult.route.alternateRoutes[0];
+                            foreach (var item in mqResult.route.alternateRoutes)
                             {
 
-                                if (!string.IsNullOrEmpty(item.route.shape.shapePoints))
+                                line1.Positions.Clear();
+                                line2.Positions.Clear();
+                                pollutionPoints.Clear();
+                                if (item.route.shape != null)
                                 {
-                                    
-                                    var points = DecodePolyline(item.route.shape.shapePoints);
-                                    foreach (var point in points)
-                                    {
-                                        line1.Positions.Add(point);
-                                        line2.Positions.Add(point);
-                                        pollutionPoints.Add(point);
-                                        if (point.Latitude.Equals(hotspot.Latitude) && point.Longitude.Equals(hotspot.Longitude))
-                                        {
-                                            duplicated = true;
-                                            break;
-                                        }
-                                    }
-                                    if (!duplicated)
-                                    {
-                                        float pollutionValue = await CalculatePollution(pollutionPoints, true);
 
-                                        if (pollutionValue < maxPollution)
+                                    if (!string.IsNullOrEmpty(item.route.shape.shapePoints))
+                                    {
+
+                                        var points = DecodePolyline(item.route.shape.shapePoints);
+                                        foreach (var point in points)
                                         {
-                                            cleanest = line2;
-                                            cleanestRoute = item;
-                                            maxPollution = pollutionValue;
-                                            isRouteChosen = true;
+                                            line1.Positions.Add(point);
+                                            line2.Positions.Add(point);
+                                            pollutionPoints.Add(point);
+                                            if (point.Latitude.Equals(hotspot.Latitude) && point.Longitude.Equals(hotspot.Longitude))
+                                            {
+                                                duplicated = true;
+                                                break;
+                                            }
                                         }
-                                        else if (item.route.time < maxTime)
+                                        if (!duplicated)
                                         {
-                                            fastest = line1;
-                                            fastestRoute = item;
-                                            maxTime = item.route.time;
-                                            fastestPollution = pollutionValue;
+                                            float pollutionValue = await CalculatePollution(pollutionPoints, true);
+
+                                            if (pollutionValue < maxPollution)
+                                            {
+                                                cleanest = line2;
+                                                cleanestRoute = item;
+                                                maxPollution = pollutionValue;
+                                                isRouteChosen = true;
+                                            }
+                                            else if (item.route.time < maxTime)
+                                            {
+                                                fastest = line1;
+                                                fastestRoute = item;
+                                                maxTime = item.route.time;
+                                                fastestPollution = pollutionValue;
+                                                isRouteChosen = true;
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
-
-
-                    }
-                    if (!isRouteChosen)
-                    {
-                        buttonGrid.IsVisible = false;
-                        map.Polylines.Clear();
-                        Device.StartTimer(TimeSpan.FromMilliseconds(3000), () =>
-                        {
-                            if (fastest.Positions.Count >= 2)
+                            if (isRouteChosen)
                             {
-                                fastest.StrokeColor = Color.FromHex("00e36f");
-                                map.Polylines.Add(fastest);
+                                map.Polylines.Clear();
+
+                                if (fastest.Positions.Count >= 2)
+                                {
+                                    map.Polylines.Add(fastest);
+                                }
+                                if (cleanest.Positions.Count >= 2)
+                                {
+                                    map.Polylines.Add(cleanest);
+                                }
+
+                                blueDistanceLabel.Text = $"{mqResult.route.distance.ToString("F1")} miles {timeToMin(mqResult.route.time)} Pollution: {(int)fastestPollution}";
+                                magentaDistanceLabel.Text = $"{cleanestRoute.route.distance.ToString("F1")} miles {timeToMin(cleanestRoute.route.time)} Pollution: {(int)maxPollution}";
+                                buttonGrid.IsVisible = true;
+                                drawHotspot();
+                                return true;
                             }
-                            magentaDistanceLabel.Text = blueDistanceLabel.Text;
-                            blueDistanceLabel.BackgroundColor = Color.Gray;
-                            blueDistanceLabel.Text = "No faster route available.";
-
-                            return false;
-                        });
+                        }
+         
                     }
-                    else {
-                        map.Polylines.Clear();
 
+                    buttonGrid.IsVisible = false;
+                    map.Polylines.Clear();
+                    Device.StartTimer(TimeSpan.FromMilliseconds(3000), () =>
+                    {
                         if (fastest.Positions.Count >= 2)
                         {
+                            fastest.StrokeColor = Color.FromHex("00e36f");
                             map.Polylines.Add(fastest);
                         }
-                        if (cleanest.Positions.Count >= 2)
-                        {
-                            map.Polylines.Add(cleanest);
-                        }
 
-                        blueDistanceLabel.Text = $"{mqResult.route.distance.ToString("F1")} miles {timeToMin(mqResult.route.time)} Pollution: {(int)fastestPollution}";
-                        magentaDistanceLabel.Text = $"{cleanestRoute.route.distance.ToString("F1")} miles {timeToMin(cleanestRoute.route.time)} Pollution: {(int)maxPollution}";
-                        buttonGrid.IsVisible = true;
+                        magentaDistanceLabel.Text = $"{mqResult.route.distance.ToString("F1")} miles {timeToMin(mqResult.route.time)} Pollution: {(int)fastestPollution}";
+                        blueDistanceLabel.BackgroundColor = Color.Gray;
+                        blueDistanceLabel.Text = "No faster route available.";
                         drawHotspot();
-                    }
+                        return false;
+                    });
+                   
                 }
             }
             else
@@ -555,6 +564,7 @@ namespace BreatheKlere
                         lat = Convert.ToDouble(result.lat[maxIndex]);
                         lng = Convert.ToDouble(result.lon[maxIndex]);
                         hotspot = new Position(lat, lng);
+
                     }
 
                 }

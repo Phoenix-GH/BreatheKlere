@@ -73,7 +73,7 @@
     <IOSDebuggerPort>53336</IOSDebuggerPort>
     <MtouchLink>SdkOnly</MtouchLink>
     <MtouchArch>ARMv7, ARM64</MtouchArch>
-    <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
+    <MtouchHttpClientHandler>CFNetworkHandler</MtouchHttpClientHandler>
     <PlatformTarget>x86</PlatformTarget>
     <DeviceSpecificBuild>false</DeviceSpecificBuild>
   </PropertyGroup>
