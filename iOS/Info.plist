@@ -58,6 +58,6 @@
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>CFBundleVersion</key>
-	<string>16</string>
+	<string>18</string>
 </dict>
 </plist>

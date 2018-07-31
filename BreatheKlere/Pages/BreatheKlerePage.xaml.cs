@@ -6,7 +6,6 @@ using Xamarin.Forms.GoogleMaps;
 using BreatheKlere.REST;
 using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
-using System.Diagnostics;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 
@@ -20,7 +19,7 @@ namespace BreatheKlere
         public byte isHomeSet = 0, isDestinationSet = 0;
         string[] modes = { "bicycling", "walking" };
         string[] mqModes = { "bicycle", "pedestrian" };
-        float maxPollution = 0, maxTime = 0, fastestPollution = 0;
+        float maxPollution = 0, maxTime = 0, cleanestTime = 0, fastestPollution = 0, fastestDistance = 0, cleanestDistance = 0;
         int mode = 1;
 
         RESTService rest;
@@ -371,6 +370,13 @@ namespace BreatheKlere
             fastest.Positions.Clear();
             cleanest.Positions.Clear();
 
+            maxTime = 0;
+            fastestDistance = 0;
+            cleanestDistance = 0;
+            fastestPollution = 0;
+            cleanestTime = 0;
+            maxPollution = 0;
+
             if (!string.IsNullOrEmpty(originParam) && !string.IsNullOrEmpty(destinationParam) && isHomeSet>0 && isDestinationSet>0)
             {
                 Bounds bounds = new Bounds(originPos, destinationPos);
@@ -405,7 +411,8 @@ namespace BreatheKlere
                                 maxPollution = await CalculatePollution(pollutionPoints, true);
                                 fastestPollution = maxPollution;
                                 maxTime = mqResult.route.time;
-
+                                fastestDistance = mqResult.route.distance;
+                                cleanestDistance = mqResult.route.distance;
                             }
                         }
 
@@ -448,20 +455,22 @@ namespace BreatheKlere
                                         if (!duplicated)
                                         {
                                             float pollutionValue = await CalculatePollution(pollutionPoints, true);
-
-                                            if (pollutionValue < maxPollution)
-                                            {
-                                                cleanest = line2;
-                                                cleanestRoute = item;
-                                                maxPollution = pollutionValue;
-                                                isRouteChosen = true;
-                                            }
-                                            else if (item.route.time < maxTime)
+                                            if (item.route.time < maxTime)
                                             {
                                                 fastest = line1;
                                                 fastestRoute = item;
                                                 maxTime = item.route.time;
                                                 fastestPollution = pollutionValue;
+                                                fastestDistance = item.route.distance;
+                                                isRouteChosen = true;
+                                            } 
+                                            else if (pollutionValue < maxPollution)
+                                            {
+                                                cleanest = line2;
+                                                cleanestRoute = item;
+                                                maxPollution = pollutionValue;
+                                                cleanestTime = item.route.time;
+                                                cleanestDistance = item.route.distance;
                                                 isRouteChosen = true;
                                             }
                                         }
@@ -481,8 +490,8 @@ namespace BreatheKlere
                                     map.Polylines.Add(cleanest);
                                 }
 
-                                blueDistanceLabel.Text = $"{mqResult.route.distance.ToString("F1")} miles {timeToMin(mqResult.route.time)} Pollution: {(int)fastestPollution}";
-                                magentaDistanceLabel.Text = $"{cleanestRoute.route.distance.ToString("F1")} miles {timeToMin(cleanestRoute.route.time)} Pollution: {(int)maxPollution}";
+                                blueDistanceLabel.Text = $"{fastestDistance.ToString("F1")} miles {timeToMin(maxTime)} Pollution: {(int)fastestPollution}";
+                                magentaDistanceLabel.Text = $"{cleanestDistance.ToString("F1")} miles {timeToMin(cleanestTime)} Pollution: {(int)maxPollution}";
                                 buttonGrid.IsVisible = true;
                                 drawHotspot();
                                 return true;
