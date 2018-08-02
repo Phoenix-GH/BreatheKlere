@@ -58,9 +58,7 @@ namespace BreatheKlere
             map.UiSettings.ZoomControlsEnabled = true;
             map.UiSettings.ZoomGesturesEnabled = true;
 
-          
-
-
+         
             var entryGesture = new TapGestureRecognizer();
             entryGesture.Tapped += Home_Focused;
             entryAddress.GestureRecognizers.Add(entryGesture);
@@ -411,6 +409,7 @@ namespace BreatheKlere
                                 maxPollution = await CalculatePollution(pollutionPoints, true);
                                 fastestPollution = maxPollution;
                                 maxTime = mqResult.route.time;
+                                cleanestTime = mqResult.route.time;
                                 fastestDistance = mqResult.route.distance;
                                 cleanestDistance = mqResult.route.distance;
                             }
@@ -477,7 +476,7 @@ namespace BreatheKlere
                                     }
                                 }
                             }
-                            if (isRouteChosen)
+                            if (isRouteChosen && fastestPollution > maxPollution)
                             {
                                 map.Polylines.Clear();
 
