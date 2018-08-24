@@ -8,6 +8,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Plugin.Permissions;
+using SegmentedControl.FormsPlugin.Android;
 
 namespace BreatheKlere.Droid
 {
@@ -22,6 +23,7 @@ namespace BreatheKlere.Droid
             base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
+            SegmentedControlRenderer.Init();
             Xamarin.FormsGoogleMaps.Init(this, bundle);
             Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity = this;
             LoadApplication(new App());

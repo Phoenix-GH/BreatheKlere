@@ -143,6 +143,12 @@
     <Reference Include="Plugin.Geolocator">
       <HintPath>..\packages\Xam.Plugin.Geolocator.4.2.0\lib\MonoAndroid10\Plugin.Geolocator.dll</HintPath>
     </Reference>
+    <Reference Include="SegmentedControl.FormsPlugin.Abstractions">
+      <HintPath>..\packages\SegmentedControl.FormsPlugin.2.0.1\lib\MonoAndroid\SegmentedControl.FormsPlugin.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="SegmentedControl.FormsPlugin.Android">
+      <HintPath>..\packages\SegmentedControl.FormsPlugin.2.0.1\lib\MonoAndroid\SegmentedControl.FormsPlugin.Android.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BreatheKlere\BreatheKlere.csproj">

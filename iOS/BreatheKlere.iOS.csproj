@@ -115,6 +115,12 @@
     <Reference Include="Plugin.Geolocator">
       <HintPath>..\packages\Xam.Plugin.Geolocator.4.2.0\lib\Xamarin.iOS10\Plugin.Geolocator.dll</HintPath>
     </Reference>
+    <Reference Include="SegmentedControl.FormsPlugin.Abstractions">
+      <HintPath>..\packages\SegmentedControl.FormsPlugin.2.0.1\lib\Xamarin.iOS10\SegmentedControl.FormsPlugin.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="SegmentedControl.FormsPlugin.iOS">
+      <HintPath>..\packages\SegmentedControl.FormsPlugin.2.0.1\lib\Xamarin.iOS10\SegmentedControl.FormsPlugin.iOS.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BreatheKlere\BreatheKlere.csproj">

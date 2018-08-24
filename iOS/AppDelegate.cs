@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
+﻿
 using Foundation;
+using SegmentedControl.FormsPlugin.iOS;
 using UIKit;
 
 namespace BreatheKlere.iOS
@@ -13,6 +11,7 @@ namespace BreatheKlere.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
+            SegmentedControlRenderer.Init();
             Xamarin.FormsGoogleMaps.Init(Config.google_maps_ios_api_key);
             LoadApplication(new App());
 

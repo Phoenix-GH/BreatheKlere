@@ -7,24 +7,25 @@ namespace BreatheKlere
     public partial class RegistrationPage : ContentPage
     {
         RESTService rest;
+        List<string> genderList;
         public RegistrationPage()
         {
             InitializeComponent();
-            var genderList = new List<string>();
+            genderList = new List<string>();
             genderList.Add("Y");
             genderList.Add("N");
-            genderPicker.ItemsSource = genderList;
+            //genderPicker.ItemsSource = genderList;
+            foreach (var item in genderList)
+            {
+                userSegment.Children.Add(new SegmentedControl.FormsPlugin.Abstractions.SegmentedControlOption { Text = item });
+
+            }
             rest = new RESTService();
         }
 
         async void OnRegistration(object sender, System.EventArgs e)
         {
-            if (genderPicker.SelectedItem == null)
-            {
-                await DisplayAlert("Warning", "Please select all fields", "OK");
-                return;
-            }
-            var result = await rest.Register(nameEntry.Text, emailEntry.Text, passwordEntry.Text, postcodeEntry.Text, genderPicker.SelectedItem.ToString());
+            var result = await rest.Register(nameEntry.Text, emailEntry.Text, passwordEntry.Text, postcodeEntry.Text, userSegment.SelectedSegment.ToString());
 
             if (result != null)
             {
