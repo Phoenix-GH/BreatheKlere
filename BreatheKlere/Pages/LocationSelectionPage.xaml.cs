@@ -33,7 +33,12 @@ namespace BreatheKlere
             recentSearchList = new List<string>();
 
             if (App.Current.Properties.ContainsKey("recentList"))
+            {
                 recentSearchList = JsonConvert.DeserializeObject<List<string>>(App.Current.Properties["recentList"].ToString());
+                string[] reverseList = recentSearchList.ToArray();
+                Array.Reverse(reverseList);
+                recentSearchList = new List<string>(reverseList);
+            }
         }
 
         protected override void OnAppearing()
