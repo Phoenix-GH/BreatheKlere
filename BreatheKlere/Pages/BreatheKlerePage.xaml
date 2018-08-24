@@ -59,6 +59,14 @@
                    InputTransparent="true"
                    HorizontalOptions="Center"
                 />
+                <Frame
+                    VerticalOptions="Fill"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    HorizontalOptions="Fill"
+                    BackgroundColor="White"
+                    CornerRadius="2"
+                />
                 <Label
                     x:Name="entryAddress"
                     VerticalOptions="Center"
@@ -66,12 +74,19 @@
                     Grid.Row="0"
                     Grid.Column="1"
                     HeightRequest="30"
-                    BackgroundColor="White"
+                    BackgroundColor="Transparent"
                     FontSize="14"
                     Margin="0, 2, 5, 1"
-                >
+                />
                    
-                </Label>
+                <Frame
+                    VerticalOptions="Fill"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    HorizontalOptions="Fill"
+                    BackgroundColor="White"
+                    CornerRadius="2"
+                />
                 <Label
                     x:Name="destinationAddress"
                     VerticalOptions="Center"
@@ -79,9 +94,9 @@
                     Grid.Row="1"
                     Grid.Column="1"
                     HeightRequest="30"
-                    BackgroundColor="White"
+                    BackgroundColor="Transparent"
                     FontSize="14"
-                    Margin="0, 1, 5, 2"
+                    Margin="0, 2, 5, 1"
                 >
                 </Label>
                 <Grid

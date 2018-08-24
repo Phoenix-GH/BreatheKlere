@@ -14,7 +14,6 @@ namespace BreatheKlere
             genderList = new List<string>();
             genderList.Add("Y");
             genderList.Add("N");
-            //genderPicker.ItemsSource = genderList;
             foreach (var item in genderList)
             {
                 userSegment.Children.Add(new SegmentedControl.FormsPlugin.Abstractions.SegmentedControlOption { Text = item });
