@@ -177,6 +177,7 @@ namespace BreatheKlere.REST
 
                 response = await client.PostAsync(uri, formContent).ConfigureAwait(false);
                 var result = await response.Content.ReadAsStringAsync();
+
                 var login = JsonConvert.DeserializeObject<Login>(result);
                 return login;
 
@@ -188,9 +189,9 @@ namespace BreatheKlere.REST
             return null;
         }
 
-        public async Task<Login> Register(string N, string UN, string PW, string PC, string G)
+        public async Task<Login> Register(string N, string UN, string PW, string PC, string G, string DID)
         {
-            string url = wilinskyURL + "reg";
+            string url = wilinskyURL + "new";
             var uri = new Uri(url);
             try
             {
@@ -201,9 +202,10 @@ namespace BreatheKlere.REST
                     new KeyValuePair<string, string>("PW", PW),
                     new KeyValuePair<string, string>("PC", PC),
                     new KeyValuePair<string, string>("G", G),
+                    new KeyValuePair<string, string>("DID", DID),
                 });
                 HttpResponseMessage response = null;
-
+                Debug.WriteLine(UN + ", "+ PW + ", " + DID);
                 response = await client.PostAsync(uri, formContent).ConfigureAwait(false);
                 var result = await response.Content.ReadAsStringAsync();
                 var login = JsonConvert.DeserializeObject<Login>(result);
@@ -215,6 +217,11 @@ namespace BreatheKlere.REST
                 Debug.WriteLine(@"             Reg ERROR {0}", ex.Message);
             }
             return null;
+        }
+
+        public Task<Base> SaveRoute(string DID)
+        {
+            throw new NotImplementedException();
         }
     }
 }

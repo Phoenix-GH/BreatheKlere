@@ -11,6 +11,7 @@ namespace BreatheKlere.REST
         Task<MQAlternativeDirection> GetMQAlternativeDirection(string from, string to, string mode);
 
         Task<Login> Login(string UN, string PW, string DID);
-        Task<Login> Register(string N, string UN, string PW, string PC, string G);
+        Task<Login> Register(string N, string UN, string PW, string PC, string G, string DID);
+        Task<Base> SaveRoute(string DID);
     }
 }

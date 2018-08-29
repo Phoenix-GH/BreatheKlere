@@ -24,13 +24,19 @@ namespace BreatheKlere
 
         async void OnRegistration(object sender, System.EventArgs e)
         {
-            var result = await rest.Register(nameEntry.Text, emailEntry.Text, passwordEntry.Text, postcodeEntry.Text, userSegment.SelectedSegment.ToString());
+            var result = await rest.Register(nameEntry.Text, emailEntry.Text, passwordEntry.Text, postcodeEntry.Text, userSegment.SelectedSegment.ToString(), "1234567");
 
             if (result != null)
             {
-                App.Current.Properties["isRegistered"] = true;
-                await Navigation.PushAsync(new BreatheKlerePage());
-
+                if (!string.IsNullOrEmpty(result.deviceID))
+                {
+                    App.Current.Properties["isRegistered"] = true;
+                    await Navigation.PushAsync(new BreatheKlerePage());
+                }
+                else if (!string.IsNullOrEmpty(result.error))
+                    await DisplayAlert("Error", result.error, "OK");
+                else
+                    await DisplayAlert("Error", "Unknown error", "OK");
             }
             else
             {

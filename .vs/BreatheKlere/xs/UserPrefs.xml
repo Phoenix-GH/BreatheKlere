@@ -1,18 +1,21 @@
 ﻿<Properties StartupConfiguration="{B27F91C8-DF42-4131-B165-254F2BC60605}|Default">
-  <MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.4DBE5472-8DF6-4023-AEFD-3E541973FDBE" automaticSigning="False" />
+  <MonoDevelop.Ide.ItemProperties.BreatheKlere.iOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.844F9964-3210-4867-A810-26AEB64E379A" automaticSigning="False" />
   <MonoDevelop.Ide.ItemProperties.BreatheKlere.Droid PreferredExecutionTarget="Android.Android_Accelerated_Nougat" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="BreatheKlere/Pages/LocationSelectionPage.xaml.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="BreatheKlere/REST/Models/Base.cs">
     <Files>
-      <File FileName="BreatheKlere/Pages/RegistrationPage.xaml.cs" Line="16" Column="33" />
-      <File FileName="BreatheKlere/Pages/RegistrationPage.xaml" Line="24" Column="1" />
-      <File FileName="iOS/AppDelegate.cs" Line="12" Column="10" />
-      <File FileName="Droid/MainApplication.cs" Line="23" Column="38" />
-      <File FileName="Droid/SplashActivity.cs" Line="1" Column="1" />
-      <File FileName="Droid/MainActivity.cs" Line="32" Column="10" />
-      <File FileName="BreatheKlere/Pages/LocationSelectionPage.xaml" Line="27" Column="41" />
-      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml" Line="97" Column="50" />
-      <File FileName="BreatheKlere/obj/Debug/BreatheKlere.Pages.BreatheKlerePage.xaml.g.cs" Line="50" Column="1" />
-      <File FileName="BreatheKlere/Pages/LocationSelectionPage.xaml.cs" Line="29" Column="37" />
+      <File FileName="BreatheKlere/REST/RESTService.cs" Line="213" Column="17" />
+      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml" Line="184" Column="1" />
+      <File FileName="BreatheKlere/Pages/BreatheKlerePage.xaml.cs" Line="1" Column="1" />
+      <File FileName="BreatheKlere/Pages/RegistrationPage.xaml" Line="19" Column="57" />
+      <File FileName="BreatheKlere/REST/IRestService.cs" Line="16" Column="6" />
+      <File FileName="BreatheKlere/REST/Models/Direction.cs" Line="1" Column="1" />
+      <File FileName="BreatheKlere/REST/Models/DistanceMatrix.cs" Line="1" Column="1" />
+      <File FileName="BreatheKlere/REST/Models/GeoResult.cs" Line="1" Column="1" />
+      <File FileName="BreatheKlere/REST/Models/Login.cs" Line="1" Column="1" />
+      <File FileName="BreatheKlere/REST/Models/Place.cs" Line="1" Column="1" />
+      <File FileName="BreatheKlere/REST/Models/Pollution.cs" Line="1" Column="1" />
+      <File FileName="BreatheKlere/REST/Models/Base.cs" Line="11" Column="6" />
+      <File FileName="BreatheKlere/Pages/RegistrationPage.xaml.cs" Line="24" Column="9" NotebookId="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
