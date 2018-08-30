@@ -197,12 +197,12 @@ namespace BreatheKlere.REST
             {
                 var formContent = new FormUrlEncodedContent(new[]
                 {
-                    new KeyValuePair<string, string>("N", N),
+                    //new KeyValuePair<string, string>("N", N),
                     new KeyValuePair<string, string>("UN", UN),
                     new KeyValuePair<string, string>("PW", PW),
-                    new KeyValuePair<string, string>("PC", PC),
-                    new KeyValuePair<string, string>("G", G),
-                    new KeyValuePair<string, string>("DID", DID),
+                    //new KeyValuePair<string, string>("PC", PC),
+                    //new KeyValuePair<string, string>("G", G),
+                    //new KeyValuePair<string, string>("DID", DID),
                 });
                 HttpResponseMessage response = null;
                 Debug.WriteLine(UN + ", "+ PW + ", " + DID);
@@ -219,9 +219,25 @@ namespace BreatheKlere.REST
             return null;
         }
 
-        public Task<Base> SaveRoute(string DID)
+        public async Task<Base> SaveRoute(string DID, List<KeyValuePair<string, string>> keys)
         {
-            throw new NotImplementedException();
+            string url = wilinskyURL + "save&&DID="+DID;
+            var uri = new Uri(url);
+            try
+            {
+                var formContent = new FormUrlEncodedContent(keys.ToArray());
+                HttpResponseMessage response = null;
+               
+                response = await client.PostAsync(uri, formContent).ConfigureAwait(false);
+                var result = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<Base>(result);
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"             Reg ERROR {0}", ex.Message);
+            }
+            return null;
         }
     }
 }

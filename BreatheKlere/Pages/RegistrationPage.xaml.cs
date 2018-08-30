@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using BreatheKlere.REST;
 using Xamarin.Forms;
 
@@ -31,6 +32,8 @@ namespace BreatheKlere
                 if (!string.IsNullOrEmpty(result.deviceID))
                 {
                     App.Current.Properties["isRegistered"] = true;
+                    App.Current.Properties["DID"] = result.deviceID;
+                    Debug.WriteLine("device -----", result.deviceID);
                     await Navigation.PushAsync(new BreatheKlerePage());
                 }
                 else if (!string.IsNullOrEmpty(result.error))

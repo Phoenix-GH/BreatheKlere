@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 namespace BreatheKlere.REST
 {
     public interface IRestService
@@ -12,6 +13,6 @@ namespace BreatheKlere.REST
 
         Task<Login> Login(string UN, string PW, string DID);
         Task<Login> Register(string N, string UN, string PW, string PC, string G, string DID);
-        Task<Base> SaveRoute(string DID);
+        Task<Base> SaveRoute(string DID, List<KeyValuePair<string, string>> keys);
     }
 }

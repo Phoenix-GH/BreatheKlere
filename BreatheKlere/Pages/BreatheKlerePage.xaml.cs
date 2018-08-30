@@ -34,6 +34,7 @@ namespace BreatheKlere
         Position hotspot;
         float peak = 0;
         Xamarin.Forms.GoogleMaps.Polyline fastest, cleanest;
+        string DID;
         public BreatheKlerePage()
         {
             InitializeComponent();
@@ -44,6 +45,7 @@ namespace BreatheKlere
             {
                 mapTypeValues.Add((MapType)mapType);
             }
+            DID = App.Current.Properties["DID"].ToString();
             isFirstLaunch = true;
             map.MapType = mapTypeValues[0];
             map.MyLocationEnabled = true;
