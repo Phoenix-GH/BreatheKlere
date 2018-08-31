@@ -23,7 +23,6 @@
                     </OnPlatform>
                 </Button.Margin>
              </Button>
-            <Label Text="test 21" />
         </StackLayout>
         <ScrollView Grid.Row="1"
                     Orientation="Vertical">
