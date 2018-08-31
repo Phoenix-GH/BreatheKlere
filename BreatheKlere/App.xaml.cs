@@ -7,9 +7,9 @@ namespace BreatheKlere
         public App()
         {
             InitializeComponent();
-            //if(Current.Properties.ContainsKey("isRegistered"))
-                //MainPage = new NavigationPage(new BreatheKlerePage());
-            //else
+            if(Current.Properties.ContainsKey("isRegistered"))
+                MainPage = new NavigationPage(new BreatheKlerePage());
+            else
                 MainPage = new NavigationPage(new RegistrationPage());
         }
 
