@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:BreatheKlere" 
              x:Class="BreatheKlere.BreatheKlerePage"
              xmlns:maps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
+             xmlns:abstractions="clr-namespace:RoundedBoxView.Forms.Plugin.Abstractions;assembly=RoundedBoxView.Forms.Plugin.Abstractions"
 >
     <Grid
         RowSpacing="0"
@@ -58,14 +59,11 @@
                    InputTransparent="true"
                    HorizontalOptions="Center"
                 />
-                <Frame
-                    VerticalOptions="Fill"
+ 
+                <abstractions:RoundedBoxView BackgroundColor="White" HeightRequest="30"
+                    CornerRadius="3" 
                     Grid.Row="0"
-                    Grid.Column="1"
-                    HorizontalOptions="Fill"
-                    BackgroundColor="White"
-                    CornerRadius="2"
-                />
+                    Grid.Column="1"/>
                 <Label
                     x:Name="entryAddress"
                     VerticalOptions="Center"
@@ -78,14 +76,10 @@
                     Margin="0, 2, 5, 1"
                 />
                    
-                <Frame
-                    VerticalOptions="Fill"
+                <abstractions:RoundedBoxView BackgroundColor="White" HeightRequest="30"
+                    CornerRadius="3" 
                     Grid.Row="1"
-                    Grid.Column="1"
-                    HorizontalOptions="Fill"
-                    BackgroundColor="White"
-                    CornerRadius="2"
-                />
+                    Grid.Column="1"/>
                 <Label
                     x:Name="destinationAddress"
                     VerticalOptions="Center"

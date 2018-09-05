@@ -1,5 +1,6 @@
 ﻿
 using Foundation;
+using RoundedBoxView.Forms.Plugin.iOSUnified;
 using SegmentedControl.FormsPlugin.iOS;
 using UIKit;
 
@@ -13,6 +14,7 @@ namespace BreatheKlere.iOS
             global::Xamarin.Forms.Forms.Init();
             SegmentedControlRenderer.Init();
             Xamarin.FormsGoogleMaps.Init(Config.google_maps_ios_api_key);
+            RoundedBoxViewRenderer.Init();
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);

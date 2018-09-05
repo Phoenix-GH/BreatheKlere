@@ -9,6 +9,7 @@ using Android.Widget;
 using Android.OS;
 using Plugin.Permissions;
 using SegmentedControl.FormsPlugin.Android;
+using RoundedBoxView.Forms.Plugin.Droid;
 
 namespace BreatheKlere.Droid
 {
@@ -26,6 +27,7 @@ namespace BreatheKlere.Droid
             SegmentedControlRenderer.Init();
             Xamarin.FormsGoogleMaps.Init(this, bundle);
             Plugin.CurrentActivity.CrossCurrentActivity.Current.Activity = this;
+            RoundedBoxViewRenderer.Init();
             LoadApplication(new App());
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
