@@ -45,7 +45,8 @@ namespace BreatheKlere
             {
                 mapTypeValues.Add((MapType)mapType);
             }
-            DID = App.Current.Properties["DID"].ToString();
+            if(App.Current.Properties.ContainsKey("DID"))
+                DID = App.Current.Properties["DID"].ToString();
             isFirstLaunch = true;
             map.MapType = mapTypeValues[0];
             map.MyLocationEnabled = true;
@@ -426,12 +427,12 @@ namespace BreatheKlere
                         if(mqResult.route.alternateRoutes.Count > 0)
                         {
                             bool duplicated = false;
-
+                            map.Polylines.Clear();
                             fastestRoute = mqResult.route.alternateRoutes[0];
                             cleanestRoute = mqResult.route.alternateRoutes[0];
                             foreach (var item in mqResult.route.alternateRoutes)
                             {
-
+                                
                                 line1.Positions.Clear();
                                 line2.Positions.Clear();
                                 pollutionPoints.Clear();

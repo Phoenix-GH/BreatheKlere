@@ -7,10 +7,10 @@ namespace BreatheKlere
         public App()
         {
             InitializeComponent();
-            if(Current.Properties.ContainsKey("isRegistered"))
+           // if(Current.Properties.ContainsKey("isRegistered"))
                 MainPage = new NavigationPage(new BreatheKlerePage());
-            else
-                MainPage = new NavigationPage(new RegistrationPage());
+            //else
+                //MainPage = new NavigationPage(new RegistrationPage());
         }
 
         protected override void OnStart()

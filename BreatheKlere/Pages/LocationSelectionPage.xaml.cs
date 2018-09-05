@@ -132,7 +132,6 @@ namespace BreatheKlere
 
         void Handle_Clicked(object sender, System.EventArgs e)
         {
-
             Navigation.PopModalAsync();
         }
 
