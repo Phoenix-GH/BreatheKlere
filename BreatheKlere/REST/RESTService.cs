@@ -12,7 +12,7 @@ namespace BreatheKlere.REST
     {
         string baseURL = "https://maps.googleapis.com/maps/api/";
         string mqBaseURL = "http://www.mapquestapi.com/directions/v2/";
-        string wilinskyURL = "http://www.wilinsky.com/Klere/?meth=";
+        string wilinskyURL = "http://ec2-52-56-59-47.eu-west-2.compute.amazonaws.com?meth=";
 
         HttpClient client;
         public RESTService()
