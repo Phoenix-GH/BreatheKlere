@@ -654,7 +654,7 @@ namespace BreatheKlere
                                 var rectangle = new Xamarin.Forms.GoogleMaps.Polygon();
  
                                 rectangle.StrokeWidth = 0;
-                                rectangle.FillColor = Color.FromRgba(255, 0, 0, ((lvl / 30) -0.25) * 100);
+                                rectangle.FillColor = Color.FromRgba(255, 0, 0, (lvl / 30.0) - 0.25);
 
                                 rectangle.Positions.Add(tileBounds.NorthEast);
                                 rectangle.Positions.Add(tileBounds.NorthWest);
