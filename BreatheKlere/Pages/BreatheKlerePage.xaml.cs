@@ -645,11 +645,11 @@ namespace BreatheKlere
                                     }
                                 }
 
-                                var north = Convert.ToDouble(result.lat[x]) * 1 + halfU * 1.1;
-                                var south = Convert.ToDouble(result.lat[x]) * 1 - halfU * 1.1;
+                                var north = Convert.ToDouble(result.lat[x]) * 1 + halfU * 1;
+                                var south = Convert.ToDouble(result.lat[x]) * 1 - halfU * 1;
 
-                                var east = Convert.ToDouble(result.lon[x]) * 1 + halfU * 1.1;
-                                var west = Convert.ToDouble(result.lon[x]) * 1 - halfU * 1.1;
+                                var east = Convert.ToDouble(result.lon[x]) * 1 + halfU * 1;
+                                var west = Convert.ToDouble(result.lon[x]) * 1 - halfU * 1;
                                 var tileBounds = new Bounds(new Position(south, west), new Position(north, east));
                                 var rectangle = new Xamarin.Forms.GoogleMaps.Polygon();
  
